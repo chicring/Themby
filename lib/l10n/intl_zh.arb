@@ -4,5 +4,13 @@
   "vip": "VIP",
   "appearance": "外观",
   "language": "语言",
-  "theme": "主题"
+  "theme": "主题",
+  "themeColor": "主题颜色",
+  "dynamicColor": "动态取色",
+  "dynamicColorDescription": "壁纸动态取色",
+  "darkMode": "深色模式",
+  "lightMode": "浅色模式",
+  "appearanceSetting": "外观设置",
+  "followTheSystem": "跟随系统",
+  "link": "链接"
 }

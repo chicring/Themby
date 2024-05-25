@@ -7,9 +7,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text(S.of(context).link,style: Theme.of(context).textTheme.titleLarge),
       ),
       body: Center(
         child: Text(S.of(context).home),

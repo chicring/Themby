@@ -1,0 +1,16 @@
+{
+  "home": "Home",
+  "mine": "Mine",
+  "vip": "VIP",
+  "appearance": "Appearance",
+  "language": "Language",
+  "theme": "Theme",
+  "themeColor": "Theme Color",
+  "dynamicColor": "Dynamic Color",
+  "dynamicColorDescription": "Dynamic color selection of wallpaper",
+  "followTheSystem": "Follow the system",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
+  "appearanceSetting": "Appearance Setting",
+  "link": "Link"
+}

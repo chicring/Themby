@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../page/appearance/view.dart';
 import '../page/home/view.dart';
 import '../page/mine/view.dart';
 import '../page/main/view.dart';
@@ -20,10 +21,12 @@ class CustomNavigationHelper {
 
   static const String homePath = '/home';
   static const String minePath = '/mine';
+  static const String appearancePath = '/appearance';
 
   static final GlobalKey<NavigatorState> mainKey = GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> homeNavigatorKey = GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> mineNavigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> appearanceNavigatorKey = GlobalKey<NavigatorState>();
 
   BuildContext get context => router.routerDelegate.navigatorKey.currentContext!;
 
@@ -62,8 +65,31 @@ class CustomNavigationHelper {
                     );
                   },
                 ),
+                GoRoute(
+                  path: appearancePath,
+                  pageBuilder: (context, GoRouterState state) {
+                    return getPage(
+                      child: AppearancePage(),
+                      state: state,
+                    );
+                  },
+                ),
               ],
             ),
+            // StatefulShellBranch(
+            //   navigatorKey: appearanceNavigatorKey,
+            //   routes: [
+            //     GoRoute(
+            //       path: appearancePath,
+            //       pageBuilder: (context, GoRouterState state) {
+            //         return getPage(
+            //           child: AppearanceWidget(),
+            //           state: state,
+            //         );
+            //       },
+            //     ),
+            //   ],
+            // )
           ],
           pageBuilder: (
               BuildContext context,

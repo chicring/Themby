@@ -16,8 +16,12 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
   @override
   Widget build(BuildContext context) {
+
+    var color = Theme.of(context).colorScheme.primary;
+
     return Scaffold(
       body: SafeArea(
         child: widget.child,
@@ -34,12 +38,12 @@ class _MainPageState extends State<MainPage> {
         },
         destinations: [
           NavigationDestination(
-            selectedIcon: Icon(Icons.dns_rounded, color: Theme.of(context).primaryColor,),
+            selectedIcon: Icon(Icons.dns_rounded, color: color,),
             icon: Icon(Icons.dns_rounded),
             label: S.of(context).home,
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.person_rounded, color: Theme.of(context).primaryColor,),
+            selectedIcon: Icon(Icons.person_rounded, color: color,),
             icon: Icon(Icons.person_rounded),
             label: S.of(context).mine,
           ),
