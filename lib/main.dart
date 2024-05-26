@@ -44,13 +44,12 @@ class MyApp extends StatelessWidget {
 
                 if (lightDynamic != null && darkDynamic != null && isDynamicColor) {
                   // dynamic取色成功
-                  lightColorScheme = lightDynamic.harmonized();
-                  darkColorScheme = darkDynamic.harmonized();
+                  (lightColorScheme, darkColorScheme) = generateDynamicColourSchemes(lightDynamic, darkDynamic);
+
                 } else {
                   // dynamic取色失败，采用品牌色
                   lightColorScheme = ColorScheme.fromSeed(
                     seedColor: defaultColor,
-                    brightness: Brightness.light,
                   );
                   darkColorScheme = ColorScheme.fromSeed(
                     seedColor: defaultColor,

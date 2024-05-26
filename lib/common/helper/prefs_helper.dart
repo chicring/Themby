@@ -1,4 +1,5 @@
 import 'package:themby/common/global.dart';
+import 'package:themby/common/global.dart';
 
 class PrefsHelper {
 
@@ -18,5 +19,15 @@ class PrefsHelper {
   static int customColor = prefs.getInt('customColor') ?? 0;
   static Future<void> updateCustomColor(int value) async {
     await prefs.setInt('customColor', value);
+  }
+
+  //唯一设备ID
+  static String deviceId() {
+    String? deviceId = prefs.getString('deviceId');
+    if (deviceId == null) {
+      deviceId = uuid.v4();
+      prefs.setString('deviceId', deviceId);
+    }
+    return deviceId;
   }
 }

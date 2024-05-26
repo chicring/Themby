@@ -50,20 +50,20 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Home`
+  /// `home`
   String get home {
     return Intl.message(
-      'Home',
+      'home',
       name: 'home',
       desc: '',
       args: [],
     );
   }
 
-  /// `Mine`
+  /// `mine`
   String get mine {
     return Intl.message(
-      'Mine',
+      'mine',
       name: 'mine',
       desc: '',
       args: [],
@@ -80,100 +80,100 @@ class S {
     );
   }
 
-  /// `Appearance`
+  /// `appearance`
   String get appearance {
     return Intl.message(
-      'Appearance',
+      'appearance',
       name: 'appearance',
       desc: '',
       args: [],
     );
   }
 
-  /// `Language`
+  /// `language`
   String get language {
     return Intl.message(
-      'Language',
+      'language',
       name: 'language',
       desc: '',
       args: [],
     );
   }
 
-  /// `Theme`
+  /// `theme`
   String get theme {
     return Intl.message(
-      'Theme',
+      'theme',
       name: 'theme',
       desc: '',
       args: [],
     );
   }
 
-  /// `Theme Color`
+  /// `theme Color`
   String get themeColor {
     return Intl.message(
-      'Theme Color',
+      'theme Color',
       name: 'themeColor',
       desc: '',
       args: [],
     );
   }
 
-  /// `Dynamic Color`
+  /// `dynamic Color`
   String get dynamicColor {
     return Intl.message(
-      'Dynamic Color',
+      'dynamic Color',
       name: 'dynamicColor',
       desc: '',
       args: [],
     );
   }
 
-  /// `Dynamic color selection of wallpaper`
+  /// `dynamic color selection of wallpaper`
   String get dynamicColorDescription {
     return Intl.message(
-      'Dynamic color selection of wallpaper',
+      'dynamic color selection of wallpaper',
       name: 'dynamicColorDescription',
       desc: '',
       args: [],
     );
   }
 
-  /// `Follow the system`
+  /// `follow the system`
   String get followTheSystem {
     return Intl.message(
-      'Follow the system',
+      'follow the system',
       name: 'followTheSystem',
       desc: '',
       args: [],
     );
   }
 
-  /// `Light Mode`
+  /// `light Mode`
   String get lightMode {
     return Intl.message(
-      'Light Mode',
+      'light Mode',
       name: 'lightMode',
       desc: '',
       args: [],
     );
   }
 
-  /// `Dark Mode`
+  /// `dark Mode`
   String get darkMode {
     return Intl.message(
-      'Dark Mode',
+      'dark Mode',
       name: 'darkMode',
       desc: '',
       args: [],
     );
   }
 
-  /// `Appearance Setting`
+  /// `appearance Setting`
   String get appearanceSetting {
     return Intl.message(
-      'Appearance Setting',
+      'appearance Setting',
       name: 'appearanceSetting',
       desc: '',
       args: [],
@@ -185,6 +185,86 @@ class S {
     return Intl.message(
       'Link',
       name: 'link',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Host Address`
+  String get hostAddress {
+    return Intl.message(
+      'Host Address',
+      name: 'hostAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `eg: http://localhost.com`
+  String get hostAddressEg {
+    return Intl.message(
+      'eg: http://localhost.com',
+      name: 'hostAddressEg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Server`
+  String get addServer {
+    return Intl.message(
+      'Add Server',
+      name: 'addServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `port`
+  String get port {
+    return Intl.message(
+      'port',
+      name: 'port',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `username`
+  String get username {
+    return Intl.message(
+      'username',
+      name: 'username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `password`
+  String get password {
+    return Intl.message(
+      'password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `confirm`
+  String get confirm {
+    return Intl.message(
+      'confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `cancel`
+  String get cancel {
+    return Intl.message(
+      'cancel',
+      name: 'cancel',
       desc: '',
       args: [],
     );

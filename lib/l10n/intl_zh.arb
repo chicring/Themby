@@ -12,5 +12,13 @@
   "lightMode": "浅色模式",
   "appearanceSetting": "外观设置",
   "followTheSystem": "跟随系统",
-  "link": "链接"
+  "link": "连接",
+  "hostAddress": "主机地址",
+  "hostAddressEg": "例如: http://localhost.com",
+  "port": "端口",
+  "addServer": "添加服务器",
+  "username": "用户名",
+  "password": "密码",
+  "confirm": "确认",
+  "cancel": "取消"
 }

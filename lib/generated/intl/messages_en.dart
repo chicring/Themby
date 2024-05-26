@@ -22,22 +22,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "appearance": MessageLookupByLibrary.simpleMessage("Appearance"),
+        "addServer": MessageLookupByLibrary.simpleMessage("Add Server"),
+        "appearance": MessageLookupByLibrary.simpleMessage("appearance"),
         "appearanceSetting":
-            MessageLookupByLibrary.simpleMessage("Appearance Setting"),
-        "darkMode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
-        "dynamicColor": MessageLookupByLibrary.simpleMessage("Dynamic Color"),
+            MessageLookupByLibrary.simpleMessage("appearance Setting"),
+        "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
+        "confirm": MessageLookupByLibrary.simpleMessage("confirm"),
+        "darkMode": MessageLookupByLibrary.simpleMessage("dark Mode"),
+        "dynamicColor": MessageLookupByLibrary.simpleMessage("dynamic Color"),
         "dynamicColorDescription": MessageLookupByLibrary.simpleMessage(
-            "Dynamic color selection of wallpaper"),
+            "dynamic color selection of wallpaper"),
         "followTheSystem":
-            MessageLookupByLibrary.simpleMessage("Follow the system"),
-        "home": MessageLookupByLibrary.simpleMessage("Home"),
-        "language": MessageLookupByLibrary.simpleMessage("Language"),
-        "lightMode": MessageLookupByLibrary.simpleMessage("Light Mode"),
+            MessageLookupByLibrary.simpleMessage("follow the system"),
+        "home": MessageLookupByLibrary.simpleMessage("home"),
+        "hostAddress": MessageLookupByLibrary.simpleMessage("Host Address"),
+        "hostAddressEg":
+            MessageLookupByLibrary.simpleMessage("eg: http://localhost.com"),
+        "language": MessageLookupByLibrary.simpleMessage("language"),
+        "lightMode": MessageLookupByLibrary.simpleMessage("light Mode"),
         "link": MessageLookupByLibrary.simpleMessage("Link"),
-        "mine": MessageLookupByLibrary.simpleMessage("Mine"),
-        "theme": MessageLookupByLibrary.simpleMessage("Theme"),
-        "themeColor": MessageLookupByLibrary.simpleMessage("Theme Color"),
+        "mine": MessageLookupByLibrary.simpleMessage("mine"),
+        "password": MessageLookupByLibrary.simpleMessage("password"),
+        "port": MessageLookupByLibrary.simpleMessage("port"),
+        "theme": MessageLookupByLibrary.simpleMessage("theme"),
+        "themeColor": MessageLookupByLibrary.simpleMessage("theme Color"),
+        "username": MessageLookupByLibrary.simpleMessage("username"),
         "vip": MessageLookupByLibrary.simpleMessage("VIP")
       };
 }

@@ -48,6 +48,9 @@ dependencies:
 
   #持久化
   shared_preferences: ^2.2.3
+  dio: ^5.4.3+1
+  device_info_plus: ^10.1.0
+  uuid: ^4.4.0
 
 
 dev_dependencies:

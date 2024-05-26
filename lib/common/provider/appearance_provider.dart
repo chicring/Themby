@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:themby/common/helper/Prefs_helper.dart';
+import 'package:themby/common/helper/prefs_helper.dart';
 import '../state/appearance_state.dart';
 
 part 'appearance_provider.g.dart';

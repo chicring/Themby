@@ -2,12 +2,10 @@
 class EmbyConfig{
 
   EmbyConfig({
-    required this.protocol,
     required this.host,
     required this.port,
   });
 
-  String protocol; // "http" | "https";
   String host;
   int port;
 

@@ -22,20 +22,29 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addServer": MessageLookupByLibrary.simpleMessage("添加服务器"),
         "appearance": MessageLookupByLibrary.simpleMessage("外观"),
         "appearanceSetting": MessageLookupByLibrary.simpleMessage("外观设置"),
+        "cancel": MessageLookupByLibrary.simpleMessage("取消"),
+        "confirm": MessageLookupByLibrary.simpleMessage("确认"),
         "darkMode": MessageLookupByLibrary.simpleMessage("深色模式"),
         "dynamicColor": MessageLookupByLibrary.simpleMessage("动态取色"),
         "dynamicColorDescription":
             MessageLookupByLibrary.simpleMessage("壁纸动态取色"),
         "followTheSystem": MessageLookupByLibrary.simpleMessage("跟随系统"),
         "home": MessageLookupByLibrary.simpleMessage("主页"),
+        "hostAddress": MessageLookupByLibrary.simpleMessage("主机地址"),
+        "hostAddressEg":
+            MessageLookupByLibrary.simpleMessage("例如: http://localhost.com"),
         "language": MessageLookupByLibrary.simpleMessage("语言"),
         "lightMode": MessageLookupByLibrary.simpleMessage("浅色模式"),
-        "link": MessageLookupByLibrary.simpleMessage("链接"),
+        "link": MessageLookupByLibrary.simpleMessage("连接"),
         "mine": MessageLookupByLibrary.simpleMessage("我的"),
+        "password": MessageLookupByLibrary.simpleMessage("密码"),
+        "port": MessageLookupByLibrary.simpleMessage("端口"),
         "theme": MessageLookupByLibrary.simpleMessage("主题"),
         "themeColor": MessageLookupByLibrary.simpleMessage("主题颜色"),
+        "username": MessageLookupByLibrary.simpleMessage("用户名"),
         "vip": MessageLookupByLibrary.simpleMessage("VIP")
       };
 }
