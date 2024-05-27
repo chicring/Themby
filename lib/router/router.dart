@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 
 import '../page/appearance/view.dart';
@@ -17,7 +18,6 @@ class CustomNavigationHelper {
   factory CustomNavigationHelper() {
     return _instance;
   }
-
 
   static const String homePath = '/home';
   static const String minePath = '/mine';
@@ -108,6 +108,8 @@ class CustomNavigationHelper {
     ];
 
     router = GoRouter(
+      //smartDialog
+      observers: [FlutterSmartDialog.observer],
       navigatorKey: mainKey,
       initialLocation: homePath,
       routes: routes,

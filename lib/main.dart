@@ -1,5 +1,6 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/common/provider/appearance_provider.dart';
 import 'package:themby/common/state/appearance_state.dart';
 import 'package:themby/common/theme/theme.dart';
@@ -11,11 +12,12 @@ import 'package:themby/router/router.dart';
 
 import 'common/init_app.dart';
 import 'common/models/common/color_type.dart';
+import 'common/widget/common/custom_dialog.dart';
 
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   intiApp().then((value) => runApp(const ProviderScope(child: MyApp())));
-  // runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +27,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
 
     return Consumer(
         builder: (context, ref, child){
@@ -74,9 +75,11 @@ class MyApp extends StatelessWidget {
                     ThemeMode.dark,
                     ThemeMode.system
                   ][appearanceState.themeMode],
-
                   theme: buildLightTheme(lightColorScheme),
-                  darkTheme: buildDarkTheme(darkColorScheme)
+                  darkTheme: buildDarkTheme(darkColorScheme),
+                  builder: FlutterSmartDialog.init(
+                    toastBuilder: (String message) => CustomToastWidget(message: message),
+                  ),
                 );
               }
           );

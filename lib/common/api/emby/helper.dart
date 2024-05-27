@@ -13,4 +13,15 @@ class Helper{
       Constant.X_Emby_Authorization: authorizationValue,
     };
   }
+
+
+  static Map<String, dynamic> buildParams() {
+    return {
+      Constant.X_Emby_Client: Constant.Client,
+      Constant.X_Emby_Device_Name: deviceName,
+      Constant.X_Emby_Device_Id: deviceId,
+      Constant.X_Emby_Client_Version: '1.0.0',
+      Constant.X_Emby_Language: "zh-CN",
+    };
+  }
 }

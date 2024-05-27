@@ -21,12 +21,7 @@ class HomePage extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return const AddServerDialog();
-                },
-              );
+              homeVM.openDialog();
             },
           ),
         ],

@@ -1,20 +1,44 @@
 
 
 import 'package:dio/dio.dart';
+import 'package:themby/common/helper/default_interceptors_wrapper.dart';
 
 class DioHelper{
+
   late final Dio _dio;
 
-  Dio get dio => _dio;
+  static DioHelper? _instance;
+  factory DioHelper() => _instance ??= DioHelper._init();
 
-  DioHelper(){
+  DioHelper._init(){
     _dio = Dio(
       BaseOptions(
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
+        headers: {
+          "content-type": "application/json",
+        }
       )
     );
+
+    //添加拦截器
+    _dio.interceptors.add(DefaultInterceptorsWrapper());
   }
+
+
+
+  // DioHelper(){
+  //   _dio = Dio(
+  //     BaseOptions(
+  //       connectTimeout: const Duration(seconds: 30),
+  //       receiveTimeout: const Duration(seconds: 30),
+  //       headers: {
+  //         "content-type": "application/json",
+  //       }
+  //     )
+  //   );
+  //
+  // }
 
   Future<Response<T>> get<T>(
       String url,
@@ -43,6 +67,7 @@ class DioHelper{
     final customOptions = options?.copyWith(
       headers: headers,
     );
+    print('url: $headers');
     return _dio.postUri<T>(
       _buildUri(url, path, params),
       data: data,

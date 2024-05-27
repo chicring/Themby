@@ -1,8 +1,11 @@
+import 'package:isar/isar.dart';
+
+import '../../common/global.dart';
 import '../../common/models/emby_site.dart';
 import 'package:flutter/material.dart';
 
 class HomeState{
-  final List<EmbySite> sites;
+  final List<EmbySite?> sites;
 
   final TextEditingController hostController;
   final TextEditingController portController;
@@ -18,7 +21,7 @@ class HomeState{
   });
 
   HomeState.initial()
-    : sites = [],
+    : sites = isar.embySites.where().findAll(),
       hostController = TextEditingController(),
       portController = TextEditingController(),
       usernameController = TextEditingController(),

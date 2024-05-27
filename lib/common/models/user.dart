@@ -1,24 +1,30 @@
 
+import 'package:isar/isar.dart';
+
+@embedded
 class User{
-  User({
-    required this.serverId,
-    this.id,
-    this.name,
-    required this.accessToken,
-  });
+  // User({
+  //   this.serverId,
+  //   this.id,
+  //   this.name,
+  //   this.accessToken,
+  //   this.imageTag,
+  // });
 
   String? id;
   String? name;
-  String serverId;
-  String accessToken;
+  String? serverId;
+  String? accessToken;
+  String? imageTag;
 
-  factory User.fromJson(Map<String, dynamic> json){
-   return User(
-        serverId: json['ServerId'] as String,
-        id: json['User']['Id'] as String?,
-        name: json['User']['Name'] as String?,
-        accessToken: json['AccessToken'] as String,
-      );
-  }
+  // factory User.fromJson(Map<String, dynamic> json){
+  //  return User(
+  //       serverId: json['ServerId'] as String,
+  //       id: json['User']['Id'] as String?,
+  //       name: json['User']['Name'] as String?,
+  //       accessToken: json['AccessToken'] as String,
+  //       imageTag: json['User']['PrimaryImageTag'] as String?,
+  //     );
+  // }
 
 }

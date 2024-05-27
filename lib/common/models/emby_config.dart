@@ -1,13 +1,20 @@
 
+import 'package:isar/isar.dart';
+
+@embedded
 class EmbyConfig{
 
-  EmbyConfig({
-    required this.host,
-    required this.port,
-  });
+  // EmbyConfig({
+  //   this.host,
+  //   this.port,
+  //   this.username,
+  //   this.password,
+  // });
 
-  String host;
-  int port;
+  String? host;
+  int? port;
+  String? username;
+  String? password;
 
 
   // factory EmbyConfig.fromJson(Map<String, dynamic> json){

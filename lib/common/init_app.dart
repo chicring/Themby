@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:themby/common/global.dart';
 import 'package:themby/common/helper/dio_helper.dart';
@@ -10,6 +12,7 @@ import '../router/router.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 import 'helper/prefs_helper.dart';
+import 'models/emby_site.dart';
 
 Future<void> intiApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,4 +76,13 @@ Future<void> intiApp() async {
 
   initDeviceInfo();
 
+  /*
+    初始化Isar
+  */
+  final dir = await getApplicationDocumentsDirectory();
+
+  isar = await Isar.openAsync(
+    schemas: [EmbySiteSchema],
+    directory: dir.path,
+  );
 }
