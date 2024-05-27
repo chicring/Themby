@@ -22,4 +22,5 @@ class Constant {
   static const String X_Emby_Device_Id = "X-Emby-Device-Id";
   static const String X_Emby_Client_Version = "X-Emby-Client-Version";
   static const String X_Emby_Language = "X-Emby-Language";
+  static const String X_Emby_Token = "X-Emby-Token";
 }

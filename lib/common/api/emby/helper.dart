@@ -15,13 +15,14 @@ class Helper{
   }
 
 
-  static Map<String, dynamic> buildParams() {
+  static Map<String, dynamic> buildParams({String? token}) {
     return {
       Constant.X_Emby_Client: Constant.Client,
       Constant.X_Emby_Device_Name: deviceName,
       Constant.X_Emby_Device_Id: deviceId,
       Constant.X_Emby_Client_Version: '1.0.0',
       Constant.X_Emby_Language: "zh-CN",
+      Constant.X_Emby_Token: token,
     };
   }
 }

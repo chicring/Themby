@@ -50,6 +50,7 @@ class DefaultInterceptorsWrapper extends InterceptorsWrapper {
     final customException = DioCustomException.fromDioException(err);
     debugPrint("Error: ${customException.message}");
     SmartDialog.showToast(customException.message!);
+    handler.next(err);
   }
 
 }

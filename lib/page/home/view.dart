@@ -27,7 +27,7 @@ class HomePage extends ConsumerWidget {
         ],
       ),
       body: Center(
-        child: const Text('Hello World'),
+        child: Text(homeState.sites.toString()),
       ),
     );
   }

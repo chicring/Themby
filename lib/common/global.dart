@@ -10,7 +10,7 @@ late SharedPreferences prefs;
 
 late DioHelper apiClient;
 
-late Isar isar;
+late final Isar isar;
 
 late String deviceId;
 

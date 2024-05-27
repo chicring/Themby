@@ -17,6 +17,7 @@ class EmbySite{
     this.serverId,
     this.host,
     this.port,
+    this.version,
   });
 
   late int id;
@@ -34,6 +35,7 @@ class EmbySite{
   String? serverId;
   String? host;
   int? port;
+  String? version;
 
   factory EmbySite.fromJson(Map<String, dynamic> json){
     return EmbySite(
@@ -63,6 +65,7 @@ class EmbySite{
     String? serverId,
     String? host,
     int? port,
+    String? version,
   }) {
     return EmbySite(
       name: name ?? this.name,
@@ -76,6 +79,7 @@ class EmbySite{
       serverId: serverId ?? this.serverId,
       host: host ?? this.host,
       port: port ?? this.port,
+      version: version ?? this.version,
     );
   }
 

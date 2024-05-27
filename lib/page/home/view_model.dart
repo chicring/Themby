@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/common/global.dart';
-import 'package:themby/common/helper/prefs_helper.dart';
 import 'package:themby/common/models/emby_site.dart';
 import 'package:themby/page/home/state.dart';
-import 'package:themby/page/home/widgets/add_server_dialog.dart';
 
 import '../../common/api/emby/index.dart';
 import '../../generated/l10n.dart';
@@ -38,10 +36,22 @@ class HomeVM extends _$HomeVM {
       password: password,
     );
     site = await LoginApi.login(site);
+    site = await LoginApi.publicInfo(site);
+    SmartDialog.showToast('添加成功 1✅');
 
 
+    await isar.writeAsync((isar) {
+      return isar.embySites.put(site);
+    }).then((value) {
+      SmartDialog.showToast('添加成功 2✅');
+      state.sites.add(site);
+      state.hostController.clear();
+      state.portController.clear();
+      state.usernameController.clear();
+      state.hostController.clear();
+      SmartDialog.showToast('添加成功 3✅');
+    });
 
-    SmartDialog.showToast('添加成功 ✅');
   }
 
   Future<void> removeSite(EmbySite site) async {
