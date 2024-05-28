@@ -67,7 +67,6 @@ class DioHelper{
     final customOptions = options?.copyWith(
       headers: headers,
     );
-    print('url: $headers');
     return _dio.postUri<T>(
       _buildUri(url, path, params),
       data: data,

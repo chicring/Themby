@@ -14,6 +14,8 @@ class HomeVM extends _$HomeVM {
   @override
   HomeState build() => HomeState.initial();
 
+  final embySiteBox = objectboxHelper.store.box<EmbySite>();
+
   Future<void> addSite() async {
     final String host = state.hostController.text;
     final String portText = state.portController.text;
@@ -37,24 +39,24 @@ class HomeVM extends _$HomeVM {
     );
     site = await LoginApi.login(site);
     site = await LoginApi.publicInfo(site);
-    SmartDialog.showToast('添加成功 1✅');
 
-
-    await isar.writeAsync((isar) {
-      return isar.embySites.put(site);
-    }).then((value) {
-      SmartDialog.showToast('添加成功 2✅');
+    embySiteBox.putAsync(site).then((id){
+      SmartDialog.dismiss();
+      SmartDialog.showToast('添加成功✅');
       state.sites.add(site);
+      ref.invalidateSelf();
       state.hostController.clear();
       state.portController.clear();
       state.usernameController.clear();
-      state.hostController.clear();
-      SmartDialog.showToast('添加成功 3✅');
+      state.passwordController.clear();
     });
-
   }
 
   Future<void> removeSite(EmbySite site) async {
+    embySiteBox.remove(site.id);
+    state.sites.remove(site);
+    ref.invalidateSelf();
+    SmartDialog.showToast('删除成功✅');
   }
 
   Future<void> openDialog() async {

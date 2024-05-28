@@ -1,7 +1,4 @@
 
-import 'package:isar/isar.dart';
-
-@embedded
 class User{
   // User({
   //   this.serverId,

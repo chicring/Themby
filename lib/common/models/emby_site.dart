@@ -1,8 +1,6 @@
-import 'package:isar/isar.dart';
+import 'package:objectbox/objectbox.dart';
 
-part 'emby_site.g.dart';
-
-@collection
+@Entity()
 class EmbySite{
 
   EmbySite({
@@ -20,7 +18,7 @@ class EmbySite{
     this.version,
   });
 
-  late int id;
+  int id = 0;
 
   String? name;
   String? type;
@@ -32,6 +30,7 @@ class EmbySite{
   String? accessToken;
 
   String? serverName;
+
   String? serverId;
   String? host;
   int? port;
@@ -52,7 +51,7 @@ class EmbySite{
       port: json['port'] as int,
     );
   }
-  
+
   EmbySite copyWith({
     String? name,
     String? type,

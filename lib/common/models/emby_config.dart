@@ -1,7 +1,4 @@
 
-import 'package:isar/isar.dart';
-
-@embedded
 class EmbyConfig{
 
   // EmbyConfig({
