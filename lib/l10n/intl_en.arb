@@ -20,5 +20,11 @@
   "username": "username",
   "password": "password",
   "confirm": "confirm",
-  "cancel": "cancel"
+  "cancel": "cancel",
+  "delete": "delete",
+  "edit": "edit",
+  "save": "save",
+  "add": "add",
+  "server": "server",
+  "search": "search"
 }

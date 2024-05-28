@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:themby/common/models/emby_site.dart';
 
+import '../../emby/view_model.dart';
 import '../view_model.dart';
 
 class ServerList extends ConsumerWidget {
@@ -38,14 +40,38 @@ class ServerList extends ConsumerWidget {
             title: Text(site.serverName ?? site.host!, style: const TextStyle(fontWeight: FontWeight.w500)),
             dense: true,
             subtitle: Text(site.name!, style: TextStyle(color: Colors.black.withOpacity(0.5))),
-            trailing: IconButton(
+            trailing: PopupMenuButton<int>(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
               icon: const Icon(Icons.more_horiz),
-              onPressed: () {
-                ref.read(homeVMProvider.notifier).removeSite(site);
-              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                 PopupMenuItem<int>(
+                  value: 0,
+                  child: const ListTile(
+                    leading: Icon(Icons.edit), // 在这里添加编辑图标
+                    title: Text('编辑'),
+                  ),
+                  onTap: () {
+                    SmartDialog.showToast('点击了${site.serverName} ${site.id}');
+                  },
+                ),
+                PopupMenuItem<int>(
+                  value: 1,
+                  child: const ListTile(
+                    leading: Icon(Icons.delete), // 在这里添加删除图标
+                    title: Text('删除'),
+                  ),
+                  onTap: () {
+                    ref.read(homeVMProvider.notifier).removeSite(site);
+                  },
+                ),
+              ],
             ),
             onTap: () {
-              SmartDialog.showToast('点击了${site.serverName} ${site.id}');
+              ref.read(embyVMProvider.notifier).init(site).then((value) {
+                GoRouter.of(context).go('/embyHome');
+              });
             },
           );
         },

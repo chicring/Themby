@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "add": MessageLookupByLibrary.simpleMessage("add"),
         "addServer": MessageLookupByLibrary.simpleMessage("Add Server"),
         "appearance": MessageLookupByLibrary.simpleMessage("appearance"),
         "appearanceSetting":
@@ -29,9 +30,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
         "confirm": MessageLookupByLibrary.simpleMessage("confirm"),
         "darkMode": MessageLookupByLibrary.simpleMessage("dark Mode"),
+        "delete": MessageLookupByLibrary.simpleMessage("delete"),
         "dynamicColor": MessageLookupByLibrary.simpleMessage("dynamic Color"),
         "dynamicColorDescription": MessageLookupByLibrary.simpleMessage(
             "dynamic color selection of wallpaper"),
+        "edit": MessageLookupByLibrary.simpleMessage("edit"),
         "followTheSystem":
             MessageLookupByLibrary.simpleMessage("follow the system"),
         "home": MessageLookupByLibrary.simpleMessage("home"),
@@ -44,6 +47,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "mine": MessageLookupByLibrary.simpleMessage("mine"),
         "password": MessageLookupByLibrary.simpleMessage("password"),
         "port": MessageLookupByLibrary.simpleMessage("port"),
+        "save": MessageLookupByLibrary.simpleMessage("save"),
+        "search": MessageLookupByLibrary.simpleMessage("search"),
+        "server": MessageLookupByLibrary.simpleMessage("server"),
         "theme": MessageLookupByLibrary.simpleMessage("theme"),
         "themeColor": MessageLookupByLibrary.simpleMessage("theme Color"),
         "username": MessageLookupByLibrary.simpleMessage("username"),

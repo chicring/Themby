@@ -36,12 +36,8 @@ class DefaultInterceptorsWrapper extends InterceptorsWrapper {
 
   // @override
   // void onResponse(Response response, ResponseInterceptorHandler handler) {
-  //   if (response.statusCode == 200) {
-  //     debugPrint("response: ${response.data}");
-  //     return handler.next(response);
-  //   } else {
-  //
-  //   }
+  //   print("response: ${response.data}");
+  //   return handler.next(response);
   // }
 
   @override
