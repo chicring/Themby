@@ -36,17 +36,17 @@ class AppSettingRepository extends _$AppSettingRepository{
 
   @override
   AppSetting build() {
-    return AppSetting.initial(ref.watch(sharedPreferencesProvider).requireValue);
+    return AppSetting.initial(ref.watch(sharedPreferencesProvider));
   }
 
   Future<void> updateThemeMode(int value) async {
-    final prefs = ref.watch(sharedPreferencesProvider).requireValue;
+    final prefs = ref.watch(sharedPreferencesProvider);
     prefs.setInt(Constant.themeModeKey, value);
     state = state.copyWith(themeMode: value);
   }
 
   Future<void> updateCustomColor(int value) async {
-    final prefs = ref.watch(sharedPreferencesProvider).requireValue;
+    final prefs = ref.watch(sharedPreferencesProvider);
     prefs.setInt(Constant.customColorKey, value);
     state = state.copyWith(customColor: value);
   }

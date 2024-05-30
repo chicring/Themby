@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final List<Color> colorsOnly = [
+final List<Color> colorType = [
   const Color.fromARGB(255, 92, 182, 123),
   Colors.pink,
   Colors.red,
