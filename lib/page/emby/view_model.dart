@@ -16,11 +16,12 @@ class EmbyVM extends _$EmbyVM{
 
   Future<void> init(EmbySite site) async {
     state = state.copyWith(site: site);
-    loadViews();
+    await loadViews();
   }
 
   Future<void> loadViews() async {
-    await ViewApi.getView(state.site!).then((value) {
+    ViewApi.getView(state.site!).then((value) {
+      print(value.first.name);
       state = state.copyWith(views : value);
       ref.invalidateSelf();
     });

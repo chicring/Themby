@@ -10,7 +10,6 @@ class EmbyListView extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
     List<EmbyView>? views = ref.watch(embyVMProvider.select((value) => value.views));
 
-    print(views);
     return views == null ?
       const Center(
           child: CircularProgressIndicator()
