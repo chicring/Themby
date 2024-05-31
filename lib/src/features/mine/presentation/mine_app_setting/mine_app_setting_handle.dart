@@ -76,37 +76,31 @@ Future<void> openThemeColorDialog(OpenThemeColorDialogRef ref, {required int cur
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: List.generate(
-                colorType.length,
-                    (index) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0), // 添加垂直间隔
-                  child: InkWell(
-                    onTap: () {
-                      ref.read(appSettingRepositoryProvider.notifier).updateCustomColor(index);
-                      SmartDialog.dismiss();
-                    },
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 10,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: colorType[index],
-                          ),
+                  colorType.length,
+                  (index) => InkWell(
+                      onTap: () {
+                        ref.read(appSettingRepositoryProvider.notifier).updateCustomColor(index);
+                        SmartDialog.dismiss();
+                      },
+                     child:  Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: index==currentColor  ? colorType[index].withOpacity(0.5) : Colors.transparent,
                         ),
-                        if (currentColor == index) // 如果当前颜色被选中
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              height: 10,
-                              color: Colors.black.withOpacity(0.5), // 在颜色条上添加半透明黑色覆盖层
+                        height: 36,
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.all(10),
+                        child: Container(
+                              decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color:  colorType[index],
                             ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
+                        ),
+                      ),
+                  )
               ),
-            ),
+            )
         )
       );
     },

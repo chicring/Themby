@@ -12,11 +12,20 @@ class MineScreen extends StatelessWidget {
     var color = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
+        appBar: AppBar(
+          title: Text(
+              "我的".hardcoded,
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: color
+              )
+          ),
+        ),
         body: Container(
           margin: const EdgeInsets.all(15),
           child: Column(
             children: <Widget>[
-              const SizedBox(height: 20),
               Card(
                 clipBehavior: Clip.antiAlias,
                 elevation: 0,

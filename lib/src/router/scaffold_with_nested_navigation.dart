@@ -55,11 +55,13 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
         selectedIndex: currentIndex,
         destinations: [
           NavigationDestination(
-            icon: const Icon(Icons.dns_rounded),
+            selectedIcon: Icon(Icons.dns_rounded, color: Theme.of(context).colorScheme.primary),
+            icon: const Icon(Icons.dns_outlined),
             label: 'Home'.hardcoded,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.person_rounded),
+            selectedIcon: Icon(Icons.account_circle_rounded, color: Theme.of(context).colorScheme.primary),
+            icon: const Icon(Icons.account_circle_outlined),
             label: 'mine'.hardcoded,
           ),
         ],
@@ -91,11 +93,13 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
             labelType: NavigationRailLabelType.all,
             destinations: <NavigationRailDestination>[
               NavigationRailDestination(
-                icon: const Icon(Icons.dns_rounded),
+                selectedIcon: Icon(Icons.dns_rounded, color: Theme.of(context).colorScheme.primary),
+                icon: const Icon(Icons.dns_outlined),
                 label: Text('Home'.hardcoded),
               ),
               NavigationRailDestination(
-                icon: const Icon(Icons.person_rounded),
+                selectedIcon: Icon(Icons.account_circle_rounded, color: Theme.of(context).colorScheme.primary),
+                icon: const Icon(Icons.account_circle_outlined),
                 label: Text('mine'.hardcoded),
               ),
             ],
