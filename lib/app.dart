@@ -17,7 +17,6 @@ part 'app.g.dart';
 @Riverpod(keepAlive: true)
 Future<void> appStartup(AppStartupRef ref) async {
   await ref.read(sharedPreferencesInitProvider.future);
-
   if (Platform.isAndroid){
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

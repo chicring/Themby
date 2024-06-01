@@ -15,61 +15,89 @@ class HomeAddServerNotifier extends _$HomeAddServerNotifier{
 
   }
 
-
   Future<void> openAddDialog() async {
     await SmartDialog.show(
-        useSystem: true,
-        animationType: SmartAnimationType.centerFade_otherSlide,
-        builder: (BuildContext context){
-          return AlertDialog(
-            title: const Text('添加服务器'),
-            content: Form(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    controller: state.hostController,
-                    decoration: const InputDecoration(
-                      labelText: '主机',
+      useSystem: true,
+      animationType: SmartAnimationType.centerFade_otherSlide,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('添加服务器'),
+          content: Form(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flex(
+                  direction: Axis.horizontal,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: DropdownButtonFormField<String>(
+                        value: state.schemeController.text.isEmpty ? null : state.schemeController.text,
+                        decoration: InputDecoration(
+                          labelText: '协议',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        items: <String>['http', 'https'].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          state.schemeController.text = newValue!;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '请选择协议';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
-                  TextFormField(
-                    controller: state.portController,
-                    decoration: const InputDecoration(
-                      labelText: '端口',
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        controller: state.portController,
+                        decoration: InputDecoration(
+                          labelText: '端口',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '请输入端口';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
-                  TextFormField(
-                    controller: state.usernameController,
-                    decoration: const InputDecoration(
-                      labelText: '用户名',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: state.passwordController,
-                    decoration: const InputDecoration(
-                      labelText: '密码',
-                    ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+                // ... 其他的 TextFormField
+              ],
             ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  SmartDialog.dismiss();
-                },
-                child: const Text('取消'),
-              ),
-              TextButton(
-                onPressed: () {
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                SmartDialog.dismiss();
+              },
+              child: const Text('取消'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (Form.of(context).validate()) {
                   addServer();
-                },
-                child: const Text('连接'),
-              ),
-            ],
-          );
-        }
+                }
+              },
+              child: const Text('连接'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

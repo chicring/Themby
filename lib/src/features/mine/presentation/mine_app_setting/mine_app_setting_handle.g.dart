@@ -158,7 +158,7 @@ class _OpenThemeModeDialogProviderElement
 }
 
 String _$openThemeColorDialogHash() =>
-    r'59bf84d7b4d69dccf4565343e098b6beaad78f42';
+    r'fd7c1eae5b383a413f0081a5d9c4b933b8eea1a0';
 
 /// See also [openThemeColorDialog].
 @ProviderFor(openThemeColorDialog)
