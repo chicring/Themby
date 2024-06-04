@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +11,7 @@ import 'package:themby/src/common/domiani/color_type.dart';
 import 'package:themby/src/common/widget/custom_dialog.dart';
 import 'package:themby/src/helper/prefs_provider.dart';
 import 'package:themby/src/router/app_router.dart';
-
+import 'package:themby/src/helper/device_info_provider.dart';
 part 'app.g.dart';
 
 
@@ -25,6 +26,7 @@ Future<void> appStartup(AppStartupRef ref) async {
       statusBarColor: Colors.transparent,
     ));
   }
+  await ref.read(deviceNameProvider.notifier).initDeviceName();
 }
 
 class App extends ConsumerWidget{
