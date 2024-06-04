@@ -18,85 +18,136 @@ class HomeAddServerNotifier extends _$HomeAddServerNotifier{
   Future<void> openAddDialog() async {
     await SmartDialog.show(
       useSystem: true,
-      animationType: SmartAnimationType.centerFade_otherSlide,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('添加服务器'),
-          content: Form(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Flex(
-                  direction: Axis.horizontal,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: DropdownButtonFormField<String>(
-                        value: state.schemeController.text.isEmpty ? null : state.schemeController.text,
-                        decoration: InputDecoration(
-                          labelText: '协议',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
+      builder: (context) {
+        GlobalKey<FormState> formKey = GlobalKey<FormState>();
+        return StatefulBuilder(builder: (context, StateSetter setState) {
+          return AlertDialog(
+            title: const Text('添加连接'),
+            content: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: ListBody(
+                  children: <Widget>[
+                    DropdownMenu<String>(
+                      label: const Text('协议'),
+                      controller: state.schemeController,
+                      inputDecorationTheme: InputDecorationTheme(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        items: <String>['http', 'https'].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          state.schemeController.text = newValue!;
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '请选择协议';
-                          }
-                          return null;
-                        },
                       ),
+                      dropdownMenuEntries: const [
+                        DropdownMenuEntry(
+                          value: 'http',
+                          label: 'http',
+                        ),
+                        DropdownMenuEntry(
+                          value: 'https',
+                          label: 'https',
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: TextFormField(
-                        controller: state.portController,
-                        decoration: InputDecoration(
-                          labelText: '端口',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: state.hostController,
+                      decoration: InputDecoration(
+                        labelText: 'Host',
+                        hintText: 'Enter your host',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '请输入端口';
-                          }
-                          return null;
-                        },
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a host';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: state.portController,
+                      decoration: InputDecoration(
+                        labelText: 'Port',
+                        hintText: 'Enter the port',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a port';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: state.usernameController,
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                        hintText: 'Enter your username',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your username';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: state.passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        hintText: 'Enter your password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            state.isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              state.isPasswordVisible = !state.isPasswordVisible;
+                            });
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      obscureText: !state.isPasswordVisible,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        return null;
+                      },
                     ),
                   ],
                 ),
-                // ... 其他的 TextFormField
-              ],
+              ),
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                SmartDialog.dismiss();
-              },
-              child: const Text('取消'),
-            ),
-            TextButton(
-              onPressed: () {
-                if (Form.of(context).validate()) {
-                  addServer();
-                }
-              },
-              child: const Text('连接'),
-            ),
-          ],
-        );
+            actions: <Widget>[
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  SmartDialog.dismiss();
+                },
+              ),
+              TextButton(
+                child: Text('连接'),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    SmartDialog.dismiss();
+                  }
+                },
+              ),
+            ],
+          );
+        });
       },
     );
   }

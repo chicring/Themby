@@ -1,14 +1,16 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:themby/src/features/home/presentation/home_add_server_notifier.dart';
 import 'package:themby/src/localization/string_hardcoded.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text('链接'.hardcoded),
@@ -17,7 +19,7 @@ class HomeScreen extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
             icon: const Icon(Icons.add_circle_outline),
             onPressed: () {
-              SmartDialog.showToast("我是按钮");
+              ref.read(homeAddServerNotifierProvider.notifier).openAddDialog();
             },
           ),
         ],
