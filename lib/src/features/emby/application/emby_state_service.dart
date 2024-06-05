@@ -31,11 +31,11 @@ class EmbyStateService extends _$EmbyStateService{
   }
 
   void addUserIdToToken(String userId){
-    state = state.copyWith(token: state.token + userId);
+    state = state.copyWith(token: state.token.replaceFirst('null', userId));
   }
 
   String _initToken(String deviceName, String deviceId){
-    return 'Client=Themby,Device=$deviceName,DeviceId=$deviceId,Version=1.0.0,Emby UserId=';
+    return 'Emby UserId=null,Client=Themby,Device=$deviceName,DeviceId=$deviceId,Version=1.0.0';
   }
 
   Future<String> _getDeviceName() async {

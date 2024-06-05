@@ -1,11 +1,13 @@
 
+import 'package:objectbox/objectbox.dart';
+
 enum SiteType {
   emby,
   jellyfin,
   plex,
 }
 
-
+@Entity()
 class Site{
   Site({
     this.remake,
@@ -23,9 +25,9 @@ class Site{
     this.accessToken
   });
 
-  final int id = 0;
+  int id = 0;
   final String? remake;
-  final SiteType? type;
+  final String? type;
 
   final String? serverId;
   final String? serverName;
@@ -43,7 +45,7 @@ class Site{
 
   Site copyWith({
     String? remake,
-    SiteType? type,
+    String? type,
     String? serverId,
     String? serverName,
     String? version,

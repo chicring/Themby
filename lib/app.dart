@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/data/app_setting_repository.dart';
 import 'package:themby/src/common/domiani/color_type.dart';
 import 'package:themby/src/common/widget/custom_dialog.dart';
+import 'package:themby/src/helper/objectbox_provider.dart';
 import 'package:themby/src/helper/prefs_provider.dart';
 import 'package:themby/src/router/app_router.dart';
 import 'package:themby/src/helper/device_info_provider.dart';
@@ -18,6 +18,8 @@ part 'app.g.dart';
 @Riverpod(keepAlive: true)
 Future<void> appStartup(AppStartupRef ref) async {
   await ref.read(sharedPreferencesInitProvider.future);
+  await ref.read(deviceNameProvider.notifier).initDeviceName();
+  await ref.read(storeInitProvider.future);
   if (Platform.isAndroid){
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -26,7 +28,6 @@ Future<void> appStartup(AppStartupRef ref) async {
       statusBarColor: Colors.transparent,
     ));
   }
-  await ref.read(deviceNameProvider.notifier).initDeviceName();
 }
 
 class App extends ConsumerWidget{

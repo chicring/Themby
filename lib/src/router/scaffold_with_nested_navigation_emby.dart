@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:themby/src/localization/string_hardcoded.dart';
 
 
-class ScaffoldWithNestedNavigation extends StatelessWidget {
-  const ScaffoldWithNestedNavigation({
+class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
+  const ScaffoldWithNestedNavigationEmby({
     Key? key,
     required this.navigationShell,
   }) : super(key: key ?? const ValueKey('ScaffoldWithNestedNavigation'));
@@ -59,8 +59,8 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
             label: 'library'.hardcoded,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.search_rounded),
-            label: 'search'.hardcoded,
+            icon: const Icon(Icons.favorite),
+            label: 'favorite'.hardcoded,
           ),
         ],
         onDestinationSelected: onDestinationSelected,
@@ -95,8 +95,8 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
                 label: Text('library'.hardcoded),
               ),
               NavigationRailDestination(
-                icon: const Icon(Icons.search_rounded),
-                label: Text('search'.hardcoded),
+                icon: const Icon(Icons.favorite),
+                label: Text('favorite'.hardcoded),
               ),
             ],
           ),

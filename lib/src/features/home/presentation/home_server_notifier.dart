@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:themby/src/common/domiani/site.dart';
+import 'package:themby/src/features/emby/application/emby_state_service.dart';
+import 'package:themby/src/features/home/data/site_repository.dart';
 import 'package:themby/src/features/home/domain/home_add_server_state.dart';
 
-part 'home_add_server_notifier.g.dart';
+part 'home_server_notifier.g.dart';
 
 @riverpod
-class HomeAddServerNotifier extends _$HomeAddServerNotifier{
+class HomeServerNotifier extends _$HomeServerNotifier{
 
   @override
   HomeAddServerState build() => HomeAddServerState.initial();
-
-  void addServer() {
-
-  }
 
   Future<void> openAddDialog() async {
     await SmartDialog.show(
@@ -139,9 +138,15 @@ class HomeAddServerNotifier extends _$HomeAddServerNotifier{
               ),
               TextButton(
                 child: Text('连接'),
-                onPressed: () {
+                onPressed: (){
                   if (formKey.currentState!.validate()) {
-                    SmartDialog.dismiss();
+                    ref.read(addEmbySiteProvider(site: Site(
+                      scheme: state.schemeController.text,
+                      host: state.hostController.text,
+                      port: int.parse(state.portController.text),
+                      username: state.usernameController.text,
+                      password: state.passwordController.text,
+                    )));
                   }
                 },
               ),

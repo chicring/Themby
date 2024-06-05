@@ -6,7 +6,7 @@ part of 'emby_state_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$embyStateServiceHash() => r'd0ca8183d893cf7b64a01776dbba132c44ae3151';
+String _$embyStateServiceHash() => r'aa2b8e53b64a3530c93d254b7719c3105405c142';
 
 /// See also [EmbyStateService].
 @ProviderFor(EmbyStateService)

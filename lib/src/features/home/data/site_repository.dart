@@ -1,43 +1,91 @@
 import 'package:dio/dio.dart';
+import 'package:objectbox/objectbox.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
+import 'package:themby/src/features/emby/application/emby_state_service.dart';
+import 'package:themby/src/helper/dio_provider.dart';
+import 'package:themby/src/helper/objectbox_provider.dart';
 
-const EMBY_CLIENT_HEADERS = {
-  "X-Emby-Client": 'Your Client Name',
-  "X-Emby-Device-Name": '',
-  "X-Emby-Device-Id": '',
-  "X-Emby-Client-Version": 'Your Version Code',
-};
-
+part 'site_repository.g.dart';
 
 class SiteRepository{
-  const SiteRepository({required this.client, required this.headers});
+  const SiteRepository({required this.client,required this.siteBox ,required this.embyToken});
 
   final Dio client;
 
-  final Map<String, String> headers;
+  final String embyToken;
+
+  final Box<Site> siteBox;
 
   Future<List<Site>> getSites() async {
-    return [];
+    return siteBox.getAllAsync();
   }
 
-  Future<Site> addEmbySite(Site site) async {
-    final uri = Uri(
-      scheme: site.scheme,
-      host: site.host,
-      port: site.port,
-      queryParameters: {
-        ...headers,
-      },
+  /*
+  * Add Emby Site
+   */
+  Future<void> addEmbySite(Site site) async {
+    print(embyToken);
+    final response = await client.postUri(
+        Uri(
+          scheme: site.scheme,
+          host: site.host,
+          port: site.port,
+          path: '/emby/Users/AuthenticateByName',
+        ),
+        data: {
+          'Username': site.username,
+          'Pw': site.password,
+        },
+        options: Options(
+          headers: {
+            'X-Emby-Authorization': embyToken,
+          }
+        )
     );
 
-    return Site(
-      scheme: site.scheme,
-      host: site.host,
-      port: site.port,
-      username: site.username,
-      password: site.password,
-      accessToken: 'accessToken'
+    Site firstSite = site.copyWith(
+      accessToken: response.data['AccessToken'],
+      userId: response.data['User']['Id'],
+      username: response.data['User']['Name'],
+      imageTag: response.data['User']['PrimaryImageTag'],
     );
+
+    final response2 = await  client.getUri(
+        Uri(
+          scheme: site.scheme,
+          host: site.host,
+          port: site.port,
+          path: '/emby/System/Info/Public',
+        ),
+        options: Options(
+          headers: {
+            'X-Emby-Authorization': embyToken,
+          }
+        )
+    );
+
+    siteBox.putAsync(firstSite.copyWith(
+      serverName: response2.data['ServerName'],
+      version: response2.data['Version'],
+    ));
   }
+}
 
+
+@riverpod
+SiteRepository siteRepository(SiteRepositoryRef ref) => SiteRepository(
+  client: ref.watch(dioProvider),
+  siteBox: ref.watch(storeProvider).box<Site>(),
+  embyToken: ref.watch(embyStateServiceProvider.select((value) => value.token)),
+);
+
+@riverpod
+Future<List<Site>> getSites(GetSitesRef ref) async {
+  return ref.watch(siteRepositoryProvider).getSites();
+}
+
+@riverpod
+Future<void> addEmbySite(AddEmbySiteRef ref,{required Site site}) async {
+  return ref.watch(siteRepositoryProvider).addEmbySite(site);
 }
