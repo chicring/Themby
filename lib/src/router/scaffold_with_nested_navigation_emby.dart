@@ -20,31 +20,35 @@ class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+    backButtonListener(Widget child) => BackButtonListener(
+      onBackButtonPressed: () async {
+        if (navigationShell.currentIndex == 1) {
+          _goBranch(0);
+          return true;
+        } else if (navigationShell.currentIndex == 0) {
+          GoRouter.of(context).go('/home');
+          return true;
+        }
+        return false;
+      },
+      child: child,
+    );
 
     if (size.width < 450) {
-
-      return BackButtonListener(
-        onBackButtonPressed: () async {
-          if (navigationShell.currentIndex == 1) {
-            _goBranch(0);
-            return true;
-          }else if (navigationShell.currentIndex == 0) {
-            GoRouter.of(context).go('/home');
-            return true;
-          }
-          return false;
-        },
-        child: ScaffoldWithNavigationBar(
+      return backButtonListener(
+        ScaffoldWithNavigationBar(
           body: navigationShell,
           currentIndex: navigationShell.currentIndex,
           onDestinationSelected: _goBranch,
         ),
       );
     } else {
-      return ScaffoldWithNavigationRail(
-        body: navigationShell,
-        currentIndex: navigationShell.currentIndex,
-        onDestinationSelected: _goBranch,
+      return backButtonListener(
+        ScaffoldWithNavigationRail(
+          body: navigationShell,
+          currentIndex: navigationShell.currentIndex,
+          onDestinationSelected: _goBranch,
+        ),
       );
     }
   }
