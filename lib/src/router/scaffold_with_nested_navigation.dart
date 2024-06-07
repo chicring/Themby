@@ -21,11 +21,23 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     if (size.width < 450) {
-      return ScaffoldWithNavigationBar(
-        body: navigationShell,
-        currentIndex: navigationShell.currentIndex,
-        onDestinationSelected: _goBranch,
+
+      return BackButtonListener(
+          onBackButtonPressed: () async {
+            final routeName = navigationShell.shellRouteContext.routerState.uri.toString();
+            if (routeName == '/mine') {
+              _goBranch(0);
+              return true;
+            }
+            return false;
+          },
+          child: ScaffoldWithNavigationBar(
+            body: navigationShell,
+            currentIndex: navigationShell.currentIndex,
+            onDestinationSelected: _goBranch,
+          )
       );
+
     } else {
       return ScaffoldWithNavigationRail(
         body: navigationShell,

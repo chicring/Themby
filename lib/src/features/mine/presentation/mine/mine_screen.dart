@@ -27,12 +27,12 @@ class MineScreen extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Card(
-                clipBehavior: Clip.antiAlias,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListView(
+                  clipBehavior: Clip.antiAlias,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ListView(
                     shrinkWrap: true,
                     children: [
                       ListTile(
@@ -54,7 +54,7 @@ class MineScreen extends StatelessWidget {
                         },
                       ),
                     ],
-                )
+                  )
               ),
             ],
           ),

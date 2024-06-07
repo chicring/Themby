@@ -20,11 +20,25 @@ class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+
     if (size.width < 450) {
-      return ScaffoldWithNavigationBar(
-        body: navigationShell,
-        currentIndex: navigationShell.currentIndex,
-        onDestinationSelected: _goBranch,
+
+      return BackButtonListener(
+        onBackButtonPressed: () async {
+          if (navigationShell.currentIndex == 1) {
+            _goBranch(0);
+            return true;
+          }else if (navigationShell.currentIndex == 0) {
+            GoRouter.of(context).go('/home');
+            return true;
+          }
+          return false;
+        },
+        child: ScaffoldWithNavigationBar(
+          body: navigationShell,
+          currentIndex: navigationShell.currentIndex,
+          onDestinationSelected: _goBranch,
+        ),
       );
     } else {
       return ScaffoldWithNavigationRail(
@@ -35,6 +49,7 @@ class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
     }
   }
 }
+
 
 class ScaffoldWithNavigationBar extends StatelessWidget {
   const ScaffoldWithNavigationBar({

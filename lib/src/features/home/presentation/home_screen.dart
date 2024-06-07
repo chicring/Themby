@@ -14,6 +14,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('链接'.hardcoded),
@@ -98,7 +99,7 @@ class ServerList extends ConsumerWidget {
                 ),
                 onTap: () async {
                   ref.read(embyStateServiceProvider.notifier).updateSite(data[index]);
-                  ref.read(embyStateServiceProvider.notifier).addUserIdToToken(data[index].accessToken!);
+                  ref.read(embyStateServiceProvider.notifier).addUserIdToToken(data[index].userId!);
                   GoRouter.of(context).go('/emby');
                 },
               );
