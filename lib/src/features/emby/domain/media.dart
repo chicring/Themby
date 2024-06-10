@@ -87,7 +87,7 @@ class Media {
       isFolder: json['IsFolder'] ?? false,
       name: json['Name'] ?? '',
       overview: json['Overview'] ?? '',
-      primaryImageAspectRatio: json['PrimaryImageAspectRatio'] ?? 0.0,
+      primaryImageAspectRatio: (json['PrimaryImageAspectRatio'] as num? ?? 0.0).toDouble(),
       productionYear: json['ProductionYear'] ?? 0,
       runTimeTicks: json['RunTimeTicks'] ?? 0,
       indexNumber: json['IndexNumber'] ?? 0,

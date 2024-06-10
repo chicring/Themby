@@ -1,11 +1,14 @@
 
 
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
 import 'package:themby/src/features/emby/domain/view.dart';
+import 'package:themby/src/helper/cancel_token_ref.dart';
 import 'package:themby/src/helper/dio_provider.dart';
 
 part 'view_repository.g.dart';
@@ -20,7 +23,7 @@ class ViewRepository{
   final String embyToken;
 
 
-  Future<View> getViews() async {
+  Future<View> getViews({CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -33,12 +36,13 @@ class ViewRepository{
           'X-Emby-Authorization': embyToken,
           'x-emby-token': site.accessToken,
         }
-      )
+      ),
+      cancelToken: cancelToken,
     );
     return View.fromJson(response.data);
   }
 
-  Future<List<Media>> getLastMedia(String parentId) async {
+  Future<List<Media>> getLastMedia(String parentId, {CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -58,12 +62,13 @@ class ViewRepository{
           'X-Emby-Authorization': embyToken,
           'x-emby-token': site.accessToken,
         }
-      )
+      ),
+      cancelToken: cancelToken,
     );
     return List<Media>.from(response.data.map((e) => Media.fromJson(e)));
   }
 
-  Future<List<Media>> getResumeMedia({String? parentId}) async {
+  Future<List<Media>> getResumeMedia({String? parentId, CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -86,12 +91,13 @@ class ViewRepository{
           'X-Emby-Authorization': embyToken,
           'x-emby-token': site.accessToken,
         }
-      )
+      ),
+      cancelToken: cancelToken,
     );
     return List<Media>.from(response.data["Items"].map((e) => Media.fromJson(e)));
   }
 
-  Future<List<Media>> getRecommendations() async {
+  Future<List<Media>> getRecommendations({CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -104,12 +110,13 @@ class ViewRepository{
           'X-Emby-Authorization': embyToken,
           'x-emby-token': site.accessToken,
         }
-      )
+      ),
+      cancelToken: cancelToken,
     );
     return List<Media>.from(response.data["Items"].map((e) => Media.fromJson(e)));
   }
 
-  Future<List<Media>> getSuggestions() async {
+  Future<List<Media>> getSuggestions({CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -120,10 +127,10 @@ class ViewRepository{
           'Limit': '10',
           'ImageTypeLimit': '1',
           'ImageTypes': 'Backdrop',
-          'EnableImageTypes': 'Logo,Backdrop',
+          'EnableImageTypes': 'Logo,Backdrop,Primary',
           'Recursive': 'true',
           'IncludeItemTypes': 'Movie,Series',
-          'SortBy': 'DateCreated,SortName,ProductionYear',
+          'SortBy': 'DateCreated,SortName,ProductionYear,Overview',
           'Fields': 'ProductionYear',
           'SortOrder': 'Descending',
           'EnableUserData': 'false',
@@ -135,7 +142,8 @@ class ViewRepository{
           'X-Emby-Authorization': embyToken,
           'x-emby-token': site.accessToken,
         }
-      )
+      ),
+      cancelToken: cancelToken,
     );
     print(response.data);
     return List<Media>.from(response.data["Items"].map((e) => Media.fromJson(e)));
@@ -151,19 +159,58 @@ ViewRepository viewRepository(ViewRepositoryRef ref) => ViewRepository(
 
 
 @riverpod
-Future<View> getViews(GetViewsRef ref) => ref.read(viewRepositoryProvider).getViews();
+Future<View> getViews(GetViewsRef ref){
+
+  final viewRepo = ref.watch(viewRepositoryProvider);
+
+  final cancelToken = ref.cancelToken();
+
+  final link = ref.keepAlive();
+
+  Timer? timer;
+
+  ref.onDispose(() {
+    cancelToken.cancel();
+    timer?.cancel();
+  });
+
+  ref.onCancel(() {
+    timer = Timer(const Duration(seconds: 30), () {
+      link.close();
+    });
+  });
+
+  ref.onResume(() {
+    timer?.cancel();
+  });
+
+  return viewRepo.getViews(cancelToken: cancelToken);
+}
 
 
 @riverpod
-Future<List<Media>> getLastMedia(GetLastMediaRef ref, String parentId) => ref.watch(viewRepositoryProvider).getLastMedia(parentId);
+Future<List<Media>> getLastMedia(GetLastMediaRef ref, String parentId ){
+  final cancelToken = ref.cancelToken();
+  return ref.read(viewRepositoryProvider).getLastMedia(parentId,cancelToken: cancelToken);
+}
 
 @riverpod
-Future<List<Media>> getResumeMedia(GetResumeMediaRef ref, {String? parentId}) => ref.watch(viewRepositoryProvider).getResumeMedia(parentId: parentId);
+Future<List<Media>> getResumeMedia(GetResumeMediaRef ref, {String? parentId }) {
+  final cancelToken = ref.cancelToken();
+  return ref.read(viewRepositoryProvider).getResumeMedia(parentId: parentId, cancelToken: cancelToken);
+}
+
 
 
 @riverpod
-Future<List<Media>> getRecommendations(GetRecommendationsRef ref) => ref.watch(viewRepositoryProvider).getRecommendations();
+Future<List<Media>> getRecommendations(GetRecommendationsRef ref) {
+  final cancelToken = ref.cancelToken();
+  return ref.read(viewRepositoryProvider).getRecommendations(cancelToken: cancelToken);
+}
 
 
 @riverpod
-Future<List<Media>> getSuggestions(GetSuggestionsRef ref) => ref.watch(viewRepositoryProvider).getSuggestions();
+Future<List<Media>> getSuggestions(GetSuggestionsRef ref) {
+  final cancelToken = ref.cancelToken();
+  return ref.read(viewRepositoryProvider).getSuggestions(cancelToken: cancelToken);
+}

@@ -9,6 +9,7 @@ import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_resume_media.dart';
 import 'package:themby/src/features/emby/presentation/widget/horizontal_list_cards.dart';
+import 'package:themby/src/features/emby/presentation/widget/loading_card.dart';
 
 class EmbyView extends ConsumerWidget {
   const EmbyView({super.key});
@@ -27,69 +28,69 @@ class EmbyView extends ConsumerWidget {
           children: [
             const SizedBox(width: 12),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.12 + 30,
-              child: ListView(
+              height: 140,
+              child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
-                children: data.items
-                    .map(
-                      (item) => Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: (){
-                          SmartDialog.showToast(item.name);
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.12,
-                              width: MediaQuery.of(context).size.height * 0.2,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10)
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                  imageUrl: getImageUrl(site!, item.id, ImageProps(
-                                    quality: 90,
-                                    tag: item.imageTags.keys.first,
-                                  )),
-                                  fit: BoxFit.cover,
-                                  placeholder: (_,__) => Shimmer.fromColors(
-                                    baseColor: Colors.black26,
-                                    highlightColor: Colors.black12,
-                                    child: Container(
-                                      color: Colors.black,
-                                      height: MediaQuery.of(context).size.height * 0.12,
-                                      width: MediaQuery.of(context).size.height * 0.2,
-                                    ),
+                itemCount: data.items.length,
+                itemBuilder: (context, index) {
+                  final item = data.items[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: (){
+                        SmartDialog.showToast(item.name);
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 110,
+                            width: 210,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: getImageUrl(site!, item.id, ImageProps(
+                                  quality: 90,
+                                  tag: item.imageTags.keys.first,
+                                )),
+                                fit: BoxFit.cover,
+                                placeholder: (_,__) => Shimmer.fromColors(
+                                  baseColor: Colors.black26,
+                                  highlightColor: Colors.black12,
+                                  child: Container(
+                                    color: Colors.black,
+                                    height: 110,
+                                    width: 210,
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.height * 0.2,
-                              child: Text(
-                                item.name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  letterSpacing: 0.5,
-                                ),
+                          ),
+                          const SizedBox(height: 4),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.height * 0.2,
+                            child: Text(
+                              item.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                letterSpacing: 0.5,
                               ),
-                            )
-                          ],
-                        ),
-                      )
-                  ),
-                )
-                    .toList(),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
 
@@ -99,9 +100,9 @@ class EmbyView extends ConsumerWidget {
               final media = ref.watch(getLastMediaProvider(item.id));
 
               return media.when(
-                loading: () => const CircularProgressIndicator(),
-                error: (error, stack) => const Text('Error'),
-                data: (value) => value.isEmpty ? const SizedBox() :
+                loading: () => const LoadingCardList(),
+                error: (error, stack) => Text(error.toString() + stack.toString()),
+                data: (value) => value.isEmpty || item.collectionType == 'music' ? const SizedBox() :
                    HorizontalListViewMedias(
                      name: item.name,
                      medias: value,

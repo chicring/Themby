@@ -28,13 +28,15 @@ class HorizontalListViewMedias extends StatelessWidget{
           ],
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.2 + 55,
-          child: ListView(
+          height: 235,
+          child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            children: [
-              ...medias.map((media) => MediaCard(media: media)),
-            ],
+            itemCount: medias.length,
+            addAutomaticKeepAlives: true,
+            itemBuilder: (context, index) {
+              return MediaCard(media: medias[index]);
+            },
           ),
         )
       ],

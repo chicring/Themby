@@ -6,6 +6,7 @@ import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
+import 'package:themby/src/features/emby/presentation/widget/loading_card.dart';
 
 class MediaCard extends ConsumerWidget{
   final Media media;
@@ -33,8 +34,8 @@ class MediaCard extends ConsumerWidget{
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: media.imageTags.values.isNotEmpty ? CachedNetworkImage(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  width: MediaQuery.of(context).size.height * 0.12,
+                  height: 180,
+                  width: 108,
                   imageUrl: getImageUrl(
                       site!,
                       media.id,
@@ -42,22 +43,14 @@ class MediaCard extends ConsumerWidget{
                         tag: media.imageTags.values.first,
                       )
                   ),
-                  placeholder: (_,__) => Shimmer.fromColors(
-                    baseColor: Colors.black26,
-                    highlightColor: Colors.black12,
-                    child: Container(
-                      color: Colors.black,
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.height * 0.12,
-                    ),
-                  ),
+                  placeholder: (_,__) => const LoadingCard(),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   fit: BoxFit.fitHeight,
                 )
                 : Container(
                   color: Colors.black12,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  width: MediaQuery.of(context).size.height * 0.12,
+                  height: 180,
+                  width: 108,
                   child: const Icon(
                     Icons.movie_creation_outlined,
                     size: 50,
@@ -66,7 +59,7 @@ class MediaCard extends ConsumerWidget{
               ),
               const SizedBox(height: 5),
               SizedBox(
-                width: MediaQuery.of(context).size.height * 0.12,
+                width: 108,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,

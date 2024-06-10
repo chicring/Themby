@@ -21,7 +21,7 @@ final viewRepositoryProvider = AutoDisposeProvider<ViewRepository>.internal(
 );
 
 typedef ViewRepositoryRef = AutoDisposeProviderRef<ViewRepository>;
-String _$getViewsHash() => r'22e1b67cd353bef14e84b915e7e3f99d3b739c95';
+String _$getViewsHash() => r'b8ce8727600d5c74931ee1fd41905d0c833cb90e';
 
 /// See also [getViews].
 @ProviderFor(getViews)
@@ -35,7 +35,7 @@ final getViewsProvider = AutoDisposeFutureProvider<View>.internal(
 );
 
 typedef GetViewsRef = AutoDisposeFutureProviderRef<View>;
-String _$getLastMediaHash() => r'a7df08d001a211d74f240d56b8b20152dcb0d06d';
+String _$getLastMediaHash() => r'dbfdabe5823afd37ca08e0e5bcde5d2aa8610b4b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -184,7 +184,7 @@ class _GetLastMediaProviderElement
   String get parentId => (origin as GetLastMediaProvider).parentId;
 }
 
-String _$getResumeMediaHash() => r'fc612a9c24270eaaa275c654facc7e924c220849';
+String _$getResumeMediaHash() => r'9c5793fe0378776b84a97a1a0f8732c935489f8e';
 
 /// See also [getResumeMedia].
 @ProviderFor(getResumeMedia)
@@ -314,7 +314,7 @@ class _GetResumeMediaProviderElement
 }
 
 String _$getRecommendationsHash() =>
-    r'24169f75440d93552b1d5988bfeb216c1a1d4a47';
+    r'742807af605c09e2ca9ffc0177c4f95acf05579f';
 
 /// See also [getRecommendations].
 @ProviderFor(getRecommendations)
@@ -330,7 +330,7 @@ final getRecommendationsProvider =
 );
 
 typedef GetRecommendationsRef = AutoDisposeFutureProviderRef<List<Media>>;
-String _$getSuggestionsHash() => r'd08ec8d76822b3913831e1fbb8a03da838e440fe';
+String _$getSuggestionsHash() => r'e17f2534108740ed3210f90d81f3e058c7139699';
 
 /// See also [getSuggestions].
 @ProviderFor(getSuggestions)

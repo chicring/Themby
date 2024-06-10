@@ -48,13 +48,14 @@ class EmbyResumeMedia extends ConsumerWidget{
               ),
               const SizedBox(height: 10),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.14 + 50,
-                child: ListView(
+                height: 100 + 55,
+                child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-
-                  children: [
-                    ...data.map((media) => Padding(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    final media = data[index];
+                    return Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
@@ -71,8 +72,8 @@ class EmbyResumeMedia extends ConsumerWidget{
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
-                                  height: MediaQuery.of(context).size.height * 0.14,
-                                  width: MediaQuery.of(context).size.height * 0.23,
+                                  height: 110,
+                                  width: 210,
                                   imageUrl: getImage(media),
                                   fit: BoxFit.cover,
                                   placeholder: (_,__) => Shimmer.fromColors(
@@ -80,8 +81,8 @@ class EmbyResumeMedia extends ConsumerWidget{
                                     highlightColor: Colors.black12,
                                     child: Container(
                                       color: Colors.black,
-                                      height: MediaQuery.of(context).size.height * 0.14,
-                                      width: MediaQuery.of(context).size.height * 0.23,
+                                      height: 100,
+                                      width: 200,
                                     ),
                                   ),
                                 ),
@@ -101,7 +102,7 @@ class EmbyResumeMedia extends ConsumerWidget{
                                       fontWeight: FontWeight.bold,
                                     ),
                                   )
-                                  : Text(
+                                      : Text(
                                     media.seriesName,
                                     maxLines: 1,
                                     style: const TextStyle(
@@ -118,7 +119,7 @@ class EmbyResumeMedia extends ConsumerWidget{
                                       color: Colors.grey,
                                     ),
                                   )
-                                  : Text(
+                                      : Text(
                                     'S${media.parentIndexNumber}E${media.indexNumber} - ${media.name}',
                                     maxLines: 1,
                                     style: const TextStyle(
@@ -132,8 +133,8 @@ class EmbyResumeMedia extends ConsumerWidget{
                           ],
                         ),
                       ),
-                    )),
-                  ],
+                    );
+                  },
                 ),
               )
             ],
