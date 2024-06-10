@@ -9,7 +9,6 @@ import 'package:themby/src/common/widget/header_text.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
-import 'package:themby/src/features/emby/presentation/emby_search/emby_search.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_recommendations_media.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_view.dart';
 

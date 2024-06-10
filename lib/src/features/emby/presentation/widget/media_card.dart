@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
@@ -18,6 +17,9 @@ class MediaCard extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
 
+    final double height = MediaQuery.of(context).size.width < 650 ? 180.0 : 270;
+    final double width = MediaQuery.of(context).size.width < 650 ? 108.0 : 162;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
@@ -33,14 +35,14 @@ class MediaCard extends ConsumerWidget{
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: media.imageTags.values.isNotEmpty ? CachedNetworkImage(
-                  height: 180,
-                  width: 108,
+                child: media.imageTags.primary != null ? CachedNetworkImage(
+                  height: height,
+                  width: width,
                   imageUrl: getImageUrl(
                       site!,
                       media.id,
                       ImageProps(
-                        tag: media.imageTags.values.first,
+                        tag: media.imageTags.primary,
                       )
                   ),
                   placeholder: (_,__) => const LoadingCard(),
@@ -49,8 +51,8 @@ class MediaCard extends ConsumerWidget{
                 )
                 : Container(
                   color: Colors.black12,
-                  height: 180,
-                  width: 108,
+                  height: height,
+                  width: width,
                   child: const Icon(
                     Icons.movie_creation_outlined,
                     size: 50,
@@ -59,7 +61,7 @@ class MediaCard extends ConsumerWidget{
               ),
               const SizedBox(height: 5),
               SizedBox(
-                width: 108,
+                width: width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -84,6 +86,7 @@ class MediaCard extends ConsumerWidget{
                   ],
                 ),
               )
+
             ],
           ),
         ),

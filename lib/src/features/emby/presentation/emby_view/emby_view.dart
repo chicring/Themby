@@ -27,72 +27,7 @@ class EmbyView extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(width: 12),
-            SizedBox(
-              height: 140,
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                itemCount: data.items.length,
-                itemBuilder: (context, index) {
-                  final item = data.items[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: InkWell(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: (){
-                        SmartDialog.showToast(item.name);
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 110,
-                            width: 210,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: CachedNetworkImage(
-                                imageUrl: getImageUrl(site!, item.id, ImageProps(
-                                  quality: 90,
-                                  tag: item.imageTags.keys.first,
-                                )),
-                                fit: BoxFit.cover,
-                                placeholder: (_,__) => Shimmer.fromColors(
-                                  baseColor: Colors.black26,
-                                  highlightColor: Colors.black12,
-                                  child: Container(
-                                    color: Colors.black,
-                                    height: 110,
-                                    width: 210,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.height * 0.2,
-                            child: Text(
-                              item.name,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            _libraryView(context, ref, data, site!),
 
             const EmbyResumeMedia(),
 
@@ -118,3 +53,77 @@ class EmbyView extends ConsumerWidget {
     );
   }
 }
+
+
+Widget _libraryView(BuildContext context, WidgetRef ref, data, site){
+
+  final double height = MediaQuery.of(context).size.width < 650 ? 110 : 165;
+  final double width = MediaQuery.of(context).size.width < 650 ? 210 : 315;
+
+  return SizedBox(
+    height: height + 50,
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      itemCount: data.items.length,
+      itemBuilder: (context, index) {
+        final item = data.items[index];
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: InkWell(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: (){
+              SmartDialog.showToast(item.name);
+            },
+            child: Column(
+              children: [
+                Container(
+                  height: height,
+                  width: width,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      imageUrl: getImageUrl(site!, item.id, ImageProps(
+                        quality: 90,
+                        tag: item.imageTags.keys.first,
+                      )),
+                      fit: BoxFit.cover,
+                      placeholder: (_,__) => Shimmer.fromColors(
+                        baseColor: Colors.black26,
+                        highlightColor: Colors.black12,
+                        child: Container(
+                          color: Colors.black,
+                          height: height,
+                          width: width,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                SizedBox(
+                  width: MediaQuery.of(context).size.height * 0.2,
+                  child: Text(
+                    item.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
+

@@ -4,6 +4,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:themby/src/features/emby/presentation/emby_favorite/emby_favorite_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_home/emby_home_screen.dart';
+import 'package:themby/src/features/emby/presentation/emby_library/emby_library_screen.dart';
 import 'package:themby/src/features/home/presentation/home_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
@@ -16,6 +17,7 @@ enum AppRoute {
   mineAppSetting,
   emby,
   favorite,
+  library,
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -88,6 +90,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   key: state.pageKey,
                   child: const EmbyHomeScreen(),
                 ),
+              ),
+              GoRoute(
+                path: '/library/:parentId',
+                name: AppRoute.library.name,
+                pageBuilder: (context, state) {
+                  final parentId = state.pathParameters['parentId']!;
+                  return NoTransitionPage(
+                    key: state.pageKey,
+                    child: EmbyLibraryScreen(parentId: parentId),
+                  );
+                },
               ),
             ],
           ),

@@ -19,6 +19,9 @@ class EmbyResumeMedia extends ConsumerWidget{
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
     final medias = ref.watch(getResumeMediaProvider());
 
+    final double height = MediaQuery.of(context).size.width < 650 ? 110 : 165;
+    final double width = MediaQuery.of(context).size.width < 650 ? 210 : 315;
+
     String getImage(Media media) {
       if(media.backdropImageTags.isNotEmpty){
         return getImageUrl(site!, media.id, ImageProps(
@@ -30,7 +33,7 @@ class EmbyResumeMedia extends ConsumerWidget{
         return getImageUrl(site!, media.id, ImageProps(
           quality: 90,
           type: ImageType.primary,
-          tag: media.imageTags.values.first,
+          tag: media.imageTags.primary,
         ));
       }
     }
@@ -48,9 +51,8 @@ class EmbyResumeMedia extends ConsumerWidget{
               ),
               const SizedBox(height: 10),
               SizedBox(
-                height: 100 + 55,
+                height: height + 55,
                 child: ListView.builder(
-                  shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: data.length,
                   itemBuilder: (context, index) {
@@ -72,8 +74,8 @@ class EmbyResumeMedia extends ConsumerWidget{
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
-                                  height: 110,
-                                  width: 210,
+                                  height: height,
+                                  width: width,
                                   imageUrl: getImage(media),
                                   fit: BoxFit.cover,
                                   placeholder: (_,__) => Shimmer.fromColors(
@@ -81,8 +83,8 @@ class EmbyResumeMedia extends ConsumerWidget{
                                     highlightColor: Colors.black12,
                                     child: Container(
                                       color: Colors.black,
-                                      height: 100,
-                                      width: 200,
+                                      height: height,
+                                      width: width,
                                     ),
                                   ),
                                 ),

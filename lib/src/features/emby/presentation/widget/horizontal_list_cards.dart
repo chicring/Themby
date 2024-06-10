@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/widget/header_text.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
 import 'package:themby/src/features/emby/presentation/widget/media_card.dart';
@@ -13,6 +14,9 @@ class HorizontalListViewMedias extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+
+    final double height = MediaQuery.of(context).size.width < 650 ? 235 : 325;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,18 +26,18 @@ class HorizontalListViewMedias extends StatelessWidget{
             HeaderText(text: name),
 
             TextButton(
-              onPressed: (){},
+              onPressed: (){
+                GoRouter.of(context).push('/library/$parentId');
+              },
               child: const Text('查看更多'),
             ),
           ],
         ),
         SizedBox(
-          height: 235,
+          height: height,
           child: ListView.builder(
-            shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemCount: medias.length,
-            addAutomaticKeepAlives: true,
             itemBuilder: (context, index) {
               return MediaCard(media: medias[index]);
             },

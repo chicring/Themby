@@ -33,12 +33,12 @@ class SmallSlider extends ConsumerWidget {
       data: (data) {
         return CarouselSlider(
           options: CarouselOptions(
-            height: 550.0,
+            height: 555.0,
             autoPlay: true,
             viewportFraction: 1,
           ),
           items: data.map((media) {
-            final imageTag = media.imageTags['Primary'];
+            final imageTag = media.imageTags.primary;
             if(imageTag == null){
               return const SizedBox();
             }else{
@@ -64,19 +64,33 @@ class SmallSlider extends ConsumerWidget {
                            fit: BoxFit.cover,
                          ),
                        ),
+                       const SizedBox(height: 5),
                      ],
                    ),
                   ),
                   Container(
                     height: 550.0,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.transparent, Colors.black],
-                        begin: Alignment.center,
-                        end: Alignment.topCenter,
+                        colors: [Colors.transparent, Theme.of(context).scaffoldBackgroundColor],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter, // 指定渐变方向从上到下
+                        stops: const [0.6, 1.0], // 0.5处开始转变，到1.0处完全是黑色
                       ),
                     ),
                   ),
+                  Positioned(
+                    bottom: 30,
+                    child: ElevatedButton.icon(
+                      onPressed: (){},
+                      icon: const Icon(Icons.play_arrow_rounded, color: Colors.black, size: 28),
+                      label: const Text('播放', style: TextStyle(color: Colors.black)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 0,
+                      ),
+                    )
+                  )
                 ],
               );
             }
@@ -102,13 +116,13 @@ class LargeSlider extends ConsumerWidget {
       data: (data) {
         return CarouselSlider(
           options: CarouselOptions(
-            height: screenSize.height * 0.7,
+            height: screenSize.height * 0.7 + 5,
             autoPlay: true,
             viewportFraction: 1,
           ),
           items: data.map((media) {
             final imageTag = media.backdropImageTags.first;
-            final logoTag = media.imageTags['Logo'];
+            final logoTag = media.imageTags.logo;
             if(imageTag.isEmpty || logoTag == null){
               return const SizedBox();
             }else{
@@ -134,6 +148,7 @@ class LargeSlider extends ConsumerWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
+                        const SizedBox(height: 5),
                       ],
                     ),
                   ),
@@ -141,15 +156,26 @@ class LargeSlider extends ConsumerWidget {
                     height: screenSize.height * 0.7,
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.transparent, Colors.black],
+                        colors: [Colors.transparent, Colors.black26],
                         begin: Alignment.center,
                         end: Alignment.topCenter,
                       ),
                     ),
                   ),
+                  Container(
+                    height: screenSize.height * 0.7,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.transparent, Theme.of(context).scaffoldBackgroundColor],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: const [0.8, 1.0],
+                      ),
+                    ),
+                  ),
                   Positioned(
-                    bottom: 20,
-                    right: 30,
+                    bottom: 50,
+                    right: 50,
                     child: CachedNetworkImage(
                       imageUrl: getImageUrl(
                           site,

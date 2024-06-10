@@ -1,3 +1,5 @@
+import 'package:themby/src/features/emby/domain/image_tags.dart';
+
 import 'user_data.dart';
 
 class Media {
@@ -15,7 +17,7 @@ class Media {
   String seasonName;
   String seriesId;
   String seriesName;
-  Map<String, String> imageTags;
+  ImageTags imageTags;
   String primary;
   String thumb;
   bool isFolder;
@@ -81,7 +83,7 @@ class Media {
       seasonName: json['SeasonName'] ?? '',
       seriesId: json['SeriesId'] ?? '',
       seriesName: json['SeriesName'] ?? '',
-      imageTags: Map<String, String>.from(json['ImageTags'] ?? {}),
+      imageTags: ImageTags.fromJson(json['ImageTags']),
       primary: json['Primary'] ?? '',
       thumb: json['Thumb'] ?? '',
       isFolder: json['IsFolder'] ?? false,

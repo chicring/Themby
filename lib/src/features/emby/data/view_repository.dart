@@ -6,7 +6,11 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
+import 'package:themby/src/features/emby/domain/emby_response.dart';
+import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
+import 'package:themby/src/features/emby/domain/query/item_options.dart';
+import 'package:themby/src/features/emby/domain/season.dart';
 import 'package:themby/src/features/emby/domain/view.dart';
 import 'package:themby/src/helper/cancel_token_ref.dart';
 import 'package:themby/src/helper/dio_provider.dart';
@@ -145,9 +149,91 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    print(response.data);
+
     return List<Media>.from(response.data["Items"].map((e) => Media.fromJson(e)));
   }
+
+  Future<List<Season>> getSeasons(String seriesId, {CancelToken? cancelToken}) async {
+    final response = await client.getUri(
+      Uri(
+        scheme: site.scheme,
+        host: site.host,
+        port: site.port,
+        path: '/emby/Shows/$seriesId/Seasons',
+        queryParameters: {
+          'UserId': site.userId,
+          'Fields': 'BasicSyncInfo,CanDelete,Container,PrimaryImageAspectRatio',
+          'EnableTotalRecordCount': 'false',
+        }
+      ),
+      options: Options(
+        headers: {
+          'X-Emby-Authorization': embyToken,
+          'x-emby-token': site.accessToken,
+        }
+      ),
+      cancelToken: cancelToken,
+    );
+    return EmbyResponse<Season>.fromJson(response.data, (json) => Season.fromJson(json)).items;
+  }
+
+  Future<List<Episode>> getEpisodes(String sid, String vid, {CancelToken? cancelToken}) async {
+    final response = await client.getUri(
+      Uri(
+        scheme: site.scheme,
+        host: site.host,
+        port: site.port,
+        path: '/emby/Shows/$vid/Episodes',
+        queryParameters: {
+          'UserId': site.userId,
+          'SeasonId': sid,
+          'Fields': 'Overview,PrimaryImageAspectRatio',
+          'EnableTotalRecordCount': 'false',
+        }
+      ),
+      options: Options(
+        headers: {
+          'X-Emby-Authorization': embyToken,
+          'x-emby-token': site.accessToken,
+        }
+      ),
+      cancelToken: cancelToken,
+    );
+    return EmbyResponse<Episode>.fromJson(response.data, (json) => Episode.fromJson(json)).items;
+  }
+
+  Future<EmbyResponse<Media>> getItem(ItemOptions itemOptions) async {
+
+    final response = await client.getUri(
+      Uri(
+        scheme: site.scheme,
+        host: site.host,
+        port: site.port,
+        path: '/emby/Users/${site.userId}/Items',
+        queryParameters: {
+          'Limit': '10',
+          'ImageTypeLimit': '1',
+          'EnableImageTypes': 'Backdrop,Primary,Thumb,Banner',
+          'Recursive': 'true',
+          'IncludeItemTypes': 'Movie,Series',
+          'SortBy': 'Fields=BasicSyncInfo,CanDelete,CanDownload,Container,PrimaryImageAspectRatio,ProductionYear,CommunityRating,OfficialRating,Status,CriticRating,EndDate,Path',
+          'Fields': 'ProductionYear',
+          'SortOrder': 'Descending',
+          'EnableUserData': 'false',
+          'EnableTotalRecordCount': 'false',
+        }
+      ),
+      options: Options(
+        headers: {
+          'X-Emby-Authorization': embyToken,
+          'x-emby-token': site.accessToken,
+        }
+      ),
+    );
+
+    return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
+  }
+
 }
 
 @riverpod
@@ -199,7 +285,6 @@ Future<List<Media>> getResumeMedia(GetResumeMediaRef ref, {String? parentId }) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getResumeMedia(parentId: parentId, cancelToken: cancelToken);
 }
-
 
 
 @riverpod
