@@ -75,6 +75,9 @@ dependencies:
   #轮播图
   carousel_slider: ^4.2.1
 
+  #骨架屏
+  shimmer: ^3.0.0
+
 
 dev_dependencies:
   flutter_test:

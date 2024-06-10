@@ -4,9 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:themby/src/common/widget/header_text.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/presentation/emby_search/emby_search.dart';
+import 'package:themby/src/features/emby/presentation/emby_view/emby_recommendations_media.dart';
+import 'package:themby/src/features/emby/presentation/emby_view/emby_resume_media.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_view.dart';
 
 class EmbyHomeScreen extends ConsumerWidget {
@@ -15,10 +18,17 @@ class EmbyHomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
+
     return Scaffold(
       appBar: AppBar(
         title: SvgPicture.asset('assets/emby.svg', width: 28, height: 28),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+
+            },
+          ),
           IconButton(
             icon: site?.imageTag != null  ? CachedNetworkImage(
               imageUrl: getAvatarUrl(site!),
@@ -29,7 +39,7 @@ class EmbyHomeScreen extends ConsumerWidget {
               errorWidget: (context, url, error) => CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 child: Text(
-                  (site.username ?? 'A')[0].toUpperCase(),
+                  (site.username ?? 'T')[0].toUpperCase(),
                 ),
               ),
             ) : CircleAvatar(
@@ -44,7 +54,19 @@ class EmbyHomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: const EmbyView(),
+      body: const SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            HeaderText(text: '每日推荐'),
+            SizedBox(height: 5),
+            EmbyRecommendationsMedia(),
+
+            HeaderText(text: '媒体库'),
+            EmbyView(),
+          ],
+        ),
+      )
     );
   }
 }
