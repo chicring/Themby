@@ -7,6 +7,7 @@ class Media {
   String dateCreated;
   List<String> airDays;
   List<String> backdropImageTags;
+  double communityRating;
   bool canDelete;
   String id;
   String parentBackdropItemId;
@@ -39,6 +40,7 @@ class Media {
     required this.dateCreated,
     required this.airDays,
     required this.backdropImageTags,
+    required this.communityRating,
     required this.canDelete,
     required this.id,
     required this.parentBackdropItemId,
@@ -73,6 +75,7 @@ class Media {
       dateCreated: json['DateCreated'] ?? '',
       airDays: List<String>.from(json['AirDays'] ?? []),
       backdropImageTags: List<String>.from(json['BackdropImageTags'] ?? []),
+      communityRating: (json['CommunityRating'] as num? ?? 0.0).toDouble(),
       canDelete: json['CanDelete'] ?? false,
       id: json['Id'] ?? '',
       parentBackdropItemId: json['ParentBackdropItemId'] ?? '',

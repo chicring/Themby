@@ -96,9 +96,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 name: AppRoute.library.name,
                 pageBuilder: (context, state) {
                   final parentId = state.pathParameters['parentId']!;
+
+                  final title = state.uri.queryParameters['title']!;
+
                   return NoTransitionPage(
                     key: state.pageKey,
-                    child: EmbyLibraryScreen(parentId: parentId),
+                    child: EmbyLibraryScreen(parentId: parentId, title: title),
                   );
                 },
               ),

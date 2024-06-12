@@ -8,7 +8,7 @@ import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_resume_media.dart';
-import 'package:themby/src/features/emby/presentation/widget/horizontal_list_cards.dart';
+import 'package:themby/src/features/emby/presentation/widget/list_cards_h.dart';
 import 'package:themby/src/features/emby/presentation/widget/loading_card.dart';
 
 class EmbyView extends ConsumerWidget {
@@ -38,10 +38,10 @@ class EmbyView extends ConsumerWidget {
                 loading: () => const LoadingCardList(),
                 error: (error, stack) => Text(error.toString() + stack.toString()),
                 data: (value) => value.isEmpty || item.collectionType == 'music' ? const SizedBox() :
-                   HorizontalListViewMedias(
-                     name: item.name,
-                     medias: value,
-                     parentId: item.id,
+                  ListCardsH(
+                    name: item.name,
+                    parentId: item.id,
+                    medias: value,
                   )
                 ,
               );

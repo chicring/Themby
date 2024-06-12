@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
@@ -28,7 +29,15 @@ class SmallSlider extends ConsumerWidget {
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
 
     return medias.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => Shimmer.fromColors(
+        baseColor: Colors.black26,
+        highlightColor: Colors.black12,
+        child: Container(
+          color: Colors.black,
+          height: 555.0,
+          width: MediaQuery.sizeOf(context).width,
+        ),
+      ),
       error: (error, stack) => Center(child: Text(error.toString() + stack.toString())),
       data: (data) {
         return CarouselSlider(
@@ -108,10 +117,18 @@ class LargeSlider extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final medias = ref.watch(getSuggestionsProvider);
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
-    final Size screenSize = MediaQuery.of(context).size;
+    final Size screenSize = MediaQuery.sizeOf(context);
 
     return medias.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => Shimmer.fromColors(
+        baseColor: Colors.black26,
+        highlightColor: Colors.black12,
+        child: Container(
+          color: Colors.black,
+          height: screenSize.height * 0.7 + 5,
+          width: screenSize.width,
+        ),
+      ),
       error: (error, stack) => Center(child: Text(error.toString() + stack.toString())),
       data: (data) {
         return CarouselSlider(

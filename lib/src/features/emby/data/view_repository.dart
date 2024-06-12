@@ -17,6 +17,14 @@ import 'package:themby/src/helper/dio_provider.dart';
 
 part 'view_repository.g.dart';
 
+typedef ItemQuery = ({
+  String parentId,
+  int page,
+  String includeItemTypes,
+  String sortBy,
+  String sortOrder,
+});
+
 class ViewRepository{
 
   ViewRepository({required this.client, required this.site, required this.embyToken});
@@ -55,9 +63,10 @@ class ViewRepository{
         path: '/emby/Users/${site.userId}/Items/Latest',
         queryParameters: {
           'Limit': '16',
-          'Fields': 'BasicSyncInfo,CanDelete,Container,PrimaryImageAspectRatio,ProductionYear,Status,EndDate,Overview',
+          'Fields': 'BasicSyncInfo,CanDelete,Container,PrimaryImageAspectRatio,ProductionYear,Status,EndDate,Overview,CriticRating,OfficialRating,CommunityRating',
           'ImageTypeLimit': '1',
           'EnableImageTypes': 'Primary,Backdrop,Thumb',
+          'EnableUserData': 'true',
           'ParentId': parentId,
         }
       ),
@@ -81,7 +90,7 @@ class ViewRepository{
         path: '/emby/Users/${site.userId}/Items/Resume',
         queryParameters: {
           'Limit': '16',
-          'Fields': 'BasicSyncInfo,CanDelete,Container,PrimaryImageAspectRatio,ProductionYear,Status,EndDate,Overview',
+          'Fields': 'BasicSyncInfo,CanDelete,Container,PrimaryImageAspectRatio,ProductionYear,EndDate,CriticRating,OfficialRating,CommunityRating,Status',
           'ImageTypeLimit': '1',
           'EnableImageTypes': 'Primary,Backdrop,Thumb',
           'MediaTypes': 'Video',
@@ -202,8 +211,7 @@ class ViewRepository{
     return EmbyResponse<Episode>.fromJson(response.data, (json) => Episode.fromJson(json)).items;
   }
 
-  Future<EmbyResponse<Media>> getItem(ItemOptions itemOptions) async {
-
+  Future<EmbyResponse<Media>> getItem({required ItemQuery itemQuery, CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -211,16 +219,17 @@ class ViewRepository{
         port: site.port,
         path: '/emby/Users/${site.userId}/Items',
         queryParameters: {
-          'Limit': '10',
+          'Limit': '30',
           'ImageTypeLimit': '1',
-          'EnableImageTypes': 'Backdrop,Primary,Thumb,Banner',
+          'EnableImageTypes': 'Logo,Backdrop,Primary,Thumb,Banner',
           'Recursive': 'true',
-          'IncludeItemTypes': 'Movie,Series',
-          'SortBy': 'Fields=BasicSyncInfo,CanDelete,CanDownload,Container,PrimaryImageAspectRatio,ProductionYear,CommunityRating,OfficialRating,Status,CriticRating,EndDate,Path',
-          'Fields': 'ProductionYear',
-          'SortOrder': 'Descending',
-          'EnableUserData': 'false',
-          'EnableTotalRecordCount': 'false',
+          'IncludeItemTypes': itemQuery.includeItemTypes,
+          'StartIndex': (itemQuery.page * 30 ) .toString(),
+          'ParentId': itemQuery.parentId,
+          'SortBy': itemQuery.sortBy,
+          'Fields': 'BasicSyncInfo,CanDelete,CanDownload,Container,PrimaryImageAspectRatio,ProductionYear,CommunityRating,OfficialRating,Status,CriticRating,EndDate,Path',
+          'SortOrder': itemQuery.sortOrder,
+          'EnableUserData': 'true',
         }
       ),
       options: Options(
@@ -229,8 +238,8 @@ class ViewRepository{
           'x-emby-token': site.accessToken,
         }
       ),
+      cancelToken: cancelToken,
     );
-
     return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
   }
 
@@ -253,21 +262,12 @@ Future<View> getViews(GetViewsRef ref){
 
   final link = ref.keepAlive();
 
-  Timer? timer;
-
   ref.onDispose(() {
     cancelToken.cancel();
-    timer?.cancel();
   });
 
   ref.onCancel(() {
-    timer = Timer(const Duration(seconds: 30), () {
-      link.close();
-    });
-  });
-
-  ref.onResume(() {
-    timer?.cancel();
+    link.close();
   });
 
   return viewRepo.getViews(cancelToken: cancelToken);
@@ -286,16 +286,53 @@ Future<List<Media>> getResumeMedia(GetResumeMediaRef ref, {String? parentId }) {
   return ref.read(viewRepositoryProvider).getResumeMedia(parentId: parentId, cancelToken: cancelToken);
 }
 
-
 @riverpod
 Future<List<Media>> getRecommendations(GetRecommendationsRef ref) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getRecommendations(cancelToken: cancelToken);
 }
 
-
 @riverpod
 Future<List<Media>> getSuggestions(GetSuggestionsRef ref) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getSuggestions(cancelToken: cancelToken);
+}
+
+@riverpod
+Future<List<Season>> getSeasons(GetSeasonsRef ref, String seriesId) {
+  final cancelToken = ref.cancelToken();
+  return ref.read(viewRepositoryProvider).getSeasons(seriesId, cancelToken: cancelToken);
+}
+
+@riverpod
+Future<List<Episode>> getEpisodes(GetEpisodesRef ref, String sid, String vid) {
+  final cancelToken = ref.cancelToken();
+  return ref.read(viewRepositoryProvider).getEpisodes(sid, vid, cancelToken: cancelToken);
+}
+
+@riverpod
+Future<EmbyResponse<Media>> getItem(GetItemRef ref,{required ItemQuery itemQuery}) {
+  final viewRepo = ref.watch(viewRepositoryProvider);
+
+  final cancelToken = ref.cancelToken();
+
+  final link = ref.keepAlive();
+
+  Timer? timer;
+
+  ref.onDispose(() {
+    cancelToken.cancel();
+    timer?.cancel();
+  });
+
+  ref.onCancel(() {
+    timer = Timer(const Duration(seconds: 30), () {
+      link.close();
+    });
+  });
+
+  ref.onResume(() {
+    timer?.cancel();
+  });
+  return viewRepo.getItem(itemQuery: itemQuery, cancelToken: cancelToken);
 }
