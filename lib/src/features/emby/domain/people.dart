@@ -4,13 +4,13 @@ class People {
   final String name;
   final String role;
   final String id;
-  final String primaryImageTag;
+  final String? primaryImageTag;
 
   People({
     required this.name,
     required this.role,
     required this.id,
-    required this.primaryImageTag,
+    this.primaryImageTag,
   });
 
   factory People.fromJson(Map<String, dynamic> json) {

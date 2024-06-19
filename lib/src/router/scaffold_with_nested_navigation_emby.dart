@@ -22,15 +22,19 @@ class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     backButtonListener(Widget child) => BackButtonListener(
       onBackButtonPressed: () async {
-        if (navigationShell.currentIndex == 1) {
+        int currentIndex = navigationShell.currentIndex;
+        print('currentIndex: $currentIndex');
+        if (currentIndex == 1) {
           _goBranch(0);
           return true;
-        } else if (navigationShell.currentIndex == 0) {
+        } else if (currentIndex == 0) {
           final routeName = navigationShell.shellRouteContext.routerState.uri.toString();
+          final nextRoute = GoRouter.of(context).;
           if (routeName == '/emby') {
             GoRouter.of(context).go('/home');
             return true;
-          } else {
+          }
+          else {
             return false;
           }
         }

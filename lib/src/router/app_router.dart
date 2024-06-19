@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:themby/src/features/emby/presentation/emby_favorite/emby_favorite_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_home/emby_home_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_library/emby_library_screen.dart';
+import 'package:themby/src/features/emby/presentation/emby_media_details/emby_media_details.dart';
 import 'package:themby/src/features/home/presentation/home_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
@@ -18,6 +19,7 @@ enum AppRoute {
   emby,
   favorite,
   library,
+  details,
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -121,6 +123,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: '/details/:id',
+        name: AppRoute.details.name,
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return NoTransitionPage(
+            key: state.pageKey,
+            child: EmbyMediaDetails(id: id),
+          );
+        },
       )
     ],
   );

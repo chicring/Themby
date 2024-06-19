@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/badge.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
@@ -30,7 +31,7 @@ class MediaCardV extends ConsumerWidget{
       color: Colors.transparent,
       child: InkWell(
         onTap: () async {
-
+          GoRouter.of(context).push('/details/${media.id}');
         },
         child: Column(
           children: [

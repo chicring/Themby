@@ -9,6 +9,7 @@ import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/domain/emby_response.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
+import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/domain/query/item_options.dart';
 import 'package:themby/src/features/emby/domain/season.dart';
 import 'package:themby/src/features/emby/domain/view.dart';
@@ -53,6 +54,27 @@ class ViewRepository{
     );
     return View.fromJson(response.data);
   }
+
+  Future<MediaDetail> getMedia(String id, {CancelToken? cancelToken }) async{
+    final response = await client.getUri(
+      Uri(
+        scheme: site.scheme,
+        host: site.host,
+        port: site.port,
+        path: '/emby/Users/${site.userId}/Items/$id',
+      ),
+      options: Options(
+        headers: {
+        'X-Emby-Authorization': embyToken,
+        'x-emby-token': site.accessToken,
+        }
+      ),
+      cancelToken: cancelToken,
+    );
+
+    return MediaDetail.fromJson(response.data);
+  }
+
 
   Future<List<Media>> getLastMedia(String parentId, {CancelToken? cancelToken}) async {
     final response = await client.getUri(
@@ -271,6 +293,15 @@ Future<View> getViews(GetViewsRef ref){
   });
 
   return viewRepo.getViews(cancelToken: cancelToken);
+}
+
+@riverpod
+Future<MediaDetail> getMedia(GetMediaRef ref, String id){
+  final viewRepo = ref.read(viewRepositoryProvider);
+
+  final cancelToken = ref.cancelToken();
+
+  return viewRepo.getMedia(id, cancelToken: cancelToken);
 }
 
 
