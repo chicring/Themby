@@ -29,7 +29,7 @@ class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
           return true;
         } else if (currentIndex == 0) {
           final routeName = navigationShell.shellRouteContext.routerState.uri.toString();
-          final nextRoute = GoRouter.of(context).;
+
           if (routeName == '/emby') {
             GoRouter.of(context).go('/home');
             return true;
