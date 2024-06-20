@@ -51,28 +51,28 @@ class MediaStream {
 
   factory MediaStream.fromJson(Map<String, dynamic> json) {
     return MediaStream(
-      codec: json['Codec'],
-      language: json['Language'],
-      displayTitle: json['DisplayTitle'],
-      displayLanguage: json['DisplayLanguage'],
-      isInterlaced: json['IsInterlaced'],
-      isDefault: json['IsDefault'],
-      isForced: json['IsForced'],
-      isHearingImpaired: json['IsHearingImpaired'],
-      type: json['Type'],
-      index: json['Index'],
-      isExternal: json['IsExternal'],
-      deliveryMethod: json['DeliveryMethod'],
-      deliveryUrl: json['DeliveryUrl'],
-      isExternalUrl: json['IsExternalUrl'],
-      isTextSubtitleStream: json['IsTextSubtitleStream'],
-      supportsExternalStream: json['SupportsExternalStream'],
-      path: json['Path'],
-      protocol: json['Protocol'],
-      extendedVideoType: json['ExtendedVideoType'],
-      extendedVideoSubType: json['ExtendedVideoSubType'],
-      extendedVideoSubTypeDescription: json['ExtendedVideoSubTypeDescription'],
-      attachmentSize: json['AttachmentSize'],
+      codec: json['Codec'] ?? '',
+      language: json['Language'] ?? '',
+      displayTitle: json['DisplayTitle'] ?? '',
+      displayLanguage: json['DisplayLanguage'] ?? '',
+      isInterlaced: json['IsInterlaced'] ?? false,
+      isDefault: json['IsDefault'] ?? false,
+      isForced: json['IsForced'] ?? false,
+      isHearingImpaired: json['IsHearingImpaired'] ?? false,
+      type: json['Type'] ?? '',
+      index: json['Index'] ?? 0,
+      isExternal: json['IsExternal'] ?? false,
+      deliveryMethod: json['DeliveryMethod'] ?? '',
+      deliveryUrl: json['DeliveryUrl'] ?? '',
+      isExternalUrl: json['IsExternalUrl'] ?? false,
+      isTextSubtitleStream: json['IsTextSubtitleStream'] ?? false,
+      supportsExternalStream: json['SupportsExternalStream'] ?? false,
+      path: json['Path'] ?? '',
+      protocol: json['Protocol'] ?? '',
+      extendedVideoType: json['ExtendedVideoType'] ?? '',
+      extendedVideoSubType: json['ExtendedVideoSubType'] ?? '',
+      extendedVideoSubTypeDescription: json['ExtendedVideoSubTypeDescription'] ?? '',
+      attachmentSize: json['AttachmentSize'] ?? 0,
     );
   }
 }
@@ -99,12 +99,12 @@ class MediaSource {
 
   factory MediaSource.fromJson(Map<String, dynamic> json) {
     return MediaSource(
-      id: json['Id'],
-      container: json['Container'],
-      directStreamUrl: json['DirectStreamUrl'],
-      path: json['Path'],
-      transcodingUrl: json['TranscodingUrl'],
-      name: json['Name'],
+      id: json['Id'] ?? '',
+      container: json['Container'] ?? '',
+      directStreamUrl: json['DirectStreamUrl'] ?? '',
+      path: json['Path'] ?? '',
+      transcodingUrl: json['TranscodingUrl'] ?? '',
+      name: json['Name'] ?? '',
       mediaStreams: (json['MediaStreams'] as List)
           .map((item) => MediaStream.fromJson(item))
           .toList(),
@@ -126,7 +126,7 @@ class PlaybackInfo {
     return PlaybackInfo(
       mediaSources: (json['MediaSources'] as List)
           .map((item) => MediaSource.fromJson(item))
-          .toList(),
+          .toList() ?? [],
       playSessionId: json['PlaySessionId'],
     );
   }

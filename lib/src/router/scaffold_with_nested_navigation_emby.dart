@@ -23,20 +23,23 @@ class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
     backButtonListener(Widget child) => BackButtonListener(
       onBackButtonPressed: () async {
         int currentIndex = navigationShell.currentIndex;
-        print('currentIndex: $currentIndex');
+
+        final currentPath = GoRouter.of(context).routerDelegate.currentConfiguration.last.route.path;
+
+        if (currentPath.startsWith('/details/')) {
+          return false;
+        }
+
         if (currentIndex == 1) {
           _goBranch(0);
           return true;
         } else if (currentIndex == 0) {
           final routeName = navigationShell.shellRouteContext.routerState.uri.toString();
-
           if (routeName == '/emby') {
             GoRouter.of(context).go('/home');
             return true;
           }
-          else {
-            return false;
-          }
+          return false;
         }
         return false;
       },

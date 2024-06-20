@@ -15,10 +15,10 @@ class People {
 
   factory People.fromJson(Map<String, dynamic> json) {
     return People(
-      name: json['Name'],
-      role: json['Role'],
-      id: json['Id'],
-      primaryImageTag: json['PrimaryImageTag'],
+      name: json['Name'] ?? '',
+      role: json['Role'] ?? '',
+      id: json['Id'] ?? '',
+      primaryImageTag: json['PrimaryImageTag'] ?? '',
     );
   }
 }

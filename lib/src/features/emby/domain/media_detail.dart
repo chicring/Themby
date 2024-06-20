@@ -1,28 +1,4 @@
 
-
-
-// Name: string
-// OriginalTitle: string
-// Overview: string
-// Genres: string[]
-// BackdropImageTags: string[]
-// CollectionType: "tvshows"|"movies"
-// Id: string
-// Etag: string
-// Type: "Series"|"Movie"|"Playlist"|string
-// ImageTags: {
-// Banner: string
-// Logo: string
-// Primary: string
-// Thumb: string
-// }
-// UserData: UserData
-// People?: People[]
-// SeriesId: string
-// SeriesName: string
-// MediaSources?: MediaSource[]
-
-
 import 'image_tags.dart';
 import 'people.dart';
 import 'playback_info.dart';
@@ -32,6 +8,7 @@ class MediaDetail{
   String name;
   String originalTitle;
   String overview;
+  String communityRating;
   List<String> genres;
   List<String> backdropImageTags;
   String collectionType;
@@ -40,6 +17,7 @@ class MediaDetail{
   String type;
   ImageTags imageTags;
   UserData userData;
+  int productionYear;
   List<People> people;
   String seriesId;
   String seriesName;
@@ -50,6 +28,7 @@ class MediaDetail{
     required this.originalTitle,
     required this.overview,
     required this.genres,
+    required this.communityRating,
     required this.backdropImageTags,
     required this.collectionType,
     required this.id,
@@ -57,6 +36,7 @@ class MediaDetail{
     required this.type,
     required this.imageTags,
     required this.userData,
+    required this.productionYear,
     required this.people,
     required this.seriesId,
     required this.seriesName,
@@ -70,17 +50,19 @@ class MediaDetail{
       overview: json['Overview'],
       genres: List<String>.from(json['Genres']),
       backdropImageTags: List<String>.from(json['BackdropImageTags']),
-      collectionType: json['CollectionType'],
+      communityRating: (((json['CommunityRating'] as num? ?? 0.0).toDouble()).toStringAsFixed(1)),
+      collectionType: json['CollectionType'] ?? '',
       id: json['Id'],
       etag: json['Etag'],
       type: json['Type'],
       imageTags: ImageTags.fromJson(json['ImageTags']),
       userData: UserData.fromJson(json['UserData']),
+      productionYear: json['ProductionYear'] ?? 0,
       people: (json['People'] as List)
           .map((item) => People.fromJson(item))
-          .toList(),
-      seriesId: json['SeriesId'],
-      seriesName: json['SeriesName'],
+          .toList() ?? [],
+      seriesId: json['SeriesId'] ?? '',
+      seriesName: json['SeriesName'] ?? '',
       mediaSources: (json['MediaSources'] as List)
           .map((item) => MediaSource.fromJson(item))
           .toList(),
