@@ -39,23 +39,25 @@ class EmbyMediaDetails extends ConsumerWidget {
                   children: [
                     _DetailBackground(mediaDetail: mediaDetail,site: site,),
 
+                    const SizedBox(height: 10),
                     _DetailContent(mediaDetail: mediaDetail,site: site),
 
                     const SizedBox(height: 10),
                     _DetailGenres(genres: mediaDetail.genres),
 
+                    const SizedBox(height: 10),
                     _DetailOverview(mediaDetail: mediaDetail, site: site),
 
+                    const SizedBox(height: 10),
                     _DetailPeople(people: mediaDetail.people, site: site),
 
-                    _DetailPeople(people: mediaDetail.people, site: site),
+                    const SizedBox(height: 10),
+                    _ExternalLinks(externalUrls: mediaDetail.externalUrls),
 
-                    _DetailPeople(people: mediaDetail.people, site: site),
+                    const SizedBox(height: 10),
+                    _MediaDetail(mediaDetail: mediaDetail),
 
-                    _DetailPeople(people: mediaDetail.people, site: site),
-
-                    const SizedBox(height: 80),
-
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),
@@ -146,7 +148,7 @@ class _DetailBackground extends StatelessWidget {
             height: MediaQuery.sizeOf(context).width * 0.65,
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Container(
           height: height + 20,
           decoration: BoxDecoration(
@@ -160,7 +162,7 @@ class _DetailBackground extends StatelessWidget {
         ),
         Positioned(
           bottom: 0,
-          left: 20,
+          left: 10,
           child: Container(
             constraints: BoxConstraints(
               maxHeight: height * 0.3,
@@ -190,23 +192,58 @@ class _DetailContent extends StatelessWidget {
   final MediaDetail mediaDetail;
   const _DetailContent({required this.mediaDetail, required this.site});
 
+  String _convertRuntimeTicksToMinutes(int runtimeTicks) {
+    int totalSeconds = (runtimeTicks / 10000000).round();
+    int hours = totalSeconds ~/ 3600;
+    int minutes = (totalSeconds % 3600) ~/ 60;
+    return '${hours}h ${minutes}m';
+  }
+
   @override
   Widget build(BuildContext context) {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
-          Column(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Row(
+                children: [
+                  const Icon(Icons.star, color: Colors.yellow, size: 20),
+                  Text(
+                    mediaDetail.communityRating,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 10),
               Text(
                 mediaDetail.productionYear.toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Theme.of(context).colorScheme.outline,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                _convertRuntimeTicksToMinutes(mediaDetail.runTimeTicks),
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal
+                ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                mediaDetail.officialRating,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
                 ),
               ),
             ],
@@ -214,22 +251,31 @@ class _DetailContent extends StatelessWidget {
           Row(
             children: [
               Text(
-                mediaDetail.communityRating,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
+                '视频:'
               ),
-              const SizedBox(width: 10),
-              const Icon(Icons.star, color: Colors.yellow, size: 20),
             ],
-          )
+          ),
+          Row(
+            children: [
+              Text(
+                '音频:'
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                '字幕:'
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 }
 
+/// 类型
 class _DetailGenres extends StatelessWidget {
   final List<String> genres;
   const _DetailGenres({required this.genres});
@@ -245,8 +291,7 @@ class _DetailGenres extends StatelessWidget {
       child: Text(
         genre,
         style: const TextStyle(
-          fontSize: 14,
-          color: Colors.white38,
+          fontSize: 13,
         ),
       ),
     );
@@ -256,6 +301,8 @@ class _DetailGenres extends StatelessWidget {
   Widget build(BuildContext context) {
     Color color = Theme.of(context).colorScheme.primary;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const SizedBox(width: StyleString.safeSpace),
         Wrap(
@@ -267,7 +314,7 @@ class _DetailGenres extends StatelessWidget {
   }
 }
 
-
+/// 概述
 class _DetailOverview extends StatelessWidget {
   final MediaDetail mediaDetail;
   final Site site;
@@ -351,6 +398,7 @@ class _DetailOverview extends StatelessWidget {
           mediaDetail.overview,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.start,
           style: const TextStyle(
             fontSize: 14,
             height: 1.5,
@@ -361,6 +409,7 @@ class _DetailOverview extends StatelessWidget {
   }
 }
 
+/// 演员
 class _DetailPeople extends StatelessWidget {
   final Site site;
   final List<People> people;
@@ -433,6 +482,138 @@ class _DetailPeople extends StatelessWidget {
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+
+/// 外部链接
+class _ExternalLinks extends StatelessWidget {
+  final List<ExternalUrl> externalUrls;
+  const _ExternalLinks({required this.externalUrls});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            '外部链接',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Wrap(
+                spacing: 10,
+                children: [
+                  ...externalUrls.map((item) {
+                    return ActionChip(
+                      onPressed: (){},
+                      avatar: const Icon(Icons.link),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: StyleString.mdRadius,
+                      ),
+                      label: Text(item.name),
+                    );
+                  }).toList(),
+                ],
+              )
+            ]
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 合集
+class _Collections extends StatelessWidget {
+  final List<MediaDetail> collections;
+  const _Collections({required this.collections});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox();
+  }
+}
+
+
+/// 相似影片
+class _SimilarMedias extends StatelessWidget{
+  final List<MediaDetail> medias;
+  const _SimilarMedias({required this.medias});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return const SizedBox() ;
+  }
+}
+
+/// 媒体详细信息
+class _MediaDetail extends StatelessWidget {
+  final MediaDetail mediaDetail;
+  const _MediaDetail({required this.mediaDetail});
+
+  String _formatSize(int size) {
+    const int KB = 1024;
+    const int MB = KB * 1024;
+    const int GB = MB * 1024;
+    const int TB = GB * 1024;
+
+    if (size >= TB) {
+      return '${(size / TB).toStringAsFixed(2)} TB';
+    } else if (size >= GB) {
+      return '${(size / GB).toStringAsFixed(2)} GB';
+    } else if (size >= MB) {
+      return '${(size / MB).toStringAsFixed(2)} MB';
+    } else if (size >= KB) {
+      return '${(size / KB).toStringAsFixed(2)} KB';
+    } else {
+      return '$size B';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
+      child: Column(
+
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Text(
+            '媒体信息',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                mediaDetail.mediaSources[0].container,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                _formatSize(mediaDetail.mediaSources[0].size),
+              )
+            ],
+          ),
+          const SizedBox(height: 8),
+
         ],
       ),
     );

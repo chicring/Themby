@@ -4,11 +4,30 @@ import 'people.dart';
 import 'playback_info.dart';
 import 'user_data.dart';
 
+class ExternalUrl{
+  String name;
+  String url;
+
+  ExternalUrl({
+    required this.name,
+    required this.url,
+  });
+
+  factory ExternalUrl.fromJson(Map<String, dynamic> json) {
+    return ExternalUrl(
+      name: json['Name'],
+      url: json['Url'],
+    );
+  }
+}
+
 class MediaDetail{
   String name;
   String originalTitle;
   String overview;
   String communityRating;
+  int runTimeTicks;
+  String officialRating;
   List<String> genres;
   List<String> backdropImageTags;
   String collectionType;
@@ -21,6 +40,7 @@ class MediaDetail{
   List<People> people;
   String seriesId;
   String seriesName;
+  List<ExternalUrl> externalUrls;
   List<MediaSource> mediaSources;
 
   MediaDetail({
@@ -29,6 +49,8 @@ class MediaDetail{
     required this.overview,
     required this.genres,
     required this.communityRating,
+    required this.runTimeTicks,
+    required this.officialRating,
     required this.backdropImageTags,
     required this.collectionType,
     required this.id,
@@ -40,6 +62,7 @@ class MediaDetail{
     required this.people,
     required this.seriesId,
     required this.seriesName,
+    required this.externalUrls,
     required this.mediaSources,
   });
 
@@ -51,6 +74,8 @@ class MediaDetail{
       genres: List<String>.from(json['Genres']),
       backdropImageTags: List<String>.from(json['BackdropImageTags']),
       communityRating: (((json['CommunityRating'] as num? ?? 0.0).toDouble()).toStringAsFixed(1)),
+      runTimeTicks: json['RunTimeTicks'] ?? 0,
+      officialRating: json['OfficialRating'] ?? '',
       collectionType: json['CollectionType'] ?? '',
       id: json['Id'],
       etag: json['Etag'],
@@ -63,6 +88,9 @@ class MediaDetail{
           .toList() ?? [],
       seriesId: json['SeriesId'] ?? '',
       seriesName: json['SeriesName'] ?? '',
+      externalUrls: (json['ExternalUrls'] as List)
+          .map((item) => ExternalUrl.fromJson(item))
+          .toList(),
       mediaSources: (json['MediaSources'] as List)
           .map((item) => MediaSource.fromJson(item))
           .toList(),

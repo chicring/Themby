@@ -85,6 +85,7 @@ class MediaSource {
   final String path;
   final String transcodingUrl;
   final String name;
+  final int size;
   final List<MediaStream> mediaStreams;
 
   MediaSource({
@@ -94,6 +95,7 @@ class MediaSource {
     required this.path,
     required this.transcodingUrl,
     required this.name,
+    required this.size,
     required this.mediaStreams,
   });
 
@@ -105,6 +107,7 @@ class MediaSource {
       path: json['Path'] ?? '',
       transcodingUrl: json['TranscodingUrl'] ?? '',
       name: json['Name'] ?? '',
+      size: json['Size'] ?? 0,
       mediaStreams: (json['MediaStreams'] as List)
           .map((item) => MediaStream.fromJson(item))
           .toList(),
