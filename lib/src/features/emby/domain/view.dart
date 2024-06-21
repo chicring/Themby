@@ -119,7 +119,7 @@ class ViewDetail {
       path: json["Path"] ?? "",
       playAccess: json["PlayAccess"] ?? "",
       presentationUniqueKey: json["PresentationUniqueKey"] ?? "",
-      primaryImageAspectRatio: json["PrimaryImageAspectRatio"].toDouble(),
+      primaryImageAspectRatio: (json["PrimaryImageAspectRatio"] ?? 0).toDouble(),
       providerIds: Map<String, dynamic>.from(json["ProviderIds"]),
       remoteTrailers: List<String>.from(json["RemoteTrailers"].map((x) => x)),
       serverId: json["ServerId"],

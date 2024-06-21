@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/domiani/site.dart';
+import 'package:themby/src/common/widget/dropdown_custom.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
@@ -12,6 +13,7 @@ import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/domain/people.dart';
+import 'package:themby/src/features/emby/domain/playback_info.dart';
 
 class EmbyMediaDetails extends ConsumerWidget {
   final String id;
@@ -27,17 +29,34 @@ class EmbyMediaDetails extends ConsumerWidget {
     return data.when(
       data: (mediaDetail) {
         return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(50),
-            child: _DetailAppBar(site: site!, mediaDetail: mediaDetail),
+          floatingActionButton: GestureDetector(
+            onTap: (){
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
+              decoration: BoxDecoration(
+                borderRadius: StyleString.mdRadius,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              width: MediaQuery.sizeOf(context).width,
+              height: 50,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.play_arrow_outlined),
+                  SizedBox(width: 10),
+                  Text('播放', style: TextStyle(fontSize: 16)),
+                ],
+              ),
+            ),
           ),
-          body: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _DetailBackground(mediaDetail: mediaDetail,site: site,),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          body: CustomScrollView(
+            slivers: [
+              _DetailAppBar(site: site!, mediaDetail: mediaDetail),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
 
                     const SizedBox(height: 10),
                     _DetailContent(mediaDetail: mediaDetail,site: site),
@@ -61,28 +80,6 @@ class EmbyMediaDetails extends ConsumerWidget {
                   ],
                 ),
               ),
-
-              Positioned(
-                left: 30,
-                right: 30,
-                bottom: 30,
-                child: ClipRRect(
-                  borderRadius: StyleString.lgRadius,
-                  child: Container(
-                    color: Theme.of(context).colorScheme.primary,
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: const Text(
-                      '播放',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ],
           )
         );
@@ -100,10 +97,11 @@ class _DetailAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final double heightBar = MediaQuery.sizeOf(context).width * 0.65;
+    final double heightBar = MediaQuery.sizeOf(context).width * 0.65;
 
-    return AppBar(
-      backgroundColor: Colors.transparent,
+    return SliverAppBar(
+      expandedHeight: heightBar,
+      pinned: true,
       actions: [
         IconButton(
           icon: const Icon(Icons.favorite),
@@ -115,8 +113,17 @@ class _DetailAppBar extends StatelessWidget {
         ),
       ],
       flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
-        title: Text(mediaDetail.name),
+        titlePadding: const EdgeInsets.only(left: 45, bottom: 18),
+        title: Text(
+          mediaDetail.name,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        collapseMode: CollapseMode.pin,
+        stretchModes: const [StretchMode.fadeTitle],
+        background: _DetailBackground(mediaDetail: mediaDetail,site: site),
       ),
     );
   }
@@ -148,9 +155,8 @@ class _DetailBackground extends StatelessWidget {
             height: MediaQuery.sizeOf(context).width * 0.65,
           ),
         ),
-        const SizedBox(height: 20),
         Container(
-          height: height + 20,
+          height: height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.transparent, Theme.of(context).scaffoldBackgroundColor],
@@ -161,14 +167,14 @@ class _DetailBackground extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: 0,
-          left: 10,
+          top: 30,
+          left: 50,
           child: Container(
             constraints: BoxConstraints(
-              maxHeight: height * 0.3,
-              maxWidth: width * 0.6,
-              minHeight: height * 0.2,
-              minWidth: width * 0.3,
+              maxHeight: height * 0.2,
+              maxWidth: width * 0.3,
+              minHeight: height * 0.1,
+              minWidth: width * 0.15,
             ),
             child: CachedNetworkImage(
               imageUrl: getImageUrl(
@@ -201,6 +207,8 @@ class _DetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
@@ -250,23 +258,21 @@ class _DetailContent extends StatelessWidget {
           ),
           Row(
             children: [
-              Text(
-                '视频:'
-              ),
+              const Text('视频:', style: StyleString.subtitleStyle),
+              const SizedBox(width: 10),
+              DropdownMenuCustom(data: ['1','df','fd'], initialSelection: '1', onSelected: (value) => print(value)),
             ],
           ),
           Row(
             children: [
-              Text(
-                '音频:'
-              ),
+              Text('音频:', style: StyleString.subtitleStyle),
+              const SizedBox(width: 10),
+
             ],
           ),
           Row(
             children: [
-              Text(
-                '字幕:'
-              ),
+              Text('字幕:', style: StyleString.subtitleStyle),
             ],
           ),
         ],
@@ -300,16 +306,13 @@ class _DetailGenres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).colorScheme.primary;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const SizedBox(width: StyleString.safeSpace),
-        Wrap(
-          spacing: 6, // Change this value to adjust the space between items
-          children: genres.map((genre) => buildTag(genre,color)).toList(),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
+      child: Wrap(
+        spacing: 6,
+        alignment: WrapAlignment.start,
+        children: genres.map((genre) => buildTag(genre,color)).toList(),
+      ),
     );
   }
 }
@@ -346,26 +349,30 @@ class _DetailOverview extends StatelessWidget {
                       height: 150,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(StyleString.safeSpace),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          mediaDetail.name,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                  Expanded( // Add this
+                    child: Padding(
+                      padding: const EdgeInsets.all(StyleString.safeSpace),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            mediaDetail.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          mediaDetail.productionYear.toString(),
-                          style: const TextStyle(
-                            fontSize: 16,
+                          const SizedBox(height: 10),
+                          Text(
+                            mediaDetail.productionYear.toString(),
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -509,25 +516,26 @@ class _ExternalLinks extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              Wrap(
-                spacing: 10,
-                children: [
-                  ...externalUrls.map((item) {
-                    return ActionChip(
-                      onPressed: (){},
-                      avatar: const Icon(Icons.link),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: StyleString.mdRadius,
-                      ),
-                      label: Text(item.name),
-                    );
-                  }).toList(),
-                ],
-              )
-            ]
-          ),
+          SizedBox(
+            height: 40,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: externalUrls.length,
+              itemBuilder: (context,index) {
+                return Container(
+                  margin: const EdgeInsets.only(right: 10), // Add this line to add space to the right of each item
+                  child: ActionChip(
+                    onPressed: (){},
+                    avatar: const Icon(Icons.link),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: StyleString.mdRadius,
+                    ),
+                    label: Text(externalUrls[index].name),
+                  ),
+                );
+              },
+            ),
+          )
         ],
       ),
     );
@@ -584,10 +592,15 @@ class _MediaDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    TextStyle textStyle = const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+    );
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
       child: Column(
-
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -613,7 +626,84 @@ class _MediaDetail extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
+          SizedBox(
+            height: 280,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: mediaDetail.mediaSources[0].mediaStreams.map((stream) {
+                return Card(
+                  elevation: 0,
+                  child: Container(
+                    margin: const EdgeInsets.all(5),
+                    height: 280,
+                    width: 210,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        if (stream.type == 'Video') ...{
+                          const Row(
+                            children: [
+                              Icon(Icons.videocam),
+                              Text('视频'),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Text('标题: ${stream.displayTitle}', style: textStyle),
+                          Text('编码: ${stream.codec}', style: textStyle),
+                          Text('配置: ${stream.profile}', style: textStyle),
+                          Text('等级: ${stream.level}', style: textStyle),
+                          Text('分辨率: ${stream.height} x ${stream.width}', style: textStyle),
+                          Text('长宽比: ${stream.aspectRatio}', style: textStyle),
+                          Text('交错: ${stream.isInterlaced}', style: textStyle),
+                          Text('帧率: ${stream.averageFrameRate}', style: textStyle),
+                          Text('位深度: ${stream.bitDepth}', style: textStyle),
+                          Text('像素格式: ${stream.pixelFormat}', style: textStyle),
+                        }
+                        else if (stream.type == 'Audio')...{
+                          const Row(
+                            children: [
+                              Icon(Icons.audiotrack_outlined),
+                              Text('音频'),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Text('标题: ${stream.displayTitle}', style: textStyle),
+                          Text('嵌入式标题: ${stream.title}', style: textStyle),
+                          Text('语言: ${stream.language}', style: textStyle),
+                          Text('编解码器: ${stream.codec}', style: textStyle),
+                          Text('布局: ${stream.channelLayout}', style: textStyle),
+                          Text('频道: ${stream.channels} ch', style: textStyle),
+                          Text('采样率: ${stream.sampleRate}', style: textStyle),
+                          Text('位深度: ${stream.bitDepth} bit', style: textStyle),
+                          Text('默认: ${stream.isDefault}', style: textStyle),
+                        }
 
+                        else if (stream.type == 'Subtitle') ...{
+                          const Row(
+                            children: [
+                              Icon(Icons.subtitles_outlined),
+                              Text('字幕'),
+                            ],
+                          ),
+                            const SizedBox(height: 10),
+                          Text('标题: ${stream.displayTitle}', style: textStyle),
+                          Text('嵌入式标题: ${stream.title}', style: textStyle),
+                          Text('编解码器: ${stream.codec}', style: textStyle),
+                          Text('默认: ${stream.isDefault}', style: textStyle),
+                          Text('强制: ${stream.isForced}', style: textStyle),
+                          Text('听力障碍: ${stream.isHearingImpaired}', style: textStyle),
+                          Text('外部: ${stream.isExternal}', style: textStyle),
+                        }
+                      ],
+
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          )
         ],
       ),
     );
