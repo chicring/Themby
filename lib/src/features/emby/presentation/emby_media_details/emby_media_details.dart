@@ -72,6 +72,11 @@ class EmbyMediaDetails extends ConsumerWidget {
                     const SizedBox(height: 5),
                     _DetailOverview(mediaDetail: mediaDetail, site: site),
 
+                    if(mediaDetail.type == 'Series') ...{
+                      const SizedBox(height: 10),
+                      //季
+                    },
+
                     const SizedBox(height: 10),
                     _DetailPeople(people: mediaDetail.people, site: site),
 
