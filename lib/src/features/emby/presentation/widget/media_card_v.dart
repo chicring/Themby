@@ -68,7 +68,7 @@ class MediaCardV extends ConsumerWidget{
                           right: 6,
                         ),
 
-                      if(media.communityRating > 0.0)
+                      if(media.communityRating != '0.0')
                         PBadge(
                           text: media.communityRating.toString(),
                           bottom: 6,

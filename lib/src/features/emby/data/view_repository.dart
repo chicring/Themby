@@ -265,6 +265,30 @@ class ViewRepository{
     return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
   }
 
+  Future<EmbyResponse<Media>> getSimilar({required String id, CancelToken? cancelToken}) async {
+    final response = await client.getUri(
+      Uri(
+        scheme: site.scheme,
+        host: site.host,
+        port: site.port,
+        path: '/emby/Items/$id/Similar',
+        queryParameters: {
+          'Fields': 'BasicSyncInfo,CanDelete,PrimaryImageAspectRatio,ProductionYear,Status,EndDate,CommunityRating',
+          'ImageTypeLimit': '1',
+          'UserId': site.userId,
+          'Limit': '12',
+        }
+      ),
+      options: Options(
+        headers: {
+          'X-Emby-Authorization': embyToken,
+          'x-emby-token': site.accessToken,
+        }
+      ),
+      cancelToken: cancelToken,
+    );
+    return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
+  }
 }
 
 @riverpod
@@ -366,4 +390,11 @@ Future<EmbyResponse<Media>> getItem(GetItemRef ref,{required ItemQuery itemQuery
     timer?.cancel();
   });
   return viewRepo.getItem(itemQuery: itemQuery, cancelToken: cancelToken);
+}
+
+
+@riverpod
+Future<EmbyResponse<Media>> getSimilar(GetSimilarRef ref, String id) {
+  final cancelToken = ref.cancelToken();
+  return ref.read(viewRepositoryProvider).getSimilar(id: id, cancelToken: cancelToken);
 }

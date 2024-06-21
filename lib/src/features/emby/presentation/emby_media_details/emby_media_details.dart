@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/dropdown_custom.dart';
@@ -13,7 +14,7 @@ import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/domain/people.dart';
-import 'package:themby/src/features/emby/domain/playback_info.dart';
+import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
 
 class EmbyMediaDetails extends ConsumerWidget {
   final String id;
@@ -31,11 +32,15 @@ class EmbyMediaDetails extends ConsumerWidget {
         return Scaffold(
           floatingActionButton: GestureDetector(
             onTap: (){
+              SmartDialog.showToast('等待播放');
+            },
+            onLongPress: (){
+              SmartDialog.showToast('别长按我，等待播放');
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
               decoration: BoxDecoration(
-                borderRadius: StyleString.mdRadius,
+                borderRadius: StyleString.lgRadius,
                 color: Theme.of(context).colorScheme.primary,
               ),
               width: MediaQuery.sizeOf(context).width,
@@ -43,7 +48,7 @@ class EmbyMediaDetails extends ConsumerWidget {
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.play_arrow_outlined),
+                  Icon(Icons.play_arrow_rounded),
                   SizedBox(width: 10),
                   Text('播放', style: TextStyle(fontSize: 16)),
                 ],
@@ -64,17 +69,21 @@ class EmbyMediaDetails extends ConsumerWidget {
                     const SizedBox(height: 10),
                     _DetailGenres(genres: mediaDetail.genres),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     _DetailOverview(mediaDetail: mediaDetail, site: site),
 
                     const SizedBox(height: 10),
                     _DetailPeople(people: mediaDetail.people, site: site),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     _ExternalLinks(externalUrls: mediaDetail.externalUrls),
 
+                    const SizedBox(height: 15),
+                    _SimilarMedias(medias: mediaDetail),
+
                     const SizedBox(height: 10),
-                    _MediaDetail(mediaDetail: mediaDetail),
+                    if (mediaDetail.mediaType == 'Video')
+                      _MediaDetail(mediaDetail: mediaDetail),
 
                     const SizedBox(height: 100),
                   ],
@@ -208,8 +217,6 @@ class _DetailContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
       child: Column(
@@ -239,14 +246,18 @@ class _DetailContent extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              Text(
-                _convertRuntimeTicksToMinutes(mediaDetail.runTimeTicks),
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal
+
+              if(mediaDetail.mediaType == 'Video') ...{
+                Text(
+                  _convertRuntimeTicksToMinutes(mediaDetail.runTimeTicks),
+                  style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
+                const SizedBox(width: 10),
+              },
+
               Text(
                 mediaDetail.officialRating,
                 style: const TextStyle(
@@ -254,6 +265,16 @@ class _DetailContent extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                 ),
               ),
+              const SizedBox(width: 10),
+
+              if(mediaDetail.type == 'Series')
+                Text(
+                  '共 ${mediaDetail.childCount} 季',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
             ],
           ),
           Row(
@@ -287,18 +308,12 @@ class _DetailGenres extends StatelessWidget {
   const _DetailGenres({required this.genres});
 
 
-  Widget buildTag(String genre,Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: StyleString.lgRadius,
-      ),
-      child: Text(
-        genre,
-        style: const TextStyle(
-          fontSize: 13,
-        ),
+  Widget buildTag(String genre, Color color) {
+    return Text(
+      genre,
+      style: const TextStyle(
+        fontSize: 15,
+        decoration: TextDecoration.underline,
       ),
     );
   }
@@ -553,16 +568,57 @@ class _Collections extends StatelessWidget {
   }
 }
 
-
 /// 相似影片
-class _SimilarMedias extends StatelessWidget{
-  final List<MediaDetail> medias;
+class _SimilarMedias extends ConsumerWidget{
+  final MediaDetail medias;
   const _SimilarMedias({required this.medias});
 
   @override
-  Widget build(BuildContext context) {
-
-    return const SizedBox() ;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(getSimilarProvider(medias.id));
+    return data.when(
+      data: (medias) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(width: StyleString.safeSpace),
+                Text(
+                  '相似影片',
+                  style: StyleString.titleStyle,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.18 + 50,
+              child: medias.items.isEmpty ?
+              const Center(child: Text('暂无数据')) :
+              ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: medias.totalRecordCount,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: MediaQuery.sizeOf(context).height * 0.117,
+                    height: MediaQuery.sizeOf(context).height * 0.18,
+                    margin: const EdgeInsets.only(
+                      left: StyleString.safeSpace,
+                    ),
+                    child: MediaCardV(
+                      media: medias.items[index],
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace')),
+    );
   }
 }
 

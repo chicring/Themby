@@ -901,5 +901,135 @@ class _GetItemProviderElement
     String sortOrder
   }) get itemQuery => (origin as GetItemProvider).itemQuery;
 }
+
+String _$getSimilarHash() => r'a9ed7d58c9ef438b6c7c62aaf18f969ad237fe7f';
+
+/// See also [getSimilar].
+@ProviderFor(getSimilar)
+const getSimilarProvider = GetSimilarFamily();
+
+/// See also [getSimilar].
+class GetSimilarFamily extends Family<AsyncValue<EmbyResponse<Media>>> {
+  /// See also [getSimilar].
+  const GetSimilarFamily();
+
+  /// See also [getSimilar].
+  GetSimilarProvider call(
+    String id,
+  ) {
+    return GetSimilarProvider(
+      id,
+    );
+  }
+
+  @override
+  GetSimilarProvider getProviderOverride(
+    covariant GetSimilarProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getSimilarProvider';
+}
+
+/// See also [getSimilar].
+class GetSimilarProvider
+    extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
+  /// See also [getSimilar].
+  GetSimilarProvider(
+    String id,
+  ) : this._internal(
+          (ref) => getSimilar(
+            ref as GetSimilarRef,
+            id,
+          ),
+          from: getSimilarProvider,
+          name: r'getSimilarProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getSimilarHash,
+          dependencies: GetSimilarFamily._dependencies,
+          allTransitiveDependencies:
+              GetSimilarFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  GetSimilarProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final String id;
+
+  @override
+  Override overrideWith(
+    FutureOr<EmbyResponse<Media>> Function(GetSimilarRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetSimilarProvider._internal(
+        (ref) => create(ref as GetSimilarRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<EmbyResponse<Media>> createElement() {
+    return _GetSimilarProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetSimilarProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetSimilarRef on AutoDisposeFutureProviderRef<EmbyResponse<Media>> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _GetSimilarProviderElement
+    extends AutoDisposeFutureProviderElement<EmbyResponse<Media>>
+    with GetSimilarRef {
+  _GetSimilarProviderElement(super.provider);
+
+  @override
+  String get id => (origin as GetSimilarProvider).id;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

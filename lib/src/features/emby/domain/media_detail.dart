@@ -42,6 +42,8 @@ class MediaDetail{
   String seriesName;
   List<ExternalUrl> externalUrls;
   List<MediaSource> mediaSources;
+  String mediaType;
+  int childCount;
 
   MediaDetail({
     required this.name,
@@ -64,6 +66,8 @@ class MediaDetail{
     required this.seriesName,
     required this.externalUrls,
     required this.mediaSources,
+    required this.mediaType,
+    required this.childCount,
   });
 
   factory MediaDetail.fromJson(Map<String, dynamic> json) {
@@ -91,9 +95,11 @@ class MediaDetail{
       externalUrls: (json['ExternalUrls'] as List)
           .map((item) => ExternalUrl.fromJson(item))
           .toList(),
-      mediaSources: (json['MediaSources'] as List)
-          .map((item) => MediaSource.fromJson(item))
-          .toList(),
+      mediaSources: json['MediaSources'] != null
+          ? (json['MediaSources'] as List).map((item) => MediaSource.fromJson(item)).toList()
+          : [],
+      mediaType: json['MediaType'] ?? '',
+      childCount: json['ChildCount'] ?? 0,
     );
   }
 

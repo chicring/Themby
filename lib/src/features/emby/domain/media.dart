@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:themby/src/features/emby/domain/image_tags.dart';
 
 import 'user_data.dart';
@@ -7,7 +9,7 @@ class Media {
   String dateCreated;
   List<String> airDays;
   List<String> backdropImageTags;
-  double communityRating;
+  String communityRating;
   bool canDelete;
   String id;
   String parentBackdropItemId;
@@ -75,7 +77,7 @@ class Media {
       dateCreated: json['DateCreated'] ?? '',
       airDays: List<String>.from(json['AirDays'] ?? []),
       backdropImageTags: List<String>.from(json['BackdropImageTags'] ?? []),
-      communityRating: (json['CommunityRating'] as num? ?? 0.0).toDouble(),
+      communityRating: (((json['CommunityRating'] as num? ?? 0.0).toDouble()).toStringAsFixed(1)),
       canDelete: json['CanDelete'] ?? false,
       id: json['Id'] ?? '',
       parentBackdropItemId: json['ParentBackdropItemId'] ?? '',
