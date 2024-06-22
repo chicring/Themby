@@ -30,7 +30,7 @@ class EmbyLibraryScreen extends ConsumerWidget {
             title,
             style: Theme.of(context).textTheme.titleMedium,
         ),
-        bottom: ,
+
       ),
       body: RefreshIndicator(
         onRefresh: () async {
