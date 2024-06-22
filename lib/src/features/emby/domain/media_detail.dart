@@ -73,8 +73,8 @@ class MediaDetail{
   factory MediaDetail.fromJson(Map<String, dynamic> json) {
     return MediaDetail(
       name: json['Name'],
-      originalTitle: json['OriginalTitle'],
-      overview: json['Overview'],
+      originalTitle: json['OriginalTitle'] ?? '',
+      overview: json['Overview'] ?? '',
       genres: List<String>.from(json['Genres']),
       backdropImageTags: List<String>.from(json['BackdropImageTags']),
       communityRating: (((json['CommunityRating'] as num? ?? 0.0).toDouble()).toStringAsFixed(1)),

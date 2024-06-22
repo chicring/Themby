@@ -6,6 +6,7 @@ import 'package:themby/src/features/emby/presentation/emby_favorite/emby_favorit
 import 'package:themby/src/features/emby/presentation/emby_home/emby_home_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_library/emby_library_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_media_details.dart';
+import 'package:themby/src/features/emby/presentation/emby_media_details/emby_season_details.dart';
 import 'package:themby/src/features/home/presentation/home_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
@@ -20,6 +21,7 @@ enum AppRoute {
   favorite,
   library,
   details,
+  season
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -132,6 +134,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           return NoTransitionPage(
             key: state.pageKey,
             child: EmbyMediaDetails(id: id),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/season/:id',
+        name: AppRoute.season.name,
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return NoTransitionPage(
+            key: state.pageKey,
+            child: EmbySeasonDetails(id),
           );
         },
       )

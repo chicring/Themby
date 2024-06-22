@@ -54,9 +54,10 @@ class Season {
       seriesName: json['SeriesName'],
       seriesPrimaryImageTag: json['SeriesPrimaryImageTag'],
       serverId: json['ServerId'],
-      supportsSync: json['SupportsSync'],
+      supportsSync: json['SupportsSync'] ?? false,
       type: json['Type'],
       userData: UserData.fromJson(json['UserData']),
+
     );
   }
 }

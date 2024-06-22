@@ -37,7 +37,7 @@ class EmbyView extends ConsumerWidget {
               return media.when(
                 loading: () => const LoadingCardList(),
                 error: (error, stack) => Text(error.toString() + stack.toString()),
-                data: (value) => value.isEmpty || item.collectionType == 'music' ? const SizedBox() :
+                data: (value) => value.isEmpty || item.collectionType == 'music' || item.collectionType == 'livetv' ? const SizedBox() :
                   ListCardsH(
                     name: item.name,
                     parentId: item.id,
@@ -86,10 +86,11 @@ Widget _libraryView(BuildContext context, WidgetRef ref, data, site){
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
+                    child: item.imageTags.primary != null ?
+                    CachedNetworkImage(
                       imageUrl: getImageUrl(site!, item.id, ImageProps(
                         quality: 90,
-                        tag: item.imageTags.keys.first,
+                        tag: item.imageTags.primary,
                       )),
                       fit: BoxFit.cover,
                       placeholder: (_,__) => Shimmer.fromColors(
@@ -100,6 +101,14 @@ Widget _libraryView(BuildContext context, WidgetRef ref, data, site){
                           height: height,
                           width: width,
                         ),
+                      ),
+                    )
+                    : Container(
+                      color: Colors.grey[500],
+                      height: height,
+                      width: width,
+                      child: const Center(
+                        child: Icon(Icons.movie_creation_rounded,size: 50),
                       ),
                     ),
                   ),

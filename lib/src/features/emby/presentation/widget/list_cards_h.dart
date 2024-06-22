@@ -32,7 +32,7 @@ class ListCardsH extends ConsumerWidget{
           ],
         ),
         SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.215 + 55,
+          height: MediaQuery.sizeOf(context).height * 0.18 + 55,
           child: medias.isEmpty ?
             const Center(child: Text('暂无数据')) :
             ListView.builder(
@@ -40,8 +40,8 @@ class ListCardsH extends ConsumerWidget{
                 itemCount: medias.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    width: MediaQuery.sizeOf(context).height * 0.14,
-                    height: MediaQuery.sizeOf(context).height * 0.215,
+                    width: MediaQuery.sizeOf(context).height * 0.117,
+                    height: MediaQuery.sizeOf(context).height * 0.18,
                     margin: const EdgeInsets.only(
                       left: StyleString.safeSpace,
                     ),

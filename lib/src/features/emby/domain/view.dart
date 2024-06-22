@@ -1,3 +1,5 @@
+import 'image_tags.dart';
+
 class ViewDetail {
   List<String> backdropImageTags;
   bool canDelete;
@@ -12,7 +14,7 @@ class ViewDetail {
   String forcedSortName;
   String guid;
   String id;
-  Map<String, String> imageTags;
+  ImageTags imageTags;
   bool isFolder;
   bool lockData;
   List<String> lockedFields;
@@ -110,7 +112,7 @@ class ViewDetail {
       forcedSortName: json["ForcedSortName"] ?? "",
       guid: json["Guid"]  ?? "",
       id: json["Id"] ?? "",
-      imageTags: Map.from(json["ImageTags"]).map((k, v) => MapEntry<String, String>(k, v)),
+      imageTags: ImageTags.fromJson(json["ImageTags"]),
       isFolder: json["IsFolder"] ?? false,
       lockData: json["LockData"] ?? false,
       lockedFields: List<String>.from(json["LockedFields"].map((x) => x)) ?? [],

@@ -1,5 +1,7 @@
 
 
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,91 +13,125 @@ import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
+import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/domain/people.dart';
+import 'package:themby/src/features/emby/domain/season.dart';
 import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
+import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart';
 
-class EmbyMediaDetails extends ConsumerWidget {
+import 'emby_media_details_appbar.dart';
+
+class EmbyMediaDetails extends ConsumerStatefulWidget {
   final String id;
   const EmbyMediaDetails({super.key,required this.id});
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _EmbyMediaDetailsState();
+}
+
+class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
+
+  late final ScrollController _controller = ScrollController();
+  late StreamController<bool> titleStreamC;
+
+  @override
+  void initState() {
+    super.initState();
+    titleStreamC = StreamController<bool>();
+
+    _controller.addListener(() {
+      if (_controller.offset > 150) {
+        titleStreamC.add(true);
+      } else if (_controller.offset <= 150) {
+        titleStreamC.add(false);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final Site? site = ref.watch(embyStateServiceProvider.select((value) => value.site));
 
-    final data = ref.watch(GetMediaProvider(id));
+    final data = ref.watch(GetMediaProvider(widget.id));
     // final double heightBar = MediaQuery.sizeOf(context).width * 0.65;
 
     return data.when(
       data: (mediaDetail) {
         return Scaffold(
-          floatingActionButton: GestureDetector(
-            onTap: (){
-              SmartDialog.showToast('等待播放');
-            },
-            onLongPress: (){
-              SmartDialog.showToast('别长按我，等待播放');
-            },
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
-              decoration: BoxDecoration(
-                borderRadius: StyleString.lgRadius,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              width: MediaQuery.sizeOf(context).width,
-              height: 50,
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.play_arrow_rounded),
-                  SizedBox(width: 10),
-                  Text('播放', style: TextStyle(fontSize: 16)),
-                ],
-              ),
-            ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-          body: CustomScrollView(
-            slivers: [
-              _DetailAppBar(site: site!, mediaDetail: mediaDetail),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-
-                    const SizedBox(height: 10),
-                    _DetailContent(mediaDetail: mediaDetail,site: site),
-
-                    const SizedBox(height: 10),
-                    _DetailGenres(genres: mediaDetail.genres),
-
-                    const SizedBox(height: 5),
-                    _DetailOverview(mediaDetail: mediaDetail, site: site),
-
-                    if(mediaDetail.type == 'Series') ...{
-                      const SizedBox(height: 10),
-                      //季
-                    },
-
-                    const SizedBox(height: 10),
-                    _DetailPeople(people: mediaDetail.people, site: site),
-
-                    const SizedBox(height: 15),
-                    _ExternalLinks(externalUrls: mediaDetail.externalUrls),
-
-                    const SizedBox(height: 15),
-                    _SimilarMedias(medias: mediaDetail),
-
-                    const SizedBox(height: 10),
-                    if (mediaDetail.mediaType == 'Video')
-                      _MediaDetail(mediaDetail: mediaDetail),
-
-                    const SizedBox(height: 100),
+            floatingActionButton: GestureDetector(
+              onTap: (){
+                SmartDialog.showToast('等待播放');
+              },
+              onLongPress: (){
+                SmartDialog.showToast('别长按我，等待播放');
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
+                decoration: BoxDecoration(
+                  borderRadius: StyleString.lgRadius,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                width: MediaQuery.sizeOf(context).width,
+                height: 50,
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.play_arrow_rounded),
+                    SizedBox(width: 10),
+                    Text('播放', style: TextStyle(fontSize: 16)),
                   ],
                 ),
               ),
-            ],
-          )
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            body: CustomScrollView(
+              controller: _controller,
+              slivers: [
+                DetailAppBar(site: site!, mediaDetail: mediaDetail, titleStreamC: titleStreamC),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+
+                      const SizedBox(height: 10),
+                      _DetailContent(mediaDetail: mediaDetail,site: site),
+
+                      const SizedBox(height: 10),
+                      _DetailGenres(genres: mediaDetail.genres),
+
+                      const SizedBox(height: 5),
+                      _DetailOverview(mediaDetail: mediaDetail, site: site),
+
+                      if(mediaDetail.type == 'Series') ...{
+                        const SizedBox(height: 10),
+                        _Seasons(mediaDetail: mediaDetail),
+                      },
+
+                      if(mediaDetail.people.isNotEmpty)...{
+                        const SizedBox(height: 10),
+                        _DetailPeople(people: mediaDetail.people, site: site),
+                      },
+
+                      if(mediaDetail.type != 'Episode') ...{
+                        const SizedBox(height: 15),
+                        _ExternalLinks(externalUrls: mediaDetail.externalUrls),
+
+                        const SizedBox(height: 10),
+                        _SimilarMedias(medias: mediaDetail),
+                      },
+
+
+                      const SizedBox(height: 10),
+                      if (mediaDetail.mediaType == 'Video')
+                        _MediaDetail(mediaDetail: mediaDetail),
+
+                      const SizedBox(height: 100),
+                    ],
+                  ),
+                ),
+              ],
+            )
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -104,18 +140,30 @@ class EmbyMediaDetails extends ConsumerWidget {
   }
 }
 
+
+
 class _DetailAppBar extends StatelessWidget {
   final Site site;
   final MediaDetail mediaDetail;
-  const _DetailAppBar({required this.site, required this.mediaDetail});
+  final StreamController<bool> titleStreamC;
+  const _DetailAppBar({required this.site, required this.mediaDetail, required this.titleStreamC});
 
   @override
   Widget build(BuildContext context) {
     final double heightBar = MediaQuery.sizeOf(context).width * 0.65;
 
     return SliverAppBar(
-      expandedHeight: heightBar,
+      expandedHeight: heightBar - MediaQuery.of(context).padding.top,
       pinned: true,
+      centerTitle: true,
+      iconTheme: const IconThemeData(color: Colors.grey),
+      title: StreamBuilder(
+        stream: titleStreamC.stream,
+        initialData: false,
+        builder: (context, snapshot) {
+          return snapshot.data == true ? Text(mediaDetail.name, style: StyleString.titleStyle) : const SizedBox();
+        },
+      ),
       actions: [
         IconButton(
           icon: const Icon(Icons.favorite),
@@ -127,14 +175,6 @@ class _DetailAppBar extends StatelessWidget {
         ),
       ],
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.only(left: 45, bottom: 18),
-        title: Text(
-          mediaDetail.name,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         collapseMode: CollapseMode.pin,
         stretchModes: const [StretchMode.fadeTitle],
         background: _DetailBackground(mediaDetail: mediaDetail,site: site),
@@ -181,14 +221,14 @@ class _DetailBackground extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 30,
-          left: 50,
+          bottom: 0,
+          left: 20,
           child: Container(
             constraints: BoxConstraints(
-              maxHeight: height * 0.2,
-              maxWidth: width * 0.3,
-              minHeight: height * 0.1,
-              minWidth: width * 0.15,
+              maxHeight: height * 0.33,
+              maxWidth: width * 0.5,
+              minHeight: height * 0.2,
+              minWidth: width * 0.3,
             ),
             child: CachedNetworkImage(
               imageUrl: getImageUrl(
@@ -282,6 +322,7 @@ class _DetailContent extends StatelessWidget {
                 ),
             ],
           ),
+          const SizedBox(height: 5),
           Row(
             children: [
               const Text('视频:', style: StyleString.subtitleStyle),
@@ -289,16 +330,20 @@ class _DetailContent extends StatelessWidget {
               DropdownMenuCustom(data: ['1','df','fd'], initialSelection: '1', onSelected: (value) => print(value)),
             ],
           ),
+          const SizedBox(height: 5),
           Row(
             children: [
               Text('音频:', style: StyleString.subtitleStyle),
               const SizedBox(width: 10),
-
+              DropdownMenuCustom(data: ['1','df','fd'], initialSelection: '1', onSelected: (value) => print(value)),
             ],
           ),
+          const SizedBox(height: 5),
           Row(
             children: [
               Text('字幕:', style: StyleString.subtitleStyle),
+              const SizedBox(width: 10),
+              DropdownMenuCustom(data: ['1'], initialSelection: '1', onSelected: (value) => print(value)),
             ],
           ),
         ],
@@ -515,7 +560,6 @@ class _DetailPeople extends StatelessWidget {
   }
 }
 
-
 /// 外部链接
 class _ExternalLinks extends StatelessWidget {
   final List<ExternalUrl> externalUrls;
@@ -559,6 +603,72 @@ class _ExternalLinks extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+/// 季
+class _Seasons extends ConsumerWidget {
+  final MediaDetail mediaDetail;
+  const _Seasons({required this.mediaDetail});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(getSeasonsProvider(mediaDetail.id));
+    return data.when(
+      data: (seasons) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(width: StyleString.safeSpace),
+                Text(
+                  '季',
+                  style: StyleString.titleStyle,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.18 + 30,
+              child: seasons.isEmpty ?
+              const Center(child: Text('暂无数据')) :
+              ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: seasons.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: MediaQuery.sizeOf(context).height * 0.117,
+                    height: MediaQuery.sizeOf(context).height * 0.18,
+                    margin: const EdgeInsets.only(
+                      left: StyleString.safeSpace,
+                    ),
+                    child: SeasonCardV(
+                      season: seasons[index],
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace'))
+    );
+  }
+}
+
+class _Episodes extends ConsumerWidget {
+  final List<Episode> episodes;
+  final MediaDetail mediaDetail;
+  const _Episodes({required this.episodes, required this.mediaDetail});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(getEpisodesProvider(mediaDetail.id, mediaDetail.id));
+    return const SizedBox();
   }
 }
 

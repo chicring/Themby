@@ -26,7 +26,7 @@ class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
 
         final currentPath = GoRouter.of(context).routerDelegate.currentConfiguration.last.route.path;
 
-        if (currentPath.startsWith('/details/')) {
+        if (currentPath.startsWith('/details/') || currentPath.startsWith('/season/')) {
           return false;
         }
 

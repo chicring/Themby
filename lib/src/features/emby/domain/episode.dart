@@ -15,6 +15,7 @@ class Episode {
   int indexNumber;
   ImageTags imageTags;
   UserData userData;
+  int runTimeTicks;
 
   Episode({
     required this.id,
@@ -28,13 +29,14 @@ class Episode {
     required this.indexNumber,
     required this.imageTags,
     required this.userData,
+    required this.runTimeTicks,
   });
 
   factory Episode.fromJson(Map<String, dynamic> json) {
     return Episode(
       id: json['Id'],
       name: json['Name'],
-      overview: json['Overview'],
+      overview: json['Overview'] ?? '',
       seriesId: json['SeriesId'],
       seriesName: json['SeriesName'],
       seasonId: json['SeasonId'],
@@ -43,6 +45,7 @@ class Episode {
       indexNumber: json['IndexNumber'],
       imageTags: ImageTags.fromJson(json['ImageTags']),
       userData: UserData.fromJson(json['UserData']),
+      runTimeTicks: json['RunTimeTicks'] ?? 0,
     );
   }
 }

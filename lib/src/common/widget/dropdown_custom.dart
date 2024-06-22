@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:themby/src/common/constants.dart';
 
 class DropdownMenuCustom extends StatefulWidget {
   const DropdownMenuCustom({
@@ -35,12 +36,36 @@ class _DropdownMenuCustomState extends State<DropdownMenuCustom> {
 
   @override
   Widget build(BuildContext context) {
+
+    OutlineInputBorder border = OutlineInputBorder(
+      borderRadius: StyleString.mdRadius,
+      borderSide: const BorderSide(color: Colors.transparent),
+    );
+
+    ThemeData theme = Theme.of(context);
+    Color? fillColor = theme.brightness == Brightness.dark
+        ? Colors.grey[800]
+        : Colors.grey[200];
+
     return SizedBox(
-      height: 40,
       child: DropdownMenu<String>(
+        trailingIcon: Transform.translate(
+          offset: const Offset(6, -10),
+          child: const Icon(Icons.arrow_drop_down),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: border,
+          focusedBorder: border,
+          enabledBorder: border,
+          filled: true,
+          fillColor: fillColor,
+          constraints: BoxConstraints.tight(const Size.fromHeight(26.0)),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
+        ),
         dropdownMenuEntries: _buildMenuList(widget.data),
         initialSelection: widget.initialSelection,
         onSelected: _onSelected,
+        enabled: widget.data.length > 1,
       ),
     );
   }
