@@ -138,15 +138,18 @@ class HomeServerNotifier extends _$HomeServerNotifier{
               ),
               TextButton(
                 child: Text('连接'),
-                onPressed: (){
+                onPressed: () async{
                   if (formKey.currentState!.validate()) {
-                    ref.read(addEmbySiteProvider(site: Site(
+                     await ref.read(addEmbySiteProvider(site: Site(
                       scheme: state.schemeController.text,
                       host: state.hostController.text,
                       port: int.parse(state.portController.text),
                       username: state.usernameController.text,
                       password: state.passwordController.text,
-                    )));
+                    )).future);
+                    ref.invalidate(getSitesProvider);
+                    await ref.read(getSitesProvider.future);
+                    SmartDialog.showToast('添加成功');
                   }
                 },
               ),

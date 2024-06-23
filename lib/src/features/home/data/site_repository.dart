@@ -25,7 +25,6 @@ class SiteRepository{
   * Add Emby Site
    */
   Future<void> addEmbySite(Site site) async {
-    print(embyToken);
     final response = await client.postUri(
         Uri(
           scheme: site.scheme,
@@ -65,7 +64,7 @@ class SiteRepository{
         )
     );
 
-    siteBox.putAsync(firstSite.copyWith(
+    await siteBox.putAsync(firstSite.copyWith(
       serverName: response2.data['ServerName'],
       version: response2.data['Version'],
     ));
