@@ -69,7 +69,6 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
                 final url = await ref.read(playUrlProvider(playbackInfo.mediaSources).future);
                 ref.watch(playerNotifierProvider.notifier).setUrl(url).then((value) => GoRouter.of(context).push('/player'));
-
               },
               onLongPress: (){
                 SmartDialog.showToast('别长按我，等待播放');

@@ -1,4 +1,6 @@
+import 'package:media_kit/media_kit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:themby/src/features/player/domain/media_kit_state.dart';
 
 part 'player_notifier.g.dart';
 
@@ -6,10 +8,24 @@ part 'player_notifier.g.dart';
 class PlayerNotifier extends _$PlayerNotifier{
 
   @override
-  String build() => '';
+  MediaKitState build() => MediaKitState.internal();
 
   Future<void> setUrl(String url) async {
-    state = url;
-    print('播放链接：'+state);
+    state.singleUrl = url;
+    print('播放链接：'+state.singleUrl);
   }
+
+  Future<void> startPlay() async {
+    state.playboy.open(
+        Media(state.singleUrl)
+    );
+    state.playboy.play();
+  }
+
+  //双击播放、暂停
+  Future<void> onDoubleTapCenter() async{
+    state.controller.player.playOrPause();
+  }
+
+
 }

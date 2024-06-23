@@ -67,7 +67,6 @@ Widget _libraryView(BuildContext context, WidgetRef ref, data, site){
     height: height + 50,
     child: ListView.builder(
       scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
       itemCount: data.items.length,
       itemBuilder: (context, index) {
         final item = data.items[index];
