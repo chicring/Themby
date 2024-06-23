@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:themby/src/features/player/domain/media_kit_state.dart';
 import 'package:themby/src/features/player/presentation/player_notifier.dart';
+import 'package:themby/src/features/player/service/controls_service.dart';
 
 class HorizontalPlayer extends ConsumerStatefulWidget {
   const HorizontalPlayer({super.key});
@@ -23,14 +24,13 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
 
-    final state = ref.watch(playerNotifierProvider);
-    final notifier = ref.watch(playerNotifierProvider.notifier);
+    final state = ref.watch(controlsServiceProvider);
+    final notifier = ref.watch(controlsServiceProvider.notifier);
 
+    //开始播放
     notifier.startPlay();
 
     double totalWidth = MediaQuery.sizeOf(context).width;
