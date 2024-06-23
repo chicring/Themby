@@ -79,6 +79,11 @@ dependencies:
   shimmer: ^3.0.0
   dio_cache_interceptor: ^3.5.0
 
+  #视频播放
+  media_kit: ^1.1.10+1
+  media_kit_video: ^1.2.4
+  media_kit_libs_video: ^1.0.4
+
 
 dev_dependencies:
   flutter_test:

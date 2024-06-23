@@ -171,7 +171,7 @@ class _GetPlaybackInfoProviderElement
   String get itemId => (origin as GetPlaybackInfoProvider).itemId;
 }
 
-String _$playUrlHash() => r'cf830feb128b23b59ef7cb547afb09062db13f89';
+String _$playUrlHash() => r'96a1034d0b6e72e982089f1bdd24a12bb318b8e7';
 
 /// See also [playUrl].
 @ProviderFor(playUrl)
@@ -184,10 +184,10 @@ class PlayUrlFamily extends Family<AsyncValue<String>> {
 
   /// See also [playUrl].
   PlayUrlProvider call(
-    MediaDetail mediaDetail,
+    List<MediaSource> sources,
   ) {
     return PlayUrlProvider(
-      mediaDetail,
+      sources,
     );
   }
 
@@ -196,7 +196,7 @@ class PlayUrlFamily extends Family<AsyncValue<String>> {
     covariant PlayUrlProvider provider,
   ) {
     return call(
-      provider.mediaDetail,
+      provider.sources,
     );
   }
 
@@ -219,11 +219,11 @@ class PlayUrlFamily extends Family<AsyncValue<String>> {
 class PlayUrlProvider extends AutoDisposeFutureProvider<String> {
   /// See also [playUrl].
   PlayUrlProvider(
-    MediaDetail mediaDetail,
+    List<MediaSource> sources,
   ) : this._internal(
           (ref) => playUrl(
             ref as PlayUrlRef,
-            mediaDetail,
+            sources,
           ),
           from: playUrlProvider,
           name: r'playUrlProvider',
@@ -233,7 +233,7 @@ class PlayUrlProvider extends AutoDisposeFutureProvider<String> {
                   : _$playUrlHash,
           dependencies: PlayUrlFamily._dependencies,
           allTransitiveDependencies: PlayUrlFamily._allTransitiveDependencies,
-          mediaDetail: mediaDetail,
+          sources: sources,
         );
 
   PlayUrlProvider._internal(
@@ -243,10 +243,10 @@ class PlayUrlProvider extends AutoDisposeFutureProvider<String> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.mediaDetail,
+    required this.sources,
   }) : super.internal();
 
-  final MediaDetail mediaDetail;
+  final List<MediaSource> sources;
 
   @override
   Override overrideWith(
@@ -261,7 +261,7 @@ class PlayUrlProvider extends AutoDisposeFutureProvider<String> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        mediaDetail: mediaDetail,
+        sources: sources,
       ),
     );
   }
@@ -273,21 +273,21 @@ class PlayUrlProvider extends AutoDisposeFutureProvider<String> {
 
   @override
   bool operator ==(Object other) {
-    return other is PlayUrlProvider && other.mediaDetail == mediaDetail;
+    return other is PlayUrlProvider && other.sources == sources;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, mediaDetail.hashCode);
+    hash = _SystemHash.combine(hash, sources.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin PlayUrlRef on AutoDisposeFutureProviderRef<String> {
-  /// The parameter `mediaDetail` of this provider.
-  MediaDetail get mediaDetail;
+  /// The parameter `sources` of this provider.
+  List<MediaSource> get sources;
 }
 
 class _PlayUrlProviderElement extends AutoDisposeFutureProviderElement<String>
@@ -295,7 +295,7 @@ class _PlayUrlProviderElement extends AutoDisposeFutureProviderElement<String>
   _PlayUrlProviderElement(super.provider);
 
   @override
-  MediaDetail get mediaDetail => (origin as PlayUrlProvider).mediaDetail;
+  List<MediaSource> get sources => (origin as PlayUrlProvider).sources;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

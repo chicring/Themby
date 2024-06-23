@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/data/app_setting_repository.dart';
 import 'package:themby/src/common/domiani/color_type.dart';
@@ -17,6 +18,7 @@ part 'app.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<void> appStartup(AppStartupRef ref) async {
+  WidgetsFlutterBinding.ensureInitialized();
   await ref.read(sharedPreferencesInitProvider.future);
   await ref.read(deviceNameProvider.notifier).initDeviceName();
   await ref.read(storeInitProvider.future);
@@ -28,6 +30,7 @@ Future<void> appStartup(AppStartupRef ref) async {
       statusBarColor: Colors.transparent,
     ));
   }
+  MediaKit.ensureInitialized();
 }
 
 class App extends ConsumerWidget{

@@ -6,12 +6,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/dropdown_custom.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
+import 'package:themby/src/features/emby/data/play_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
@@ -20,6 +22,7 @@ import 'package:themby/src/features/emby/domain/people.dart';
 import 'package:themby/src/features/emby/domain/season.dart';
 import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
 import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart';
+import 'package:themby/src/features/player/presentation/player_notifier.dart';
 
 import 'emby_media_details_appbar.dart';
 
@@ -55,14 +58,17 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
     final Site? site = ref.watch(embyStateServiceProvider.select((value) => value.site));
 
     final data = ref.watch(GetMediaProvider(widget.id));
-    // final double heightBar = MediaQuery.sizeOf(context).width * 0.65;
 
     return data.when(
       data: (mediaDetail) {
         return Scaffold(
             floatingActionButton: GestureDetector(
-              onTap: (){
-                SmartDialog.showToast('等待播放');
+              onTap: () async{
+                final playbackInfo = await ref.read(getPlaybackInfoProvider(widget.id).future);
+
+                final url = await ref.read(playUrlProvider(playbackInfo.mediaSources).future);
+                ref.watch(playerNotifierProvider.notifier).setUrl(url).then((value) => GoRouter.of(context).push('/player'));
+
               },
               onLongPress: (){
                 SmartDialog.showToast('别长按我，等待播放');

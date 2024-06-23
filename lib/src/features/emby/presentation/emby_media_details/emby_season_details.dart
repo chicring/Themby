@@ -211,12 +211,15 @@ class SeasonCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 5),
-            Text(
-              episodes.overview,
-              maxLines: 6,
-              overflow: TextOverflow.ellipsis,
-              style: StyleString.subtitleStyle.copyWith(color: Colors.grey),
-            )
+            SizedBox(
+              width: MediaQuery.of(context).size.width - 2 * StyleString.safeSpace,
+              child: Text(
+                  episodes.overview,
+                  maxLines: 6,
+                  overflow: TextOverflow.ellipsis,
+                  style: StyleString.subtitleStyle.copyWith(color: Colors.grey),
+                )
+            ),
           ],
         ),
       ),

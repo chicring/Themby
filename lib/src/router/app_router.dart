@@ -10,6 +10,7 @@ import 'package:themby/src/features/emby/presentation/emby_media_details/emby_se
 import 'package:themby/src/features/home/presentation/home_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
+import 'package:themby/src/features/player/presentation/horizontal_player.dart';
 import 'package:themby/src/router/scaffold_with_nested_navigation.dart';
 import 'package:themby/src/router/scaffold_with_nested_navigation_emby.dart';
 
@@ -21,7 +22,8 @@ enum AppRoute {
   favorite,
   library,
   details,
-  season
+  season,
+  player
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -147,7 +149,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             child: EmbySeasonDetails(id),
           );
         },
+      ),
+      GoRoute(
+        path: '/player',
+        name: AppRoute.player.name,
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            key: state.pageKey,
+            child: HorizontalPlayer(),
+          );
+        }
       )
+
     ],
   );
 });

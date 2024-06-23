@@ -30,7 +30,19 @@ class EmbyLibraryScreen extends ConsumerWidget {
             title,
             style: Theme.of(context).textTheme.titleMedium,
         ),
-
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(15),
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            child: const Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Icon(Icons.sort),
+              ],
+            ),
+          ),
+        )
       ),
       body: RefreshIndicator(
         onRefresh: () async {

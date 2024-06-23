@@ -53,8 +53,7 @@ class PlayRepository{
     return PlaybackInfo.fromJson(response.data);
   }
 
-  Future<String> getPlayUrl(MediaDetail mediaDetail) async {
-    final sources = mediaDetail.mediaSources;
+  Future<String> getPlayUrl(List<MediaSource> sources) async {
 
     final List<String> urls = sources.map((source) {
       if (source.container == 'strm') {
@@ -65,7 +64,7 @@ class PlayRepository{
     }).toList();
 
     if (urls.isNotEmpty) {
-      return urls[0];
+      return '${site.scheme}://${site.host}:${site.port}/emby${urls.first}';
     } else {
       return '';
     }
@@ -85,4 +84,4 @@ PlayRepository playRepository(PlayRepositoryRef ref) => PlayRepository(
 Future<PlaybackInfo> getPlaybackInfo(GetPlaybackInfoRef ref, String itemId) => ref.read(playRepositoryProvider).getPlaybackInfo(itemId);
 
 @riverpod
-Future<String> playUrl(PlayUrlRef ref, MediaDetail mediaDetail) => ref.read(playRepositoryProvider).getPlayUrl(mediaDetail);
+Future<String> playUrl(PlayUrlRef ref, List<MediaSource> sources) => ref.read(playRepositoryProvider).getPlayUrl(sources);

@@ -41,7 +41,7 @@ class Episode {
       seriesName: json['SeriesName'],
       seasonId: json['SeasonId'],
       seasonName: json['SeasonName'],
-      primaryImageAspectRatio: json['PrimaryImageAspectRatio'],
+      primaryImageAspectRatio: json['PrimaryImageAspectRatio'] ?? 0.0,
       indexNumber: json['IndexNumber'],
       imageTags: ImageTags.fromJson(json['ImageTags']),
       userData: UserData.fromJson(json['UserData']),
