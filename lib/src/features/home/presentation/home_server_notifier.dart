@@ -139,6 +139,7 @@ class HomeServerNotifier extends _$HomeServerNotifier{
               TextButton(
                 child: Text('连接'),
                 onPressed: () async{
+                  SmartDialog.showLoading();
                   if (formKey.currentState!.validate()) {
                      await ref.read(addEmbySiteProvider(site: Site(
                       scheme: state.schemeController.text,
@@ -151,6 +152,7 @@ class HomeServerNotifier extends _$HomeServerNotifier{
                     await ref.read(getSitesProvider.future);
                     SmartDialog.showToast('添加成功');
                   }
+                  SmartDialog.dismiss();
                 },
               ),
             ],

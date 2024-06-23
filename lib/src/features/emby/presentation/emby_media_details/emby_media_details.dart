@@ -25,6 +25,7 @@ import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart'
 import 'package:themby/src/features/player/presentation/player_notifier.dart';
 
 import 'emby_media_details_appbar.dart';
+import 'emby_media_details_shimmer.dart';
 
 class EmbyMediaDetails extends ConsumerStatefulWidget {
   final String id;
@@ -140,7 +141,7 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
             )
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const EmbyMediaDetailsShimmer(),
       error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace')),
     );
   }

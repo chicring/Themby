@@ -106,7 +106,10 @@ class NetworkImgLayer extends StatelessWidget {
             baseColor: Colors.black26,
             highlightColor: Colors.black12,
             child: Container(
-              color: Colors.black,
+              decoration: BoxDecoration(
+                borderRadius: StyleString.lgRadius,
+                color: Colors.black,
+              ),
               height: width,
               width: height,
             ),

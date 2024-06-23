@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:themby/src/common/widget/shimmer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_resume_media.dart';
+import 'package:themby/src/features/emby/presentation/emby_view/emby_view_shimmer.dart';
 import 'package:themby/src/features/emby/presentation/widget/list_cards_h.dart';
 import 'package:themby/src/features/emby/presentation/widget/loading_card.dart';
 
@@ -20,34 +22,35 @@ class EmbyView extends ConsumerWidget {
     final view = ref.watch(getViewsProvider);
 
     return view.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) =>  Center(child: Text(error.toString() + stack.toString())),
+      loading: () => const EmbyViewShimmer(),
+      error: (error, stack) => const EmbyViewShimmer(),
       data: (data) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(width: 12),
-            _libraryView(context, ref, data, site!),
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(width: 12),
+              _libraryView(context, ref, data, site!),
 
-            const EmbyResumeMedia(),
+              const EmbyResumeMedia(),
 
-            ...data.items.map((item){
-              final media = ref.watch(getLastMediaProvider(item.id));
-
-              return media.when(
-                loading: () => const LoadingCardList(),
-                error: (error, stack) => Text(error.toString() + stack.toString()),
-                data: (value) => value.isEmpty || item.collectionType == 'music' || item.collectionType == 'livetv' ? const SizedBox() :
+              ...data.items.map((item){
+                final media = ref.watch(getLastMediaProvider(item.id));
+                return media.when(
+                  loading: () => ShimmerList(height: MediaQuery.sizeOf(context).height * 0.18, width: MediaQuery.sizeOf(context).height * 0.117),
+                  error: (error, stack) => ShimmerList(height: MediaQuery.sizeOf(context).height * 0.18, width: MediaQuery.sizeOf(context).height * 0.117),
+                  data: (value) => value.isEmpty || item.collectionType == 'music' || item.collectionType == 'livetv' ? const SizedBox() :
                   ListCardsH(
                     name: item.name,
                     parentId: item.id,
                     medias: value,
                   )
-                ,
-              );
+                  ,
+                );
 
-            })
-          ],
+              })
+            ],
+          ),
         );
       },
     );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:themby/src/common/widget/header_text.dart';
+import 'package:themby/src/common/widget/shimmer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
@@ -142,8 +143,8 @@ class EmbyResumeMedia extends ConsumerWidget{
             ],
           );
         },
-        error: (error, stack) => Center(child: Text(error.toString())),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => ShimmerList(height: height + 55, width: width),
+        loading: () => ShimmerList(height: height, width: width),
     );
   }
 }
