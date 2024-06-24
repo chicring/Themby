@@ -22,7 +22,7 @@ import 'package:themby/src/features/emby/domain/people.dart';
 import 'package:themby/src/features/emby/domain/season.dart';
 import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
 import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart';
-import 'package:themby/src/features/player/presentation/player_notifier.dart';
+import 'package:themby/src/features/player/service/medias_service.dart';
 
 import 'emby_media_details_appbar.dart';
 import 'emby_media_details_shimmer.dart';
@@ -65,10 +65,8 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
         return Scaffold(
             floatingActionButton: GestureDetector(
               onTap: () async{
-                final playbackInfo = await ref.read(getPlaybackInfoProvider(widget.id).future);
-
-                final url = await ref.read(playUrlProvider(playbackInfo.mediaSources).future);
-                ref.watch(playerNotifierProvider.notifier).setUrl(url).then((value) => GoRouter.of(context).push('/player'));
+                await ref.watch(mediasServiceProvider.notifier).setPlayUrlByOne(mediaDetail)
+                    .then((value) => GoRouter.of(context).push('/player'));
               },
               onLongPress: (){
                 SmartDialog.showToast('别长按我，等待播放');

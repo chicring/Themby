@@ -11,6 +11,7 @@ import 'package:themby/src/features/home/presentation/home_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
 import 'package:themby/src/features/player/presentation/horizontal_player.dart';
+import 'package:themby/src/features/player/presentation/player_screen.dart';
 import 'package:themby/src/router/scaffold_with_nested_navigation.dart';
 import 'package:themby/src/router/scaffold_with_nested_navigation_emby.dart';
 
@@ -156,7 +157,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) {
           return NoTransitionPage(
             key: state.pageKey,
-            child: HorizontalPlayer(),
+            child: const PlayerScreen(),
           );
         }
       )

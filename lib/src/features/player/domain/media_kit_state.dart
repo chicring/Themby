@@ -13,7 +13,6 @@ List<Map<String, dynamic>> videoFitType = [
   {'attr': BoxFit.scaleDown, 'desc': '缩小适应'},
 ];
 
-
 class MediaKitState{
 
   late Player playboy;

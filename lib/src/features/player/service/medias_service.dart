@@ -3,6 +3,7 @@ import 'package:themby/src/features/emby/data/play_repository.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/player/domain/medias_state.dart';
+import 'package:themby/src/features/player/service/controls_service.dart';
 
 part 'medias_service.g.dart';
 
@@ -28,6 +29,13 @@ class MediasService extends _$MediasService {
     state.playingTitle = episodes[index].name;
     state.playingIndex = index;
     state.episodes = episodes;
+  }
+
+  Future<void> dispose() async {
+    state.currentPlayUrl = '';
+    state.playingTitle = '';
+    state.episodes = [];
+    state.playingIndex = 0;
   }
 
 }

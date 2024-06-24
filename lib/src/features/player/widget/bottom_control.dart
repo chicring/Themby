@@ -3,6 +3,7 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/features/player/presentation/player_notifier.dart';
+import 'package:themby/src/features/player/service/controls_service.dart';
 
 class BottomControl extends ConsumerStatefulWidget implements PreferredSizeWidget {
   const BottomControl({super.key});
@@ -20,10 +21,11 @@ class _BottomControl extends ConsumerState<BottomControl> {
   @override
   Widget build(BuildContext context) {
 
-    final state = ref.watch(playerNotifierProvider);
-    final notifier = ref.watch(playerNotifierProvider.notifier);
-
     Color colorTheme = Theme.of(context).colorScheme.primary;
+
+    final notifier = ref.watch(controlsServiceProvider.notifier);
+
+    final state = ref.watch(controlsServiceProvider);
 
     return Container(
       color: Colors.transparent,

@@ -42,7 +42,7 @@ class Episode {
       seasonId: json['SeasonId'],
       seasonName: json['SeasonName'],
       primaryImageAspectRatio: json['PrimaryImageAspectRatio'] ?? 0.0,
-      indexNumber: json['IndexNumber'],
+      indexNumber: json['IndexNumber'] ?? 0,
       imageTags: ImageTags.fromJson(json['ImageTags']),
       userData: UserData.fromJson(json['UserData']),
       runTimeTicks: json['RunTimeTicks'] ?? 0,
