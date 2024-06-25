@@ -35,10 +35,7 @@ class PlayRepository{
           "UserId": site.userId,
           "AutoOpenLiveStream": "false",
           "IsPlayback": "false",
-          "AudioStreamIndex": "1",
-          "SubtitleStreamIndex": "1",
-          "MaxStreamingBitrate": "160000000",
-          "reqformat": "json",
+          "MaxStreamingBitrate": "600000000",
         },
       ),
       options: Options(
@@ -53,22 +50,6 @@ class PlayRepository{
     return PlaybackInfo.fromJson(response.data);
   }
 
-  Future<String> getPlayUrl(List<MediaSource> sources) async {
-
-    final List<String> urls = sources.map((source) {
-      if (source.container == 'strm') {
-        return source.path;
-      } else {
-        return source.directStreamUrl;
-      }
-    }).toList();
-
-    if (urls.isNotEmpty) {
-      return '${site.scheme}://${site.host}:${site.port}/emby${urls.first}';
-    } else {
-      return '';
-    }
-  }
 }
 
 
@@ -84,4 +65,24 @@ PlayRepository playRepository(PlayRepositoryRef ref) => PlayRepository(
 Future<PlaybackInfo> getPlaybackInfo(GetPlaybackInfoRef ref, String itemId) => ref.read(playRepositoryProvider).getPlaybackInfo(itemId);
 
 @riverpod
-Future<String> playUrl(PlayUrlRef ref, List<MediaSource> sources) => ref.read(playRepositoryProvider).getPlayUrl(sources);
+Future<String> getPlayerUrl(GetPlayerUrlRef ref,String itemId) async {
+  final playbackInfo = await ref.read(getPlaybackInfoProvider(itemId).future);
+  return markPlayUrl(playbackInfo.mediaSources, ref.read(embyStateServiceProvider.select((value) => value.site!)));
+}
+
+Future<String> markPlayUrl(List<MediaSource> sources,Site site) async {
+
+  final List<String> urls = sources.map((source) {
+    if (source.container == 'strm') {
+      return source.path;
+    } else {
+      return source.directStreamUrl;
+    }
+  }).toList();
+
+  if (urls.isNotEmpty) {
+    return '${site.scheme}://${site.host}:${site.port}/emby${urls.first}';
+  } else {
+    return '';
+  }
+}

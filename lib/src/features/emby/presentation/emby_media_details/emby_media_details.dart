@@ -60,13 +60,14 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
     final data = ref.watch(GetMediaProvider(widget.id));
 
+    // ref.watch(getPlaybackInfoProvider(widget.id));
+
     return data.when(
       data: (mediaDetail) {
         return Scaffold(
             floatingActionButton: GestureDetector(
               onTap: () async{
-                await ref.watch(mediasServiceProvider.notifier).setPlayUrlByOne(mediaDetail)
-                    .then((value) => GoRouter.of(context).push('/player'));
+                GoRouter.of(context).push('/player/${mediaDetail.type}/${mediaDetail.id}');
               },
               onLongPress: (){
                 SmartDialog.showToast('别长按我，等待播放');

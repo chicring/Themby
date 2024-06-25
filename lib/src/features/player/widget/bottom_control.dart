@@ -16,16 +16,39 @@ class BottomControl extends ConsumerStatefulWidget implements PreferredSizeWidge
 }
 
 class _BottomControl extends ConsumerState<BottomControl> {
+  //播放位置时间
+  Duration position = const Duration(seconds: 0);
 
+  //视频时长
+  Duration duration = const Duration(seconds: 0);
+
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
 
     Color colorTheme = Theme.of(context).colorScheme.primary;
 
-    final notifier = ref.watch(controlsServiceProvider.notifier);
-
+    // final notifier = ref.watch(controlsServiceProvider.notifier);
     final state = ref.watch(controlsServiceProvider);
+
+    state.playboy.stream.duration.listen((event) {
+      duration = event;
+    });
+
+    state.playboy.stream.position.listen((event) {
+      position = event;
+      setState(() {
+      });
+    });
+
+    state.playboy.stream.error.listen((error) => debugPrint(error));
+
 
     return Container(
       color: Colors.transparent,
@@ -35,13 +58,16 @@ class _BottomControl extends ConsumerState<BottomControl> {
           Padding(
             padding: const EdgeInsets.only(left: 7,right: 7,bottom: 0),
             child: ProgressBar(
-              progress: state.position,
-              total: state.duration,
+              progress: position,
+              total: duration,
               progressBarColor: colorTheme,
               baseBarColor: Colors.white.withOpacity(0.2),
               bufferedBarColor: colorTheme.withOpacity(0.4),
               barHeight: 4,
               thumbRadius: 8,
+              onSeek: (duration) {
+                state.playboy.seek(Duration(seconds: duration.inSeconds));
+              },
             ),
           )
         ],

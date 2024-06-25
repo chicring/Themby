@@ -15,27 +15,37 @@ class MediasService extends _$MediasService {
 
 
   Future<void> setPlayUrlByOne(MediaDetail detail) async {
-    final playbackInfo = await ref.read(getPlaybackInfoProvider(detail.id).future);
-    final url = await ref.read(playUrlProvider(playbackInfo.mediaSources).future);
-    state.currentPlayUrl = url;
-    state.playingTitle = detail.name;
-    state.detail = detail;
+    // final playbackInfo = await ref.read(getPlaybackInfoProvider(detail.id).future);
+    // final url = await ref.read(playUrlProvider(playbackInfo.mediaSources).future);
+    //
+    // state = state.copyWith(
+    //   currentPlayUrl: url,
+    //   playingTitle: detail.name,
+    //   detail: detail
+    // );
+    //
+    // ref.read(controlsServiceProvider.notifier).startPlay(state.currentPlayUrl);
   }
 
   Future<void> setPlayUrlByMany(List<Episode> episodes, int index) async{
-    final playbackInfo = await ref.read(getPlaybackInfoProvider(episodes[index].id).future);
-    final url = await ref.read(playUrlProvider(playbackInfo.mediaSources).future);
-    state.currentPlayUrl = url;
-    state.playingTitle = episodes[index].name;
-    state.playingIndex = index;
-    state.episodes = episodes;
+    // final playbackInfo = await ref.read(getPlaybackInfoProvider(episodes[index].id).future);
+    // final url = await ref.read(playUrlProvider(playbackInfo.mediaSources).future);
+    //
+    // state = state.copyWith(
+    //   currentPlayUrl: url,
+    //   playingTitle: episodes[index].name,
+    //   playingIndex: index,
+    //   episodes: episodes
+    // );
   }
 
   Future<void> dispose() async {
-    state.currentPlayUrl = '';
-    state.playingTitle = '';
-    state.episodes = [];
-    state.playingIndex = 0;
+    state = state.copyWith(
+      currentPlayUrl: '',
+      playingTitle: '',
+      episodes: [],
+      playingIndex: 0
+    );
   }
 
 }

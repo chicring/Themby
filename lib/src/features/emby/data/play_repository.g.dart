@@ -171,32 +171,32 @@ class _GetPlaybackInfoProviderElement
   String get itemId => (origin as GetPlaybackInfoProvider).itemId;
 }
 
-String _$playUrlHash() => r'96a1034d0b6e72e982089f1bdd24a12bb318b8e7';
+String _$getPlayerUrlHash() => r'78e0b81017636ab59d6d59e461a00d28ba1d213e';
 
-/// See also [playUrl].
-@ProviderFor(playUrl)
-const playUrlProvider = PlayUrlFamily();
+/// See also [getPlayerUrl].
+@ProviderFor(getPlayerUrl)
+const getPlayerUrlProvider = GetPlayerUrlFamily();
 
-/// See also [playUrl].
-class PlayUrlFamily extends Family<AsyncValue<String>> {
-  /// See also [playUrl].
-  const PlayUrlFamily();
+/// See also [getPlayerUrl].
+class GetPlayerUrlFamily extends Family<AsyncValue<String>> {
+  /// See also [getPlayerUrl].
+  const GetPlayerUrlFamily();
 
-  /// See also [playUrl].
-  PlayUrlProvider call(
-    List<MediaSource> sources,
+  /// See also [getPlayerUrl].
+  GetPlayerUrlProvider call(
+    String itemId,
   ) {
-    return PlayUrlProvider(
-      sources,
+    return GetPlayerUrlProvider(
+      itemId,
     );
   }
 
   @override
-  PlayUrlProvider getProviderOverride(
-    covariant PlayUrlProvider provider,
+  GetPlayerUrlProvider getProviderOverride(
+    covariant GetPlayerUrlProvider provider,
   ) {
     return call(
-      provider.sources,
+      provider.itemId,
     );
   }
 
@@ -212,90 +212,91 @@ class PlayUrlFamily extends Family<AsyncValue<String>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'playUrlProvider';
+  String? get name => r'getPlayerUrlProvider';
 }
 
-/// See also [playUrl].
-class PlayUrlProvider extends AutoDisposeFutureProvider<String> {
-  /// See also [playUrl].
-  PlayUrlProvider(
-    List<MediaSource> sources,
+/// See also [getPlayerUrl].
+class GetPlayerUrlProvider extends AutoDisposeFutureProvider<String> {
+  /// See also [getPlayerUrl].
+  GetPlayerUrlProvider(
+    String itemId,
   ) : this._internal(
-          (ref) => playUrl(
-            ref as PlayUrlRef,
-            sources,
+          (ref) => getPlayerUrl(
+            ref as GetPlayerUrlRef,
+            itemId,
           ),
-          from: playUrlProvider,
-          name: r'playUrlProvider',
+          from: getPlayerUrlProvider,
+          name: r'getPlayerUrlProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$playUrlHash,
-          dependencies: PlayUrlFamily._dependencies,
-          allTransitiveDependencies: PlayUrlFamily._allTransitiveDependencies,
-          sources: sources,
+                  : _$getPlayerUrlHash,
+          dependencies: GetPlayerUrlFamily._dependencies,
+          allTransitiveDependencies:
+              GetPlayerUrlFamily._allTransitiveDependencies,
+          itemId: itemId,
         );
 
-  PlayUrlProvider._internal(
+  GetPlayerUrlProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.sources,
+    required this.itemId,
   }) : super.internal();
 
-  final List<MediaSource> sources;
+  final String itemId;
 
   @override
   Override overrideWith(
-    FutureOr<String> Function(PlayUrlRef provider) create,
+    FutureOr<String> Function(GetPlayerUrlRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: PlayUrlProvider._internal(
-        (ref) => create(ref as PlayUrlRef),
+      override: GetPlayerUrlProvider._internal(
+        (ref) => create(ref as GetPlayerUrlRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        sources: sources,
+        itemId: itemId,
       ),
     );
   }
 
   @override
   AutoDisposeFutureProviderElement<String> createElement() {
-    return _PlayUrlProviderElement(this);
+    return _GetPlayerUrlProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is PlayUrlProvider && other.sources == sources;
+    return other is GetPlayerUrlProvider && other.itemId == itemId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, sources.hashCode);
+    hash = _SystemHash.combine(hash, itemId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin PlayUrlRef on AutoDisposeFutureProviderRef<String> {
-  /// The parameter `sources` of this provider.
-  List<MediaSource> get sources;
+mixin GetPlayerUrlRef on AutoDisposeFutureProviderRef<String> {
+  /// The parameter `itemId` of this provider.
+  String get itemId;
 }
 
-class _PlayUrlProviderElement extends AutoDisposeFutureProviderElement<String>
-    with PlayUrlRef {
-  _PlayUrlProviderElement(super.provider);
+class _GetPlayerUrlProviderElement
+    extends AutoDisposeFutureProviderElement<String> with GetPlayerUrlRef {
+  _GetPlayerUrlProviderElement(super.provider);
 
   @override
-  List<MediaSource> get sources => (origin as PlayUrlProvider).sources;
+  String get itemId => (origin as GetPlayerUrlProvider).itemId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

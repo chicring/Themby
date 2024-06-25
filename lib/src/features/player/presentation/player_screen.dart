@@ -7,13 +7,17 @@ import 'horizontal_player.dart';
 
 class PlayerScreen extends StatelessWidget {
 
-  const PlayerScreen({super.key});
+  const PlayerScreen({super.key, required this.id, required this.type});
+  final String id;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
-
-    return const Scaffold(
-      body: HorizontalPlayer(),
+    return Scaffold(
+      body: HorizontalPlayer(
+        id: id,
+        type: type,
+      ),
     );
   }
 }

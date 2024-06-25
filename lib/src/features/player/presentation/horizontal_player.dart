@@ -9,7 +9,10 @@ import 'package:themby/src/features/player/widget/app_bar_ani.dart';
 import 'package:themby/src/features/player/widget/bottom_control.dart';
 
 class HorizontalPlayer extends ConsumerStatefulWidget {
-  const HorizontalPlayer({super.key});
+  const HorizontalPlayer({super.key, required this.id, required this.type});
+
+  final String id;
+  final String type;
 
   @override
   ConsumerState<HorizontalPlayer> createState() => _HorizontalPlayer();
@@ -19,19 +22,13 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
 
   late AnimationController animationController;
 
-  // late final controlsNotifier;
-  // late final mediasNotifier;
 
   @override
   void initState(){
     super.initState();
-
-    // controlsNotifier = ref.read(controlsServiceProvider.notifier);
-    // mediasNotifier = ref.read(mediasServiceProvider.notifier);
-
-    // 横屏 和 全屏
-    enterFullScreen();
-    enterLandscapeMode();
+    // // 横屏 和 全屏
+    // enterFullScreen();
+    // enterLandscapeMode();
 
     animationController = AnimationController(
       vsync: this,
@@ -51,8 +48,8 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
   @override
   void dispose() {
     animationController.dispose();
-    exitFullScreen();
-    exitLandscapeMode();
+    // exitFullScreen();
+    // exitLandscapeMode();
     super.dispose();
   }
 
@@ -62,8 +59,10 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
     final state = ref.watch(controlsServiceProvider);
     final notifier = ref.watch(controlsServiceProvider.notifier);
 
+    notifier.startPlay(widget.id);
+
     //开始播放
-    notifier.startPlay();
+    // ;
 
     double totalWidth = MediaQuery.sizeOf(context).width;
     double totalHeight = MediaQuery.sizeOf(context).height;
@@ -73,11 +72,20 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
       children: [
         Video(
             controller: state.controller,
-            controls: NoVideoControls,
             pauseUponEnteringBackgroundMode: true,
             resumeUponEnteringForegroundMode: false,
             alignment: Alignment.center,
-            fit: videoFitType[state.fitType]['attr']
+            fit: videoFitType[state.fitType]['attr'],
+            controls: (state){
+              return Center(
+                child: IconButton(
+                  icon: const Icon(Icons.pause),
+                  onPressed: (){
+                   state.toggleFullscreen();
+                  },
+                ),
+              );
+            },
         ),
         Positioned.fill(
           left: 16,
@@ -99,23 +107,23 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
             },
           ),
         ),
-        SafeArea(
-          top: false,
-          bottom: false,
-          child: Column(
-            children: [
-              const Spacer(),
-              ClipRect(
-                child: AppBarAni(
-                  controller: animationController,
-                  visible: state.bottomShow && !state.controlsLock,
-                  position: 'bottom',
-                  child: const BottomControl(),
-                ),
-              )
-            ],
-          ),
-        )
+        // SafeArea(
+        //   top: false,
+        //   bottom: false,
+        //   child: Column(
+        //     children: [
+        //       const Spacer(),
+        //       ClipRect(
+        //         child: AppBarAni(
+        //           controller: animationController,
+        //           visible: state.bottomShow && !state.controlsLock,
+        //           position: 'bottom',
+        //           child: const BottomControl(),
+        //         ),
+        //       )
+        //     ],
+        //   ),
+        // )
       ],
     );
   }

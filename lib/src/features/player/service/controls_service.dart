@@ -3,6 +3,7 @@
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:themby/src/features/emby/data/play_repository.dart';
 import 'package:themby/src/features/player/domain/controls_state.dart';
 import 'package:themby/src/features/player/service/medias_service.dart';
 
@@ -31,17 +32,17 @@ class ControlsService extends _$ControlsService{
 
   }
 
-  Future<void> startPlay() async {
-    String playUrl = ref.watch(mediasServiceProvider).currentPlayUrl;
-
-    if( playUrl.isEmpty){
+  Future<void> startPlay(String id) async {
+    final url = await ref.read(getPlayerUrlProvider(id).future);
+    if(url.isEmpty){
       SmartDialog.showToast('播放还没有准备好');
       return;
     }
-    print('播放链接：'+playUrl);
-    await state.playboy.open(Media(playUrl));
-    await state.playboy.play();
-    startListeners();
+    print('播放链接：'+url);
+    state.playboy.open(Media(url));
+    state.playboy.play();
+
+    // startListeners();
   }
 
   //双击暂停或者开始
@@ -49,9 +50,16 @@ class ControlsService extends _$ControlsService{
     state.controller.player.playOrPause();
   }
 
+  Future<void> seekTo(Duration position) async{
+    if (position < Duration.zero) {
+      position = Duration.zero;
+    }
+    await state.playboy.seek(position);
+  }
+
   Future<void> dispose() async {
     state.playboy.stop();
-    state.playboy.dispose();
+    // state.playboy.dispose();
   }
 
 }

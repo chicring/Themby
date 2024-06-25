@@ -15,7 +15,6 @@ class ControlsState {
 
   bool topShow = true;
 
-
   //播放位置时间
   Duration position = const Duration(seconds: 0);
 
@@ -31,7 +30,6 @@ class ControlsState {
   ControlsState.internal(){
     playboy = Player(
         configuration: const PlayerConfiguration(
-          bufferSize: 8 * 1024 * 1024,
         )
     );
     controller = VideoController(
