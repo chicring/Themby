@@ -22,7 +22,6 @@ import 'package:themby/src/features/emby/domain/people.dart';
 import 'package:themby/src/features/emby/domain/season.dart';
 import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
 import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart';
-import 'package:themby/src/features/player/service/medias_service.dart';
 
 import 'emby_media_details_appbar.dart';
 import 'emby_media_details_shimmer.dart';

@@ -55,7 +55,6 @@ dependencies:
   #设备信息
   device_info_plus: ^10.1.0
 
-
   uuid: ^4.4.0
 
   #toast dialog loading
@@ -85,6 +84,7 @@ dependencies:
   media_kit_libs_video: ^1.0.4
   url_launcher: ^6.3.0
   audio_video_progress_bar: ^2.0.3
+  shadcn_ui: ^0.5.7
 
 
 dev_dependencies:

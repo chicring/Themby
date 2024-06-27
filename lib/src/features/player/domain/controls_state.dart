@@ -1,78 +1,54 @@
 
-import 'package:flutter/material.dart';
-import 'package:media_kit/media_kit.dart';
-import 'package:media_kit_video/media_kit_video.dart';
+import 'dart:async';
 
 class ControlsState {
-  late Player playboy;
 
-  late final VideoController controller;
+  Timer? timer;
+
+  bool isPlaying = false;
+
+  double rate = 1.0;
 
 
+  //控制器锁
   bool controlsLock = false;
 
-  bool bottomShow = true;
-
-  bool topShow = true;
-
-  //播放位置时间
-  Duration position = const Duration(seconds: 0);
-
-  //视频时长
-  Duration duration = const Duration(seconds: 0);
-
   //视频方向
-  String direction = 'horizontal';
+  bool horizontal = false;
+
+  //控制器显示
+  bool showControls = true;
 
   //填充方式
   int fitType = 0;
 
-  ControlsState.internal(){
-    playboy = Player(
-        configuration: const PlayerConfiguration(
-        )
-    );
-    controller = VideoController(
-      playboy,
-      configuration: const VideoControllerConfiguration(
-        enableHardwareAcceleration: true,
-      ),
-    );
-  }
+  //播放位置时间
+  Duration position = const Duration();
 
   ControlsState({
-    required this.playboy,
-    required this.controller,
+    this.isPlaying = false,
     this.controlsLock = false,
-    this.bottomShow = true,
-    this.topShow = true,
-    this.position = const Duration(seconds: 0),
-    this.duration = const Duration(seconds: 0),
-    this.direction = 'horizontal',
     this.fitType = 0,
+    this.horizontal = false,
+    this.showControls = true,
+    this.position = const Duration(),
   });
 
   ControlsState copyWith({
-    Player? playboy,
-    VideoController? controller,
     bool? controlsLock,
-    bool? bottomShow,
-    bool? topShow,
-    Duration? position,
-    Duration? duration,
-    String? direction,
+    bool? horizontal,
+    bool? showControls,
     int? fitType,
+    bool? isPlaying,
+    Duration? position,
   }) {
     return ControlsState(
-      playboy: playboy ?? this.playboy,
-      controller: controller ?? this.controller,
       controlsLock: controlsLock ?? this.controlsLock,
-      bottomShow: bottomShow ?? this.bottomShow,
-      topShow: topShow ?? this.topShow,
-      position: position ?? this.position,
-      duration: duration ?? this.duration,
-      direction: direction ?? this.direction,
       fitType: fitType ?? this.fitType,
+      horizontal: horizontal ?? this.horizontal,
+      showControls: showControls ?? this.showControls,
+      isPlaying: isPlaying ?? this.isPlaying,
+      position: position ?? this.position,
     );
   }
 }

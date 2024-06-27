@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:themby/src/common/data/app_setting_repository.dart';
 import 'package:themby/src/common/domiani/color_type.dart';
 import 'package:themby/src/common/widget/custom_dialog.dart';
@@ -41,23 +42,9 @@ class App extends ConsumerWidget{
 
     final startup = ref.watch(appStartupProvider);
     return switch (startup) {
-      AsyncData() => MaterialApp.router(
+      AsyncData() => ShadApp.materialRouter(
         routerConfig: ref.watch(goRouterProvider),
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
-              brightness: Brightness.light
-          ),
-          useMaterial3: true,
-        ),
-        darkTheme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
-              brightness: Brightness.dark
-          ),
-          useMaterial3: true,
-        ),
         themeMode: [
           ThemeMode.light,
           ThemeMode.dark,
