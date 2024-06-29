@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/dropdown_custom.dart';
@@ -263,9 +264,35 @@ class _DetailContent extends StatelessWidget {
     return '${hours}h ${minutes}m';
   }
 
+  Widget select(BuildContext context, Map<String,String> fruits){
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 180),
+      child: ShadSelect<String>(
+        placeholder: const Text('Select a fruit'),
+        initialValue: fruits.keys.first,
+        options: [
+          ...fruits.entries
+              .map((e) =>
+              ShadOption(value: e.key, child: Text(e.value)))
+        ],
+        focusNode: FocusNode(
+          canRequestFocus: false,
+        ),
+        selectedOptionBuilder: (context, value) =>
+            Text(fruits[value]!),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
+    final fruits = {
+      'apple': 'Apple',
+      'banana': 'Banana',
+      'blueberry': 'Blueberry',
+      'grapes': 'Grapes',
+      'pineapple': 'Pineapple',
+    };
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
       child: Column(
@@ -331,7 +358,7 @@ class _DetailContent extends StatelessWidget {
             children: [
               const Text('视频:', style: StyleString.subtitleStyle),
               const SizedBox(width: 10),
-              DropdownMenuCustom(data: ['1','df','fd'], initialSelection: '1', onSelected: (value) => print(value)),
+              select(context, fruits)
             ],
           ),
           const SizedBox(height: 5),
@@ -339,7 +366,7 @@ class _DetailContent extends StatelessWidget {
             children: [
               Text('音频:', style: StyleString.subtitleStyle),
               const SizedBox(width: 10),
-              DropdownMenuCustom(data: ['1','df','fd'], initialSelection: '1', onSelected: (value) => print(value)),
+              select(context, fruits)
             ],
           ),
           const SizedBox(height: 5),
@@ -347,7 +374,7 @@ class _DetailContent extends StatelessWidget {
             children: [
               Text('字幕:', style: StyleString.subtitleStyle),
               const SizedBox(width: 10),
-              DropdownMenuCustom(data: ['1'], initialSelection: '1', onSelected: (value) => print(value)),
+              select(context, fruits)
             ],
           ),
         ],

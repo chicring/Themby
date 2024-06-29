@@ -9,7 +9,6 @@ class ControlsState {
 
   double rate = 1.0;
 
-
   //控制器锁
   bool controlsLock = false;
 
@@ -18,6 +17,8 @@ class ControlsState {
 
   //控制器显示
   bool showControls = true;
+
+  bool isLongPressMultiple = false;
 
   //填充方式
   int fitType = 0;
@@ -32,6 +33,8 @@ class ControlsState {
     this.horizontal = false,
     this.showControls = true,
     this.position = const Duration(),
+    this.rate = 1.0,
+    this.isLongPressMultiple = false,
   });
 
   ControlsState copyWith({
@@ -41,6 +44,8 @@ class ControlsState {
     int? fitType,
     bool? isPlaying,
     Duration? position,
+    double? rate,
+    bool? isLongPressMultiple,
   }) {
     return ControlsState(
       controlsLock: controlsLock ?? this.controlsLock,
@@ -49,6 +54,8 @@ class ControlsState {
       showControls: showControls ?? this.showControls,
       isPlaying: isPlaying ?? this.isPlaying,
       position: position ?? this.position,
+      rate: rate ?? this.rate,
+      isLongPressMultiple: isLongPressMultiple ?? this.isLongPressMultiple,
     );
   }
 }
