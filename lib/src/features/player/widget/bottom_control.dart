@@ -26,7 +26,7 @@ class _BottomControl extends ConsumerState<BottomControl> {
 
   Duration buffer = const Duration(seconds: 0);
 
-  bool isPlaying = false;
+  bool isPlaying = true;
 
 
   List<StreamSubscription> subscriptions = [];
@@ -39,13 +39,14 @@ class _BottomControl extends ConsumerState<BottomControl> {
       [
         ref.read(videoControllerProvider).player.stream.duration.listen((event) {
           duration = event;
+          setState(() {
+          });
         }),
         ref.read(videoControllerProvider).player.stream.buffer.listen((event) {
           buffer = event;
         }),
         ref.read(videoControllerProvider).player.stream.playing.listen((event) {
           isPlaying = event;
-          print('isPlaying: $isPlaying');
           setState(() {
           });
         }),

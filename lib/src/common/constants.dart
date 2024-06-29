@@ -15,6 +15,7 @@ class StyleString {
 
   static const TextStyle subtitleStyle = TextStyle(
     fontSize: 13,
+    fontWeight: FontWeight.normal,
   );
 
   static const TextStyle headerStyle = TextStyle(

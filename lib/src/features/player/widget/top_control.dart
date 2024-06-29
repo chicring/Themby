@@ -2,10 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/constants.dart';
+import 'package:themby/src/features/player/service/controls_service.dart';
+import 'package:themby/src/features/player/widget/media_title.dart';
 
 class TopControl extends ConsumerStatefulWidget {
-  const TopControl({super.key});
+  const TopControl({super.key,required this.id});
+
+  final String id;
 
   @override
   ConsumerState<TopControl> createState() => _TopControl();
@@ -13,8 +18,24 @@ class TopControl extends ConsumerStatefulWidget {
 
 class _TopControl extends ConsumerState<TopControl>{
 
+  Widget customButton(IconData icon, Function() onTap){
+    return IconButton(
+        icon: Icon(
+          icon,
+          size: 24,
+          color: Colors.white,
+        ),
+        onPressed: onTap
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
+    final notifier = ref.read(controlsServiceProvider.notifier);
+
+
     return Container(
       width: MediaQuery.sizeOf(context).width,
       color: Colors.transparent,
@@ -24,7 +45,19 @@ class _TopControl extends ConsumerState<TopControl>{
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    size: 24,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                  }
+              ),
+              MediaTitle(id: widget.id)
+            ],
           ),
           Container(
             decoration: BoxDecoration(
@@ -33,45 +66,29 @@ class _TopControl extends ConsumerState<TopControl>{
             ),
             child: Row(
               children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.fit_screen,
-                      size: 24,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-
-                    }
+                customButton(
+                  Icons.fit_screen,
+                  (){
+                    notifier.toggleFitType();
+                  }
                 ),
-                IconButton(
-                    icon: Icon(
-                      Icons.subtitles,
-                      size: 24,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-
-                    }
+                customButton(
+                  Icons.subtitles,
+                  (){
+                    SmartDialog.showToast('正在做');
+                  }
                 ),
-                IconButton(
-                    icon: Icon(
-                      Icons.music_note,
-                      size: 24,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-
-                    }
+                customButton(
+                  Icons.music_note,
+                  (){
+                    SmartDialog.showToast('正在做');
+                  }
                 ),
-                IconButton(
-                    icon: Icon(
-                      Icons.videocam,
-                      size: 24,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-
-                    }
+                customButton(
+                  Icons.videocam,
+                  (){
+                    SmartDialog.showToast('正在做');
+                  }
                 ),
               ],
             ),

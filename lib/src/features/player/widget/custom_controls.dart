@@ -10,7 +10,8 @@ import 'package:themby/src/features/player/widget/bottom_control.dart';
 import 'package:themby/src/features/player/widget/top_control.dart';
 
 class CustomControls extends ConsumerStatefulWidget {
-  const CustomControls({super.key,required this.state});
+  const CustomControls({super.key,required this.state,required this.id});
+  final String id;
   final VideoState state;
   @override
   ConsumerState<CustomControls> createState() => _CustomControls();
@@ -97,7 +98,7 @@ class _CustomControls extends ConsumerState<CustomControls> {
               child: Visibility(
                 visible: state.showControls & !state.controlsLock,
                 maintainState: true,
-                child: const TopControl(),
+                child: TopControl(id: widget.id),
               ),
             )
         ),

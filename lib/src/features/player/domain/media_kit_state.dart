@@ -4,14 +4,7 @@ import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
 
-List<Map<String, dynamic>> videoFitType = [
-  {'attr': BoxFit.contain, 'desc': '包含'},
-  {'attr': BoxFit.cover, 'desc': '覆盖'},
-  {'attr': BoxFit.fill, 'desc': '填充'},
-  {'attr': BoxFit.fitHeight, 'desc': '高度适应'},
-  {'attr': BoxFit.fitWidth, 'desc': '宽度适应'},
-  {'attr': BoxFit.scaleDown, 'desc': '缩小适应'},
-];
+
 
 class MediaKitState{
 

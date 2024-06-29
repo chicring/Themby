@@ -38,7 +38,15 @@ class SmallSlider extends ConsumerWidget {
           width: MediaQuery.sizeOf(context).width,
         ),
       ),
-      error: (error, stack) => Center(child: Text(error.toString() + stack.toString())),
+      error: (error, stack) => Shimmer.fromColors(
+        baseColor: Colors.black26,
+        highlightColor: Colors.black12,
+        child: Container(
+          color: Colors.black,
+          height: 555.0,
+          width: MediaQuery.sizeOf(context).width,
+        ),
+      ),
       data: (data) {
         return CarouselSlider(
           options: CarouselOptions(

@@ -13,8 +13,8 @@ class PlayerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: HorizontalPlayer(
+    return SafeArea(
+      child: HorizontalPlayer(
         id: id,
         type: type,
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:themby/src/features/player/domain/controls_state.dart';
 import 'package:themby/src/features/player/domain/media_kit_state.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
@@ -56,13 +57,31 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
     // double totalWidth = MediaQuery.sizeOf(context).width;
     // double totalHeight = MediaQuery.sizeOf(context).height;
 
+    const TextStyle subTitleStyle = TextStyle(
+      height: 1.5,
+      fontSize: 50.0,
+      letterSpacing: 0.0,
+      wordSpacing: 0.0,
+      color: Color(0xffffffff),
+      fontWeight: FontWeight.normal,
+      backgroundColor: Colors.transparent,
+    );
+
+    final fitType = ref.watch(controlsServiceProvider.select((v) => v.fitType));
+
     return SizedBox(
       child: Video(
+        key: ValueKey(fitType),
         controller: ref.watch(videoControllerProvider),
         pauseUponEnteringBackgroundMode: true,
         resumeUponEnteringForegroundMode: false,
         alignment: Alignment.center,
-        controls: (state) => CustomControls(state: state),
+        fit: videoFitType[fitType]['attr'],
+        subtitleViewConfiguration: const SubtitleViewConfiguration(
+          style: subTitleStyle,
+          padding: EdgeInsets.all(24.0),
+        ),
+        controls: (state) => CustomControls(state: state, id: widget.id),
       ),
     );
   }

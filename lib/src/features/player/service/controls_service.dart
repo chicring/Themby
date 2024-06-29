@@ -106,8 +106,6 @@ class ControlsService extends _$ControlsService{
     autoHideControls();
   }
 
-
-
   //拖动进度条
   Future<void> seekTo(Duration position) async{
     if (position < Duration.zero) {
@@ -139,6 +137,19 @@ class ControlsService extends _$ControlsService{
     double rate = ref.read(videoControllerProvider).player.state.rate;
     ref.read(videoControllerProvider).player.setRate(rate * 2);
   }
+
+  void toggleFitType() {
+    final length = videoFitType.length;
+    int fitType = state.fitType;
+    if (state.fitType == length - 1) {
+      fitType = 0;
+    } else {
+      fitType = state.fitType + 1;
+    }
+    print('fitType: $fitType');
+    state = state.copyWith(fitType: fitType);
+  }
+
 
   //销毁
   Future<void> dispose() async {
