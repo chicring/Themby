@@ -80,8 +80,19 @@ class _BottomControl extends ConsumerState<BottomControl> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          Row(
+            children: [
+              const SizedBox(width: StyleString.safeSpace),
+              SizedBox(
+                child: Text(
+                  '${position.inMinutes}:${position.inSeconds.remainder(60)} / ${duration.inMinutes}:${duration.inSeconds.remainder(60)}',
+                  style: StyleString.subtitleStyle.copyWith(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
           Padding(
-            padding: const EdgeInsets.only(right: 12,bottom: 0),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: ProgressBar(
               progress: position,
               total: duration,
@@ -107,12 +118,6 @@ class _BottomControl extends ConsumerState<BottomControl> {
             children: [
               Row(
                 children: [
-                  SizedBox(
-                    child: Text(
-                      '${position.inMinutes}:${position.inSeconds.remainder(60)} / ${duration.inMinutes}:${duration.inSeconds.remainder(60)}',
-                      style: StyleString.titleStyle.copyWith(color: Colors.white),
-                    ),
-                  ),
                   IconButton(
                     icon: Icon(
                       isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,

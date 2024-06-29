@@ -7,6 +7,7 @@ import 'package:media_kit_video/media_kit_video.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/widget/bottom_control.dart';
+import 'package:themby/src/features/player/widget/top_control.dart';
 
 class CustomControls extends ConsumerStatefulWidget {
   const CustomControls({super.key,required this.state});
@@ -84,6 +85,19 @@ class _CustomControls extends ConsumerState<CustomControls> {
                 onPressed: (){
                   notifier.lockOrUnlock();
                 },
+              ),
+            )
+        ),
+        Positioned(
+            top: 0,
+            child: AnimatedOpacity(
+              curve: Curves.easeInOut,
+              duration: const Duration(milliseconds: 200),
+              opacity: state.showControls & !state.controlsLock  ? 1 : 0,
+              child: Visibility(
+                visible: state.showControls & !state.controlsLock,
+                maintainState: true,
+                child: const TopControl(),
               ),
             )
         ),

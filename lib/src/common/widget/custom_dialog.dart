@@ -1,3 +1,7 @@
+
+
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class CustomToastWidget extends StatelessWidget {
@@ -11,20 +15,24 @@ class CustomToastWidget extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 120),
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.1)),
-        boxShadow: [
-          BoxShadow(
-              color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.05),
-              blurRadius: 20,
-              spreadRadius: 2,
-              offset: const Offset(0, 0)
-          ),
-        ],
       ),
-      child: Text(message,
-          style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Theme.of(context).colorScheme.primary)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              message,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
