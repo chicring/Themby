@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:themby/src/common/widget/shimmer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
@@ -11,7 +12,6 @@ import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_resume_media.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_view_shimmer.dart';
 import 'package:themby/src/features/emby/presentation/widget/list_cards_h.dart';
-import 'package:themby/src/features/emby/presentation/widget/loading_card.dart';
 
 class EmbyView extends ConsumerWidget {
   const EmbyView({super.key});
@@ -45,7 +45,6 @@ class EmbyView extends ConsumerWidget {
                     parentId: item.id,
                     medias: value,
                   )
-                  ,
                 );
 
               })
@@ -76,6 +75,8 @@ Widget _libraryView(BuildContext context, WidgetRef ref, data, site){
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             onTap: (){
+              GoRouter.of(context).push(Uri(path: '/library/${item.id}', queryParameters: {'title': item.name}).toString());
+
               SmartDialog.showToast(item.name);
             },
             child: Column(

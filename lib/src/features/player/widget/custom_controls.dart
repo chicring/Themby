@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/widget/bottom_control.dart';
@@ -38,7 +39,9 @@ class _CustomControls extends ConsumerState<CustomControls> {
     final state = ref.watch(controlsServiceProvider);
     final notifier = ref.read(controlsServiceProvider.notifier);
 
-    return Stack(
+    return SafeArea(
+      minimum: const EdgeInsets.all(StyleString.safeSpace),
+        child: Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.center,
       children: [
@@ -72,7 +75,7 @@ class _CustomControls extends ConsumerState<CustomControls> {
           ),
         ),
         Positioned(
-            right: 12,
+            right: 6,
             child: AnimatedOpacity(
               curve: Curves.easeInOut,
               duration: const Duration(milliseconds: 200),
@@ -116,6 +119,7 @@ class _CustomControls extends ConsumerState<CustomControls> {
             )
         )
       ],
+    )
     );
   }
 }

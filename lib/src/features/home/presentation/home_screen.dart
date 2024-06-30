@@ -88,7 +88,7 @@ class ServerList extends ConsumerWidget {
                           title: Text('删除'),
                         ),
                         onTap: () {
-                          SmartDialog.showToast('点击了Emby');
+                          ref.read(homeServerNotifierProvider.notifier).removeSite(data[index]);
                         },
                       ),
                     ],

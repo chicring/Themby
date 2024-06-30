@@ -36,10 +36,8 @@ class _TopControl extends ConsumerState<TopControl>{
     final notifier = ref.read(controlsServiceProvider.notifier);
 
 
-    return Container(
-      width: MediaQuery.sizeOf(context).width,
-      color: Colors.transparent,
-      padding:  const EdgeInsets.all(StyleString.safeSpace),
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width - 36,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,6 +52,7 @@ class _TopControl extends ConsumerState<TopControl>{
                     color: Colors.white,
                   ),
                   onPressed: () {
+                    Navigator.pop(context);
                   }
               ),
               MediaTitle(id: widget.id)
@@ -64,6 +63,7 @@ class _TopControl extends ConsumerState<TopControl>{
               color: const Color(0x66000000),
               borderRadius: BorderRadius.circular(16),
             ),
+            margin: const EdgeInsets.only(right: 24),
             child: Row(
               children: [
                 customButton(

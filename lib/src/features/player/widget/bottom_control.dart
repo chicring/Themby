@@ -42,6 +42,17 @@ class _BottomControl extends ConsumerState<BottomControl> {
           setState(() {
           });
         }),
+        ref.read(videoControllerProvider).player.stream.position.listen((event) {
+          if(event - position > const Duration(seconds: 1) || event - position < const Duration(seconds: -1)){
+            position = event;
+
+            if(duration != ref.read(videoControllerProvider).player.state.duration){
+              duration = ref.read(videoControllerProvider).player.state.duration;
+            }
+            setState(() {
+            });
+          }
+        }),
         ref.read(videoControllerProvider).player.stream.buffer.listen((event) {
           buffer = event;
         }),
@@ -49,13 +60,6 @@ class _BottomControl extends ConsumerState<BottomControl> {
           isPlaying = event;
           setState(() {
           });
-        }),
-        ref.read(videoControllerProvider).player.stream.position.listen((event) {
-          if(event - position > const Duration(seconds: 1) || event - position < const Duration(seconds: -1)){
-            position = event;
-            setState(() {
-            });
-          }
         }),
       ]
     );
@@ -74,10 +78,8 @@ class _BottomControl extends ConsumerState<BottomControl> {
 
     final state = ref.watch(controlsServiceProvider);
 
-    return Container(
-      width: MediaQuery.sizeOf(context).width,
-      color: Colors.transparent,
-      padding:  const EdgeInsets.all(StyleString.safeSpace),
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width - 36,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -93,7 +95,7 @@ class _BottomControl extends ConsumerState<BottomControl> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.only(left: 12, right: 24),
             child: ProgressBar(
               progress: position,
               total: duration,
@@ -160,7 +162,7 @@ class _BottomControl extends ConsumerState<BottomControl> {
                         style: StyleString.titleStyle.copyWith(color: Colors.white),
                       )
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 24),
                 ],
               )
             ],

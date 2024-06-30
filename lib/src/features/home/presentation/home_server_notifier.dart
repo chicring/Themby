@@ -118,12 +118,6 @@ class HomeServerNotifier extends _$HomeServerNotifier{
                         ),
                       ),
                       obscureText: !state.isPasswordVisible,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
                     ),
                   ],
                 ),
@@ -160,6 +154,14 @@ class HomeServerNotifier extends _$HomeServerNotifier{
         });
       },
     );
+  }
+
+
+  Future<void> removeSite(Site site) async {
+    await ref.read(removeEmbySiteProvider(site: site).future);
+
+    ref.refresh(getSitesProvider.future);
+    SmartDialog.showToast('删除成功');
   }
 }
 

@@ -7,7 +7,7 @@ part of 'home_server_notifier.dart';
 // **************************************************************************
 
 String _$homeServerNotifierHash() =>
-    r'f4f6212518eb8fd4e91da9bcc031a38b3de3e9b4';
+    r'ada9b17162bd8d3ccf3ac2bd69c01abc99321564';
 
 /// See also [HomeServerNotifier].
 @ProviderFor(HomeServerNotifier)

@@ -21,8 +21,10 @@ import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/domain/people.dart';
 import 'package:themby/src/features/emby/domain/season.dart';
+import 'package:themby/src/features/emby/presentation/widget/list_cards_h.dart';
 import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
 import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart';
+import 'package:themby/src/helper/screen_helper.dart';
 
 import 'emby_media_details_appbar.dart';
 import 'emby_media_details_shimmer.dart';
@@ -520,73 +522,71 @@ class _DetailPeople extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.sizeOf(context).width * 0.25;
 
-    final double height = width / 0.65;
+    double cardWidth = ScreenHelper.getPortionAuto();
+    double cardHeight = cardWidth / 0.65;
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            '演员',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          '演员',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
-          const SizedBox(height: StyleString.safeSpace),
-          SizedBox(
-            height: height + 50,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: people.length,
-              itemBuilder: (context,index) {
-                return Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  width: width,
-                  child: Column(
-                    children: [
-                      NetworkImgLayer(
-                        imageUrl: getImageUrl(
-                            site,
-                            people[index].id,
-                            ImageProps(
-                              tag: people[index].primaryImageTag,
-                              type: ImageType.primary,
-                            )
-                        ),
-                        width: width,
-                        height: height,
+        ),
+        const SizedBox(height: StyleString.safeSpace),
+        SizedBox(
+          height: cardHeight + 50,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: people.length,
+            padding: const EdgeInsets.only(left: StyleString.safeSpace),
+            itemBuilder: (context,index) {
+              return Container(
+                margin: const EdgeInsets.only(right: StyleString.safeSpace),
+                width: cardWidth,
+                child: Column(
+                  children: [
+                    NetworkImgLayer(
+                      imageUrl: getImageUrl(
+                          site,
+                          people[index].id,
+                          ImageProps(
+                            tag: people[index].primaryImageTag,
+                            type: ImageType.primary,
+                          )
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        people[index].name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
+                      width: cardWidth,
+                      height: cardHeight,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      people[index].name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 12,
                       ),
-                      const SizedBox(height: 3),
-                      Text(
-                        people[index].role,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey,
-                        ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      people[index].role,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey,
                       ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -722,49 +722,55 @@ class _SimilarMedias extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(getSimilarProvider(medias.id));
+
     return data.when(
-      data: (medias) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(width: StyleString.safeSpace),
-                Text(
-                  '相似影片',
-                  style: StyleString.titleStyle,
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.18 + 50,
-              child: medias.items.isEmpty ?
-              const Center(child: Text('暂无数据')) :
-              ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: medias.totalRecordCount,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: MediaQuery.sizeOf(context).height * 0.117,
-                    height: MediaQuery.sizeOf(context).height * 0.18,
-                    margin: const EdgeInsets.only(
-                      left: StyleString.safeSpace,
-                    ),
-                    child: MediaCardV(
-                      media: medias.items[index],
-                    ),
-                  );
-                },
-              ),
-            )
-          ],
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace')),
+        data: (data) => ListCardsH(name: '相似推荐', parentId: '1', medias: data.items, showMore: false),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace')),
     );
+    // return data.when(
+    //   data: (medias) {
+    //     return Column(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: [
+    //         const Row(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             SizedBox(width: StyleString.safeSpace),
+    //             Text(
+    //               '相似影片',
+    //               style: StyleString.titleStyle,
+    //             ),
+    //           ],
+    //         ),
+    //         const SizedBox(height: 8),
+    //         SizedBox(
+    //           height: MediaQuery.sizeOf(context).height * 0.18 + 50,
+    //           child: medias.items.isEmpty ?
+    //           const Center(child: Text('暂无数据')) :
+    //           ListView.builder(
+    //             scrollDirection: Axis.horizontal,
+    //             itemCount: medias.totalRecordCount,
+    //             itemBuilder: (context, index) {
+    //               return Container(
+    //                 width: MediaQuery.sizeOf(context).height * 0.117,
+    //                 height: MediaQuery.sizeOf(context).height * 0.18,
+    //                 margin: const EdgeInsets.only(
+    //                   left: StyleString.safeSpace,
+    //                 ),
+    //                 child: MediaCardV(
+    //                   media: medias.items[index],
+    //                 ),
+    //               );
+    //             },
+    //           ),
+    //         )
+    //       ],
+    //     );
+    //   },
+    //   loading: () => const Center(child: CircularProgressIndicator()),
+    //   error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace')),
+    // );
   }
 }
 

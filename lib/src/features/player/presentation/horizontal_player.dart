@@ -69,20 +69,18 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
 
     final fitType = ref.watch(controlsServiceProvider.select((v) => v.fitType));
 
-    return SizedBox(
-      child: Video(
-        key: ValueKey(fitType),
-        controller: ref.watch(videoControllerProvider),
-        pauseUponEnteringBackgroundMode: true,
-        resumeUponEnteringForegroundMode: false,
-        alignment: Alignment.center,
-        fit: videoFitType[fitType]['attr'],
-        subtitleViewConfiguration: const SubtitleViewConfiguration(
-          style: subTitleStyle,
-          padding: EdgeInsets.all(24.0),
-        ),
-        controls: (state) => CustomControls(state: state, id: widget.id),
+    return Video(
+      key: ValueKey(fitType),
+      controller: ref.watch(videoControllerProvider),
+      pauseUponEnteringBackgroundMode: true,
+      resumeUponEnteringForegroundMode: false,
+      alignment: Alignment.center,
+      fit: videoFitType[fitType]['attr'],
+      subtitleViewConfiguration: const SubtitleViewConfiguration(
+        style: subTitleStyle,
+        padding: EdgeInsets.all(24.0),
       ),
+      controls: (state) => CustomControls(state: state, id: widget.id),
     );
   }
 }

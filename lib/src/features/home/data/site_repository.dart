@@ -69,6 +69,10 @@ class SiteRepository{
       version: response2.data['Version'],
     ));
   }
+
+  Future<void> removeEmbySite(Site site) async {
+    siteBox.removeAsync(site.id);
+  }
 }
 
 
@@ -87,4 +91,9 @@ Future<List<Site>> getSites(GetSitesRef ref) async {
 @riverpod
 Future<void> addEmbySite(AddEmbySiteRef ref,{required Site site}) async {
   return ref.watch(siteRepositoryProvider).addEmbySite(site);
+}
+
+@riverpod
+Future<void> removeEmbySite(RemoveEmbySiteRef ref,{required Site site}) async {
+  return ref.watch(siteRepositoryProvider).removeEmbySite(site);
 }

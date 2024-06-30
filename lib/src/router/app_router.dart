@@ -152,16 +152,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        path: '/player/:type/:id',
+        path: '/player/:type/:id/:index',
         name: AppRoute.player.name,
         pageBuilder: (context, state) {
           final id = state.pathParameters['id']!;
           final type = state.pathParameters['type']!;
+          final index = state.pathParameters['index'];
           return NoTransitionPage(
             key: state.pageKey,
             child: PlayerScreen(
               id: id,
               type: type,
+              index: index != null ? int.parse(index) : 0,
             ),
           );
         }

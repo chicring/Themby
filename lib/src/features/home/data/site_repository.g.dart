@@ -183,5 +183,133 @@ class _AddEmbySiteProviderElement extends AutoDisposeFutureProviderElement<void>
   @override
   Site get site => (origin as AddEmbySiteProvider).site;
 }
+
+String _$removeEmbySiteHash() => r'5104b332c000085a6e19cee20d1576dd7909f190';
+
+/// See also [removeEmbySite].
+@ProviderFor(removeEmbySite)
+const removeEmbySiteProvider = RemoveEmbySiteFamily();
+
+/// See also [removeEmbySite].
+class RemoveEmbySiteFamily extends Family<AsyncValue<void>> {
+  /// See also [removeEmbySite].
+  const RemoveEmbySiteFamily();
+
+  /// See also [removeEmbySite].
+  RemoveEmbySiteProvider call({
+    required Site site,
+  }) {
+    return RemoveEmbySiteProvider(
+      site: site,
+    );
+  }
+
+  @override
+  RemoveEmbySiteProvider getProviderOverride(
+    covariant RemoveEmbySiteProvider provider,
+  ) {
+    return call(
+      site: provider.site,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'removeEmbySiteProvider';
+}
+
+/// See also [removeEmbySite].
+class RemoveEmbySiteProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [removeEmbySite].
+  RemoveEmbySiteProvider({
+    required Site site,
+  }) : this._internal(
+          (ref) => removeEmbySite(
+            ref as RemoveEmbySiteRef,
+            site: site,
+          ),
+          from: removeEmbySiteProvider,
+          name: r'removeEmbySiteProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$removeEmbySiteHash,
+          dependencies: RemoveEmbySiteFamily._dependencies,
+          allTransitiveDependencies:
+              RemoveEmbySiteFamily._allTransitiveDependencies,
+          site: site,
+        );
+
+  RemoveEmbySiteProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.site,
+  }) : super.internal();
+
+  final Site site;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(RemoveEmbySiteRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: RemoveEmbySiteProvider._internal(
+        (ref) => create(ref as RemoveEmbySiteRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        site: site,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _RemoveEmbySiteProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RemoveEmbySiteProvider && other.site == site;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, site.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin RemoveEmbySiteRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `site` of this provider.
+  Site get site;
+}
+
+class _RemoveEmbySiteProviderElement
+    extends AutoDisposeFutureProviderElement<void> with RemoveEmbySiteRef {
+  _RemoveEmbySiteProviderElement(super.provider);
+
+  @override
+  Site get site => (origin as RemoveEmbySiteProvider).site;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
