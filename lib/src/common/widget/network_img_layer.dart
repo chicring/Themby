@@ -79,7 +79,7 @@ class NetworkImgLayer extends StatelessWidget {
         fadeInDuration ?? const Duration(milliseconds: 120),
         filterQuality: FilterQuality.medium,
         errorWidget: (BuildContext context, String url, Object error) =>
-            placeholder(context),
+            errorWidget(context),
         placeholder: (BuildContext context, String url) =>
             placeholder(context),
       ),
@@ -114,6 +114,38 @@ class NetworkImgLayer extends StatelessWidget {
               width: height,
             ),
         ),
+    );
+  }
+
+  Widget errorWidget(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(type == 'avatar'
+            ? 50
+            : type == 'emote'
+            ? 0
+            : StyleString.imgRadius.x),
+      ),
+      child: type == 'bg'
+          ? const SizedBox()
+          : Container(
+            decoration: BoxDecoration(
+              borderRadius: StyleString.lgRadius,
+              color: Colors.black38,
+            ),
+            height: width,
+            width: height,
+            child: const Center(
+              child: Icon(
+                Icons.movie_creation_outlined,
+                size: 50,
+              ),
+            )
+          ),
     );
   }
 }
