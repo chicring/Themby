@@ -2,38 +2,32 @@
 
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
+import 'package:themby/src/features/emby/domain/playback_info.dart';
 
 class MediasState {
 
-  late MediaDetail? detail;
+  final List<MediaSource> sources;
 
-  // 季
-  late List<Episode>? episodes;
+  final List<Episode> episodes;
 
   // 视频序号
   int playingIndex = 0;
 
-  String playingTitle = '';
-
   MediasState({
-    this.detail,
-    this.episodes,
-    this.playingIndex = 0,
-    this.playingTitle = '',
+    this.episodes = const [],
+    this.sources = const [],
+    this.playingIndex = 0
   });
 
   MediasState copyWith({
-    String? currentPlayUrl,
-    MediaDetail? detail,
+    List<MediaSource>? sources,
     List<Episode>? episodes,
     int? playingIndex,
-    String? playingTitle,
   }) {
     return MediasState(
-      detail: detail ?? this.detail,
       episodes: episodes ?? this.episodes,
       playingIndex: playingIndex ?? this.playingIndex,
-      playingTitle: playingTitle ?? this.playingTitle,
+      sources: sources ?? this.sources,
     );
   }
 }

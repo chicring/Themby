@@ -8,9 +8,12 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/features/emby/data/play_repository.dart';
+import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/player/domain/controls_state.dart';
+import 'package:themby/src/features/player/service/medias_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/widget/control_toast.dart';
+import 'package:themby/src/features/player/widget/sheet_control.dart';
 
 part 'controls_service.g.dart';
 
@@ -24,16 +27,25 @@ class ControlsService extends _$ControlsService{
   @override
   ControlsState build() => ControlsState();
 
-  Future<void> startPlay(String id) async {
-    final url = await ref.read(getPlayerUrlProvider(id).future);
+  Future<void> startPlay(String id,String type, {int index = 0 } ) async {
+
+    String url = await ref.read(getPlayerUrlProvider(id).future);
+
+    ref.read(videoControllerProvider).player.open(Media(url));
+    ref.read(videoControllerProvider).player.play();
+
     if(url.isEmpty){
       SmartDialog.showToast('播放还没有准备好');
       return;
     }
     print('播放链接：'+url);
-    ref.read(videoControllerProvider).player.open(Media(url));
-    ref.read(videoControllerProvider).player.play();
+
     autoHideControls();
+    if(type == 'Episode') {
+      final media = await ref.watch(GetMediaProvider(id).future);
+      final episodes = await ref.watch(getEpisodesProvider(media.parentId,media.parentId).future);
+      ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
+    }
   }
 
   void cancelAutoHideControls() {
@@ -111,7 +123,13 @@ class ControlsService extends _$ControlsService{
     if (position < Duration.zero) {
       position = Duration.zero;
     }
+    await ref.read(videoControllerProvider).player.stream.buffer.first;
+
     ref.read(videoControllerProvider).player.seek(position);
+
+    if (!ref.read(videoControllerProvider).player.state.playing) {
+      ref.read(videoControllerProvider).player.play();
+    }
     autoHideControls();
   }
 
@@ -155,7 +173,9 @@ class ControlsService extends _$ControlsService{
   Future<void> dispose() async {
     ref.read(videoControllerProvider).player.stop();
     ref.read(videoControllerProvider).player.dispose();
+    ref.read(mediasServiceProvider.notifier).removeEpisode();
   }
+
 
 
   void showSetSpeedSheet(){

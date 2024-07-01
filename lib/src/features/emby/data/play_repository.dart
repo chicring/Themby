@@ -70,7 +70,7 @@ Future<String> getPlayerUrl(GetPlayerUrlRef ref,String itemId) async {
   return markPlayUrl(playbackInfo.mediaSources, ref.read(embyStateServiceProvider.select((value) => value.site!)));
 }
 
-Future<String> markPlayUrl(List<MediaSource> sources,Site site) async {
+Future<String> markPlayUrl(List<MediaSource> sources, Site site) async {
 
   final List<String> urls = sources.map((source) {
     if (source.container == 'strm') {

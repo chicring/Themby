@@ -10,19 +10,15 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/domiani/site.dart';
-import 'package:themby/src/common/widget/dropdown_custom.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
-import 'package:themby/src/features/emby/data/play_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/domain/people.dart';
-import 'package:themby/src/features/emby/domain/season.dart';
 import 'package:themby/src/features/emby/presentation/widget/list_cards_h.dart';
-import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
 import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart';
 import 'package:themby/src/helper/screen_helper.dart';
 
@@ -69,7 +65,7 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
         return Scaffold(
             floatingActionButton: GestureDetector(
               onTap: () async{
-                GoRouter.of(context).push('/player/${mediaDetail.type}/${mediaDetail.id}');
+                GoRouter.of(context).push('/player/${mediaDetail.type}/${mediaDetail.id}/0');
               },
               onLongPress: (){
                 SmartDialog.showToast('别长按我，等待播放');
@@ -82,12 +78,12 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
                 ),
                 width: MediaQuery.sizeOf(context).width,
                 height: 50,
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.play_arrow_rounded),
-                    SizedBox(width: 10),
-                    Text('播放', style: TextStyle(fontSize: 16)),
+                    Icon(Icons.play_arrow_rounded , color: Theme.of(context).colorScheme.onPrimary),
+                    const SizedBox(width: 10),
+                    Text('播放', style: StyleString.titleStyle.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
                   ],
                 ),
               ),
@@ -529,12 +525,17 @@ class _DetailPeople extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          '演员',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+        const Row(
+          children: [
+            SizedBox(width: StyleString.safeSpace),
+            Text(
+              '演员',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: StyleString.safeSpace),
         SizedBox(
@@ -645,6 +646,11 @@ class _Seasons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(getSeasonsProvider(mediaDetail.id));
+
+    double cardWidth = ScreenHelper.getPortionAuto();
+    double cardHeight = cardWidth /0.65;
+
+
     return data.when(
       data: (seasons) {
         return Column(
@@ -662,7 +668,7 @@ class _Seasons extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.18 + 30,
+              height: cardHeight + 30,
               child: seasons.isEmpty ?
               const Center(child: Text('暂无数据')) :
               ListView.builder(
@@ -670,8 +676,8 @@ class _Seasons extends ConsumerWidget {
                 itemCount: seasons.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    width: MediaQuery.sizeOf(context).height * 0.117,
-                    height: MediaQuery.sizeOf(context).height * 0.18,
+                    width: cardWidth,
+                    height: cardHeight,
                     margin: const EdgeInsets.only(
                       left: StyleString.safeSpace,
                     ),

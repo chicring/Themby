@@ -16,6 +16,8 @@ class Episode {
   ImageTags imageTags;
   UserData userData;
   int runTimeTicks;
+  List<String> backdropImageTags;
+  List<String> parentBackdropImageTags;
 
   Episode({
     required this.id,
@@ -30,6 +32,8 @@ class Episode {
     required this.imageTags,
     required this.userData,
     required this.runTimeTicks,
+    required this.backdropImageTags,
+    required this.parentBackdropImageTags,
   });
 
   factory Episode.fromJson(Map<String, dynamic> json) {
@@ -46,6 +50,8 @@ class Episode {
       imageTags: ImageTags.fromJson(json['ImageTags']),
       userData: UserData.fromJson(json['UserData']),
       runTimeTicks: json['RunTimeTicks'] ?? 0,
+      backdropImageTags: List<String>.from(json['BackdropImageTags']),
+      parentBackdropImageTags: List<String>.from(json['ParentBackdropImageTags']),
     );
   }
 }

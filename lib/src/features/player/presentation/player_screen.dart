@@ -17,7 +17,7 @@ class PlayerScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(0),
       margin: const EdgeInsets.all(0),
-      child: HorizontalPlayer(id: id, type: type),
+      child: HorizontalPlayer(id: id, type: type, index: index),
     );
   }
 }

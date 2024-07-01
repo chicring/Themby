@@ -6,7 +6,6 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
-import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/widget/bottom_control.dart';
 import 'package:themby/src/features/player/widget/top_control.dart';
 
@@ -55,6 +54,8 @@ class _CustomControls extends ConsumerState<CustomControls> {
               notifier.showOrHide();
             },
             onDoubleTapDown: (TapDownDetails details){
+              if (state.controlsLock) return;
+
               final double tapPosition = details.localPosition.dx;
               final double sectionWidth = totalWidth / 3;
               if (tapPosition < sectionWidth) {
@@ -66,6 +67,7 @@ class _CustomControls extends ConsumerState<CustomControls> {
               }
             },
             onLongPressStart: (LongPressStartDetails detail){
+              if (state.controlsLock) return;
               ref.read(controlsServiceProvider.notifier).longPressSpeed();
             },
             onLongPressEnd: (LongPressEndDetails detail){

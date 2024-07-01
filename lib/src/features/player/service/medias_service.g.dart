@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'controls_service.dart';
+part of 'medias_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$controlsServiceHash() => r'cf3fc44242e19d00bdec2a2e0a293863db786bd9';
+String _$mediasServiceHash() => r'608cadd406efaa26aa5e67cc95a5a27830f0d60f';
 
-/// See also [ControlsService].
-@ProviderFor(ControlsService)
-final controlsServiceProvider =
-    AutoDisposeNotifierProvider<ControlsService, ControlsState>.internal(
-  ControlsService.new,
-  name: r'controlsServiceProvider',
+/// See also [MediasService].
+@ProviderFor(MediasService)
+final mediasServiceProvider =
+    AutoDisposeNotifierProvider<MediasService, List<Episode>>.internal(
+  MediasService.new,
+  name: r'mediasServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$controlsServiceHash,
+      : _$mediasServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ControlsService = AutoDisposeNotifier<ControlsState>;
+typedef _$MediasService = AutoDisposeNotifier<List<Episode>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

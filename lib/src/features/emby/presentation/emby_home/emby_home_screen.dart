@@ -39,7 +39,6 @@ class EmbyHomeScreen extends ConsumerWidget {
             children: [
               EmbyRecommendationsMedia(),
 
-              HeaderText(text: '媒体库'),
               EmbyView(),
             ],
           ),

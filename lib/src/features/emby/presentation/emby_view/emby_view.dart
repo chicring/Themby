@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:themby/src/common/widget/header_text.dart';
 import 'package:themby/src/common/widget/shimmer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
@@ -30,9 +31,11 @@ class EmbyView extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(width: 12),
-              _libraryView(context, ref, data, site!),
 
               const EmbyResumeMedia(),
+
+              const HeaderText(text: '媒体库'),
+              _libraryView(context, ref, data, site!),
 
               ...data.items.map((item){
                 final media = ref.watch(getLastMediaProvider(item.id));

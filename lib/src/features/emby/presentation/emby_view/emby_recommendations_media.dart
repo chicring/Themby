@@ -15,7 +15,7 @@ class EmbyRecommendationsMedia extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MediaQuery.of(context).size.width < 650 ? const SmallSlider() : const LargeSlider();
+    return MediaQuery.of(context).size.width < 800 ? const SmallSlider() : const LargeSlider();
   }
 }
 

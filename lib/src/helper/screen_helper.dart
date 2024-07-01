@@ -32,8 +32,14 @@ class ScreenHelper {
 
     if(mediaQuery != _mediaQueryData){
       _mediaQueryData = mediaQuery;
-      screenWidth = mediaQuery.size.width;
-      screenHeight = mediaQuery.size.height;
+
+      if(mediaQuery.size.width / mediaQuery.size.height < 1.0){
+        screenWidth = mediaQuery.size.width;
+        screenHeight = mediaQuery.size.height;
+      } else {
+        screenWidth = mediaQuery.size.height;
+        screenHeight = mediaQuery.size.width;
+      }
 
       double basePortion = screenWidth / 12;
       _widthPortion = [

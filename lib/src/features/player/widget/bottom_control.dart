@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
+import 'package:themby/src/features/player/service/medias_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
 
 
@@ -146,7 +147,7 @@ class _BottomControl extends ConsumerState<BottomControl> {
                 children: [
                   TextButton(
                       onPressed: (){
-                        SmartDialog.showToast('选集');
+                        ref.read(mediasServiceProvider.notifier).showEpisodeSheet();
                       },
                       child: Text(
                         '选集',

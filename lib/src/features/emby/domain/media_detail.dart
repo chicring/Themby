@@ -38,6 +38,8 @@ class MediaDetail{
   UserData userData;
   int productionYear;
   List<People> people;
+  String parentId;
+  String seasonId;
   String seriesId;
   String seriesName;
   List<ExternalUrl> externalUrls;
@@ -62,6 +64,8 @@ class MediaDetail{
     required this.userData,
     required this.productionYear,
     required this.people,
+    required this.parentId,
+    required this.seasonId,
     required this.seriesId,
     required this.seriesName,
     required this.externalUrls,
@@ -90,7 +94,9 @@ class MediaDetail{
       people: (json['People'] as List)
           .map((item) => People.fromJson(item))
           .toList() ?? [],
+      parentId: json['ParentId'] ?? '',
       seriesId: json['SeriesId'] ?? '',
+      seasonId: json['SeasonId'] ?? '',
       seriesName: json['SeriesName'] ?? '',
       externalUrls: (json['ExternalUrls'] as List)
           .map((item) => ExternalUrl.fromJson(item))
