@@ -18,6 +18,8 @@ class ControlsState {
 
   Timer? timer;
 
+  String mediaId = '0';
+
   bool isPlaying = false;
 
   double rate = 1.0;
@@ -40,6 +42,7 @@ class ControlsState {
   Duration position = const Duration();
 
   ControlsState({
+    this.mediaId = '0',
     this.isPlaying = false,
     this.controlsLock = false,
     this.fitType = 0,
@@ -51,6 +54,7 @@ class ControlsState {
   });
 
   ControlsState copyWith({
+    String? mediaId,
     bool? controlsLock,
     bool? horizontal,
     bool? showControls,
@@ -61,6 +65,7 @@ class ControlsState {
     bool? isLongPressMultiple,
   }) {
     return ControlsState(
+      mediaId: mediaId ?? this.mediaId,
       controlsLock: controlsLock ?? this.controlsLock,
       fitType: fitType ?? this.fitType,
       horizontal: horizontal ?? this.horizontal,

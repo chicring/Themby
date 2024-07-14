@@ -6,6 +6,7 @@ import 'package:themby/src/common/widget/badge.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
+import 'package:themby/src/features/emby/domain/Resume.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
 
@@ -13,7 +14,7 @@ class MediaCardH extends ConsumerWidget{
 
   const MediaCardH({super.key, required this.media, this.longPress, this.longPressEnd});
 
-  final Media media;
+  final Resume media;
 
   final Function()? longPress;
 
@@ -24,18 +25,18 @@ class MediaCardH extends ConsumerWidget{
 
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
 
-    String getImage(Media media) {
+    String getImage(Resume media) {
       if(media.backdropImageTags.isNotEmpty){
-        return getImageUrl(site!, media.id, ImageProps(
+        return getImageUrl(site!, media.id!, ImageProps(
           quality: 90,
           type: ImageType.backdrop,
           tag: media.backdropImageTags.first,
         ));
       }else{
-        return getImageUrl(site!, media.id, ImageProps(
+        return getImageUrl(site!, media.id!, ImageProps(
           quality: 90,
           type: ImageType.primary,
-          tag: media.imageTags.primary,
+          tag: media.imageTags?.primary,
         ));
       }
     }
@@ -71,13 +72,13 @@ class MediaCardH extends ConsumerWidget{
                         height: maxHeight,
                       ),
 
-                      if(media.userData.playbackPositionTicks > 0)
+                      if(media.userData?.playbackPositionTicks != null)
                         Positioned(
                           bottom: 0,
                           child: SizedBox(
                             width: maxWidth,
                             child: LinearProgressIndicator(
-                              value: media.userData.playedPercentage / 100,
+                              value: media.userData!.playedPercentage! / 100,
                               backgroundColor: Colors.grey.withOpacity(0.5),
                             ),
                           ),
@@ -100,7 +101,7 @@ class MediaCardH extends ConsumerWidget{
 class MediaContent extends StatelessWidget{
   const MediaContent({super.key, required this.media});
 
-  final Media media;
+  final Resume media;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +111,7 @@ class MediaContent extends StatelessWidget{
         children: [
           media.type == 'Movie' ?
           Text(
-            media.name,
+            media.name!,
             maxLines: 1,
             style: const TextStyle(
               fontSize: 12,
@@ -118,7 +119,7 @@ class MediaContent extends StatelessWidget{
             ),
           )
               : Text(
-            media.seriesName,
+            media.seriesName!,
             maxLines: 1,
             style: const TextStyle(
               fontSize: 12,

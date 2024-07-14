@@ -11,9 +11,11 @@ import 'package:themby/src/features/emby/domain/media.dart';
 
 class EpisodeCard extends ConsumerWidget{
 
-  const EpisodeCard({super.key, required this.episode, this.longPress, this.longPressEnd});
+  const EpisodeCard({super.key, required this.episode, this.longPress, this.longPressEnd, this.onPress, });
 
   final Episode episode;
+
+  final Function()? onPress;
 
   final Function()? longPress;
 
@@ -52,11 +54,11 @@ class EpisodeCard extends ConsumerWidget{
     return Card(
       elevation: 0,
       clipBehavior: Clip.hardEdge,
-      margin: EdgeInsets.zero,
+      margin: const EdgeInsets.symmetric(vertical: 5),
       color: Colors.transparent,
       child: InkWell(
         onTap: () async {
-
+          onPress?.call();
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,6 +84,7 @@ class EpisodeCard extends ConsumerWidget{
                 }),
               ),
             ),
+            const SizedBox(width: 5),
             Flexible(
               fit: FlexFit.tight,
               child: Column(
@@ -89,20 +92,24 @@ class EpisodeCard extends ConsumerWidget{
                 children: [
                   SizedBox(
                       child: Text(
-                        episode.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: StyleString.titleStyle,
-                      )
-                  ),
-                  SizedBox(
-                      child: Text(
-                        episode.overview,
+                        '第${episode.indexNumber}集 - ${episode.name}',
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
-                        style: StyleString.subtitleStyle.copyWith(color: Colors.grey),
+                        style: StyleString.subtitleStyle.copyWith(
+                          color: Colors.white,
+                        ),
                       )
                   ),
+                  // SizedBox(
+                  //   child: Text(
+                  //     '第${episode.indexNumber}集 - ${episode.name}',
+                  //     maxLines: 1,
+                  //     style: const TextStyle(
+                  //       fontSize: 10,
+                  //       color: Colors.grey,
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
             )

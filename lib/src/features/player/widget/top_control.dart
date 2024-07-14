@@ -6,6 +6,9 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/widget/media_title.dart';
+import 'package:themby/src/features/player/widget/subtitle_sheet.dart';
+
+import 'audio_sheet.dart';
 
 class TopControl extends ConsumerStatefulWidget {
   const TopControl({super.key,required this.id});
@@ -75,13 +78,21 @@ class _TopControl extends ConsumerState<TopControl>{
                 customButton(
                   Icons.subtitles,
                   (){
-                    SmartDialog.showToast('正在做');
+                    SmartDialog.show(
+                        alignment: Alignment.centerRight,
+                        maskColor: Colors.transparent,
+                        builder: (_) => SubtitleSheet(id: ref.watch(controlsServiceProvider).mediaId)
+                    );
                   }
                 ),
                 customButton(
                   Icons.music_note,
-                  (){
-                    SmartDialog.showToast('正在做');
+                  () {
+                    SmartDialog.show(
+                        alignment: Alignment.centerRight,
+                        maskColor: Colors.transparent,
+                      builder: (_) => AudioSheet(id: ref.watch(controlsServiceProvider).mediaId)
+                    );
                   }
                 ),
                 customButton(

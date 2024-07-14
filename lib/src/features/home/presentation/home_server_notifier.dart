@@ -6,6 +6,8 @@ import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/home/data/site_repository.dart';
 import 'package:themby/src/features/home/domain/home_add_server_state.dart';
 
+import 'home_add.dart';
+
 part 'home_server_notifier.g.dart';
 
 @riverpod
@@ -15,144 +17,11 @@ class HomeServerNotifier extends _$HomeServerNotifier{
   HomeAddServerState build() => HomeAddServerState.initial();
 
   Future<void> openAddDialog() async {
+
     await SmartDialog.show(
-      useSystem: true,
-      builder: (context) {
-        GlobalKey<FormState> formKey = GlobalKey<FormState>();
-        return StatefulBuilder(builder: (context, StateSetter setState) {
-          return AlertDialog(
-            title: const Text('添加连接'),
-            content: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: ListBody(
-                  children: <Widget>[
-                    DropdownMenu<String>(
-                      label: const Text('协议'),
-                      controller: state.schemeController,
-                      inputDecorationTheme: InputDecorationTheme(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      dropdownMenuEntries: const [
-                        DropdownMenuEntry(
-                          value: 'http',
-                          label: 'http',
-                        ),
-                        DropdownMenuEntry(
-                          value: 'https',
-                          label: 'https',
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: state.hostController,
-                      decoration: InputDecoration(
-                        labelText: 'Host',
-                        hintText: 'Enter your host',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a host';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: state.portController,
-                      decoration: InputDecoration(
-                        labelText: 'Port',
-                        hintText: 'Enter the port',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a port';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: state.usernameController,
-                      decoration: InputDecoration(
-                        labelText: 'Username',
-                        hintText: 'Enter your username',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your username';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: state.passwordController,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        hintText: 'Enter your password',
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            state.isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              state.isPasswordVisible = !state.isPasswordVisible;
-                            });
-                          },
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      obscureText: !state.isPasswordVisible,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  SmartDialog.dismiss();
-                },
-              ),
-              TextButton(
-                child: Text('连接'),
-                onPressed: () async{
-                  SmartDialog.showLoading();
-                  if (formKey.currentState!.validate()) {
-                     await ref.read(addEmbySiteProvider(site: Site(
-                      scheme: state.schemeController.text,
-                      host: state.hostController.text,
-                      port: int.parse(state.portController.text),
-                      username: state.usernameController.text,
-                      password: state.passwordController.text,
-                    )).future);
-                    ref.invalidate(getSitesProvider);
-                    await ref.read(getSitesProvider.future);
-                    SmartDialog.showToast('添加成功');
-                  }
-                  SmartDialog.dismiss();
-                },
-              ),
-            ],
-          );
-        });
-      },
+        builder: (_) {
+          return const HomeAddSite();
+        }
     );
   }
 
@@ -160,7 +29,7 @@ class HomeServerNotifier extends _$HomeServerNotifier{
   Future<void> removeSite(Site site) async {
     await ref.read(removeEmbySiteProvider(site: site).future);
 
-    ref.refresh(getSitesProvider.future);
+    await ref.refresh(getSitesProvider.future);
     SmartDialog.showToast('删除成功');
   }
 }

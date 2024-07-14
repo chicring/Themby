@@ -6,6 +6,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
+import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/widget/bottom_control.dart';
 import 'package:themby/src/features/player/widget/top_control.dart';
 
@@ -18,12 +19,25 @@ class CustomControls extends ConsumerStatefulWidget {
 }
 
 class _CustomControls extends ConsumerState<CustomControls> {
+  List<StreamSubscription> subscriptions = [];
 
   @override
   void initState() {
     super.initState();
-  }
 
+    subscriptions.addAll(
+      [
+        // ref.read(videoControllerProvider).player.stream.buffering.listen((event) {
+        //   SmartDialog.showToast(event ? 'Buffering...' : 'Buffering finished');
+        //   if(event && !ref.read(videoControllerProvider).player.state.){
+        //     SmartDialog.showLoading(msg: 'Loading...');
+        //   }else{
+        //     SmartDialog.dismiss();
+        //   }
+        // }),
+      ]
+    );
+  }
 
   @override
   void dispose(){

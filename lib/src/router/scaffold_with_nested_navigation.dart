@@ -68,7 +68,7 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
     return Scaffold(
       body: body,
       bottomNavigationBar: NavigationBar(
-        height: 64,
+        height: 68,
         selectedIndex: currentIndex,
         destinations: [
           NavigationDestination(

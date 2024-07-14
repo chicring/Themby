@@ -35,11 +35,7 @@ class DetailAppBar extends StatelessWidget {
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.favorite),
-          onPressed: (){},
-        ),
-        IconButton(
-          icon: const Icon(Icons.share),
+          icon: const Icon(Icons.favorite_outline_rounded),
           onPressed: (){},
         ),
       ],

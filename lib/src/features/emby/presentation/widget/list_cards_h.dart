@@ -25,43 +25,71 @@ class ListCardsH extends ConsumerWidget{
     return Column(
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            HeaderText(text: name),
-
-            Visibility(
-              visible: showMore,
-              child: TextButton(
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text(name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
+            Opacity(
+              opacity: showMore ? 1.0 : 0.0,
+              child: IconButton(
+                padding: const EdgeInsets.all(0),
                 onPressed: () async{
                   GoRouter.of(context).push(Uri(path: '/library/$parentId', queryParameters: {'title': name}).toString());
                 },
-                child: const Text('查看更多'),
+                icon: const Icon(Icons.arrow_forward_ios_rounded,size: 13),
+                // child: const Text('查看更多'),
               )
             ),
           ],
         ),
-        SizedBox(
-          height: cardHeight + 55,
-          child: medias.isEmpty ?
-            const Center(child: Text('暂无数据')) :
-            ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: medias.length,
-                padding: const EdgeInsets.only(left: StyleString.safeSpace),
-                itemBuilder: (context, index) {
-                  return Container(
+        const SizedBox(height: 5),
+        Stack(
+          children: [
+            IgnorePointer(
+              child: Opacity(
+                opacity: 0.0,
+                child: Container(
                     width: cardWidth,
-                    height: cardHeight,
                     margin: const EdgeInsets.only(
-                      right: StyleString.safeSpace,
+                      left: StyleString.safeSpace,
                     ),
                     child: MediaCardV(
-                      media: medias[index],
-                    ),
-                  );
-                },
+                      media: medias.first,
+                    )
+                ),
+              ),
             ),
-        )
+            const SizedBox(width: double.infinity),
+            Positioned.fill(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: medias.length,
+                  padding: const EdgeInsets.only(left: StyleString.safeSpace),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      width: cardWidth,
+                      height: cardHeight,
+                      margin: const EdgeInsets.only(
+                        right: StyleString.safeSpace,
+                      ),
+                      child: MediaCardV(
+                        media: medias[index],
+                      ),
+                    );
+                  },
+                )
+            )
+          ],
+        ),
+        // SizedBox(
+        //   height: cardHeight + 55,
+        //   child: medias.isEmpty ?
+        //     const Center(child: Text('暂无数据')) :
+        //     ,
+        // )
       ],
     );
   }

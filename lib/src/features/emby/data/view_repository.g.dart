@@ -311,14 +311,14 @@ class _GetLastMediaProviderElement
   String get parentId => (origin as GetLastMediaProvider).parentId;
 }
 
-String _$getResumeMediaHash() => r'9c5793fe0378776b84a97a1a0f8732c935489f8e';
+String _$getResumeMediaHash() => r'5a1c4a8bbdb03fa241a2104e0ff6ffdd1a62fe3e';
 
 /// See also [getResumeMedia].
 @ProviderFor(getResumeMedia)
 const getResumeMediaProvider = GetResumeMediaFamily();
 
 /// See also [getResumeMedia].
-class GetResumeMediaFamily extends Family<AsyncValue<List<Media>>> {
+class GetResumeMediaFamily extends Family<AsyncValue<List<Resume>>> {
   /// See also [getResumeMedia].
   const GetResumeMediaFamily();
 
@@ -356,7 +356,7 @@ class GetResumeMediaFamily extends Family<AsyncValue<List<Media>>> {
 }
 
 /// See also [getResumeMedia].
-class GetResumeMediaProvider extends AutoDisposeFutureProvider<List<Media>> {
+class GetResumeMediaProvider extends AutoDisposeFutureProvider<List<Resume>> {
   /// See also [getResumeMedia].
   GetResumeMediaProvider({
     String? parentId,
@@ -391,7 +391,7 @@ class GetResumeMediaProvider extends AutoDisposeFutureProvider<List<Media>> {
 
   @override
   Override overrideWith(
-    FutureOr<List<Media>> Function(GetResumeMediaRef provider) create,
+    FutureOr<List<Resume>> Function(GetResumeMediaRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -408,7 +408,7 @@ class GetResumeMediaProvider extends AutoDisposeFutureProvider<List<Media>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Media>> createElement() {
+  AutoDisposeFutureProviderElement<List<Resume>> createElement() {
     return _GetResumeMediaProviderElement(this);
   }
 
@@ -426,13 +426,13 @@ class GetResumeMediaProvider extends AutoDisposeFutureProvider<List<Media>> {
   }
 }
 
-mixin GetResumeMediaRef on AutoDisposeFutureProviderRef<List<Media>> {
+mixin GetResumeMediaRef on AutoDisposeFutureProviderRef<List<Resume>> {
   /// The parameter `parentId` of this provider.
   String? get parentId;
 }
 
 class _GetResumeMediaProviderElement
-    extends AutoDisposeFutureProviderElement<List<Media>>
+    extends AutoDisposeFutureProviderElement<List<Resume>>
     with GetResumeMediaRef {
   _GetResumeMediaProviderElement(super.provider);
 

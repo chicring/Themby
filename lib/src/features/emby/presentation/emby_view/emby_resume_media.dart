@@ -21,13 +21,13 @@ class EmbyResumeMedia extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
 
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
-    final medias = ref.watch(getResumeMediaProvider());
+    final resumes = ref.watch(getResumeMediaProvider());
 
 
     double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3);
     double cardHeight = cardWidth * 9 / 16;
 
-    return medias.when(
+    return resumes.when(
         data: (data) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -30,9 +30,10 @@ class EmbyView extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(width: 12),
 
               const EmbyResumeMedia(),
+
+              const SizedBox(height: 10),
 
               const HeaderText(text: '媒体库'),
               _libraryView(context, ref, data, site!),
@@ -66,7 +67,7 @@ Widget _libraryView(BuildContext context, WidgetRef ref, data, site){
   final double width = MediaQuery.of(context).size.width < 650 ? 210 : 315;
 
   return SizedBox(
-    height: height + 50,
+    height: height + 35,
     child: ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: data.items.length,
@@ -79,8 +80,9 @@ Widget _libraryView(BuildContext context, WidgetRef ref, data, site){
             highlightColor: Colors.transparent,
             onTap: (){
               GoRouter.of(context).push(Uri(path: '/library/${item.id}', queryParameters: {'title': item.name}).toString());
+            },
+            onLongPress: (){
 
-              SmartDialog.showToast(item.name);
             },
             child: Column(
               children: [

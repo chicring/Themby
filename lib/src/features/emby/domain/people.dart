@@ -1,10 +1,10 @@
 
 
 class People {
-  final String name;
-  final String role;
-  final String id;
-  final String? primaryImageTag;
+  String name;
+  String role;
+  String id;
+  String? primaryImageTag;
 
   People({
     required this.name,
@@ -18,7 +18,7 @@ class People {
       name: json['Name'] ?? '',
       role: json['Role'] ?? '',
       id: json['Id'] ?? '',
-      primaryImageTag: json['PrimaryImageTag'] ?? '',
+      primaryImageTag: json['PrimaryImageTag'],
     );
   }
 }

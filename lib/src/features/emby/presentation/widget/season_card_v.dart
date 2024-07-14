@@ -61,9 +61,9 @@ class SeasonCardV extends ConsumerWidget{
                         height: maxHeight,
                       ),
 
-                      if(season.userData.unplayedItemCount! > 0)
+                      if(season.userData.unPlayedItemCount != null)
                         PBadge(
-                          text: season.userData.unplayedItemCount.toString(),
+                          text: season.userData.unPlayedItemCount.toString(),
                           top: 6,
                           right: 6,
                         ),

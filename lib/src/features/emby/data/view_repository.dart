@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
+import 'package:themby/src/features/emby/domain/Resume.dart';
 import 'package:themby/src/features/emby/domain/emby_response.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
@@ -103,7 +104,7 @@ class ViewRepository{
     return List<Media>.from(response.data.map((e) => Media.fromJson(e)));
   }
 
-  Future<List<Media>> getResumeMedia({String? parentId, CancelToken? cancelToken}) async {
+  Future<List<Resume>> getResumeMedia({String? parentId, CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -129,7 +130,7 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return List<Media>.from(response.data["Items"].map((e) => Media.fromJson(e)));
+    return List<Resume>.from(response.data["Items"].map((e) => Resume.fromJson(e)));
   }
 
   Future<List<Media>> getRecommendations({CancelToken? cancelToken}) async {
@@ -339,7 +340,7 @@ Future<List<Media>> getLastMedia(GetLastMediaRef ref, String parentId ){
 }
 
 @riverpod
-Future<List<Media>> getResumeMedia(GetResumeMediaRef ref, {String? parentId }) {
+Future<List<Resume>> getResumeMedia(GetResumeMediaRef ref, {String? parentId }) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getResumeMedia(parentId: parentId, cancelToken: cancelToken);
 }

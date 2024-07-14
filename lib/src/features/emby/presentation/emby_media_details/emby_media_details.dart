@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:themby/src/common/constants.dart';
+import 'package:themby/src/common/data/emby_repository.dart';
 import 'package:themby/src/common/domiani/site.dart';
+import 'package:themby/src/common/widget/dropdown_custom.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
@@ -262,35 +263,10 @@ class _DetailContent extends StatelessWidget {
     return '${hours}h ${minutes}m';
   }
 
-  Widget select(BuildContext context, Map<String,String> fruits){
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: 180),
-      child: ShadSelect<String>(
-        placeholder: const Text('Select a fruit'),
-        initialValue: fruits.keys.first,
-        options: [
-          ...fruits.entries
-              .map((e) =>
-              ShadOption(value: e.key, child: Text(e.value)))
-        ],
-        focusNode: FocusNode(
-          canRequestFocus: false,
-        ),
-        selectedOptionBuilder: (context, value) =>
-            Text(fruits[value]!),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    final fruits = {
-      'apple': 'Apple',
-      'banana': 'Banana',
-      'blueberry': 'Blueberry',
-      'grapes': 'Grapes',
-      'pineapple': 'Pineapple',
-    };
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
       child: Column(
@@ -351,30 +327,45 @@ class _DetailContent extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: 5),
-          Row(
-            children: [
-              const Text('视频:', style: StyleString.subtitleStyle),
-              const SizedBox(width: 10),
-              select(context, fruits)
-            ],
-          ),
-          const SizedBox(height: 5),
-          Row(
-            children: [
-              Text('音频:', style: StyleString.subtitleStyle),
-              const SizedBox(width: 10),
-              select(context, fruits)
-            ],
-          ),
-          const SizedBox(height: 5),
-          Row(
-            children: [
-              Text('字幕:', style: StyleString.subtitleStyle),
-              const SizedBox(width: 10),
-              select(context, fruits)
-            ],
-          ),
+
+          if(mediaDetail.mediaType == 'Video') ...{
+            const SizedBox(height: 5),
+            Row(
+              children: [
+                const Text('视频:', style: StyleString.subtitleStyle),
+                const SizedBox(width: 10),
+                DropdownMenuCustom(
+                  data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Video'),
+                  initialSelection: 0,
+                  onSelected: (value) => SmartDialog.showToast(value.toString()),
+                )
+              ],
+            ),
+            const SizedBox(height: 5),
+            Row(
+              children: [
+                const Text('音频:', style: StyleString.subtitleStyle),
+                const SizedBox(width: 10),
+                DropdownMenuCustom(
+                  data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Audio'),
+                  initialSelection: 0,
+                  onSelected: (value) => SmartDialog.showToast(value.toString()),
+                )
+              ],
+            ),
+            const SizedBox(height: 5),
+            Row(
+              children: [
+                const Text('字幕:', style: StyleString.subtitleStyle),
+                const SizedBox(width: 10),
+                DropdownMenuCustom(
+                  data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Subtitle'),
+                  initialSelection: 0,
+                  onSelected: (value) => SmartDialog.showToast(value.toString()),
+                )
+              ],
+            ),
+          }
         ],
       ),
     );
@@ -388,11 +379,18 @@ class _DetailGenres extends StatelessWidget {
 
 
   Widget buildTag(String genre, Color color) {
-    return Text(
-      genre,
-      style: const TextStyle(
-        fontSize: 15,
-        decoration: TextDecoration.underline,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+      decoration: BoxDecoration(
+        borderRadius: StyleString.mdRadius,
+        color: color.withOpacity(0.3),
+      ),
+      child: Text(
+        genre,
+        style: const TextStyle(
+          fontSize: 13
+          // decoration: TextDecoration.underline,
+        ),
       ),
     );
   }

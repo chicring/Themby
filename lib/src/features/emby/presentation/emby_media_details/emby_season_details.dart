@@ -195,7 +195,7 @@ class SeasonCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        episodes.name,
+                        '${episodes.indexNumber}.  ${episodes.name}',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: StyleString.titleStyle,

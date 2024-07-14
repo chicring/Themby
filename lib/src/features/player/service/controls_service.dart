@@ -13,12 +13,8 @@ import 'package:themby/src/features/player/domain/controls_state.dart';
 import 'package:themby/src/features/player/service/medias_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/widget/control_toast.dart';
-import 'package:themby/src/features/player/widget/sheet_control.dart';
 
 part 'controls_service.g.dart';
-
-
-
 
 
 @riverpod
@@ -27,24 +23,75 @@ class ControlsService extends _$ControlsService{
   @override
   ControlsState build() => ControlsState();
 
-  Future<void> startPlay(String id,String type, {int index = 0 } ) async {
+  Future<void> startPlay(String id, String type, {int index = 0 } ) async {
 
     String url = await ref.read(getPlayerUrlProvider(id).future);
 
     ref.read(videoControllerProvider).player.open(Media(url));
     ref.read(videoControllerProvider).player.play();
 
+    state = state.copyWith(mediaId: id);
+
     if(url.isEmpty){
       SmartDialog.showToast('播放还没有准备好');
       return;
     }
     print('播放链接：'+url);
-
     autoHideControls();
     if(type == 'Episode') {
       final media = await ref.watch(GetMediaProvider(id).future);
       final episodes = await ref.watch(getEpisodesProvider(media.parentId,media.parentId).future);
       ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
+    }
+  }
+
+  Future<void> togglePlayMedia(String id) async {
+    state = state.copyWith(mediaId: id);
+    ref.read(videoControllerProvider).player.stop();
+    String url = await ref.read(getPlayerUrlProvider(id).future);
+    if(url.isEmpty){
+      SmartDialog.showToast('播放还没有准备好');
+      return;
+    }
+    ref.read(videoControllerProvider).player.open(Media(url));
+    ref.read(videoControllerProvider).player.play();
+
+    SmartDialog.dismiss();
+  }
+
+  Future<void> toggleAudio(int index) async {
+    final player = ref.read(videoControllerProvider).player;
+    List<AudioTrack> audios = player.state.tracks.audio;
+
+    await ref.read(videoControllerProvider).player.stream.buffer.first;
+
+    await player.setAudioTrack(audios[index + 2]);
+    // if(audios.isEmpty){
+    //   SmartDialog.showToast('没有音轨');
+    //   return;
+    // }
+    // for (AudioTrack audio in audios) {
+    //   SmartDialog.showToast('${audio.title} |  ${audio.language}');
+    // }
+    SmartDialog.dismiss();
+  }
+
+  Future<void> toggleSubtitle(int index) async {
+    final player = ref.read(videoControllerProvider).player;
+    List<SubtitleTrack> subtitles = player.state.tracks.subtitle;
+
+    await ref.read(videoControllerProvider).player.stream.buffer.first;
+    await player.setSubtitleTrack(subtitles[index + 2]);
+    SmartDialog.dismiss();
+
+  }
+
+
+  Future<void> playNext() async {
+    final episodes = ref.read(mediasServiceProvider);
+    if(episodes.isEmpty){
+      SmartDialog.showToast('没有下一集了');
+      return;
     }
   }
 
@@ -125,7 +172,7 @@ class ControlsService extends _$ControlsService{
     }
     await ref.read(videoControllerProvider).player.stream.buffer.first;
 
-    ref.read(videoControllerProvider).player.seek(position);
+    await ref.read(videoControllerProvider).player.seek(position);
 
     if (!ref.read(videoControllerProvider).player.state.playing) {
       ref.read(videoControllerProvider).player.play();
@@ -155,6 +202,7 @@ class ControlsService extends _$ControlsService{
     double rate = ref.read(videoControllerProvider).player.state.rate;
     ref.read(videoControllerProvider).player.setRate(rate * 2);
   }
+
 
   void toggleFitType() {
     final length = videoFitType.length;

@@ -61,9 +61,9 @@ class MediaCardV extends ConsumerWidget{
                         height: maxHeight,
                       ),
 
-                      if(media.userData.unplayedItemCount! > 0)
+                      if(media.userData.unPlayedItemCount != null)
                         PBadge(
-                          text: media.userData.unplayedItemCount.toString(),
+                          text: media.userData.unPlayedItemCount.toString(),
                           top: 6,
                           right: 6,
                         ),

@@ -42,9 +42,23 @@ class App extends ConsumerWidget{
 
     final startup = ref.watch(appStartupProvider);
     return switch (startup) {
-      AsyncData() => ShadApp.materialRouter(
+      AsyncData() => MaterialApp.router(
         routerConfig: ref.watch(goRouterProvider),
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
+              brightness: Brightness.light
+          ),
+          useMaterial3: true,
+        ),
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
+              brightness: Brightness.dark
+          ),
+          useMaterial3: true,
+        ),
         themeMode: [
           ThemeMode.light,
           ThemeMode.dark,
