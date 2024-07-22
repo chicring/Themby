@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:themby/src/common/data/app_setting_repository.dart';
 import 'package:themby/src/common/domiani/color_type.dart';
 import 'package:themby/src/common/widget/custom_dialog.dart';

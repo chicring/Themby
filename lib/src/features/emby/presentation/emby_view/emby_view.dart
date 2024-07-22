@@ -26,35 +26,35 @@ class EmbyView extends ConsumerWidget {
       loading: () => const EmbyViewShimmer(),
       error: (error, stack) => const EmbyViewShimmer(),
       data: (data) {
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
 
-              const EmbyResumeMedia(),
-
-              const SizedBox(height: 10),
-
-              const HeaderText(text: '媒体库'),
-              _libraryView(context, ref, data, site!),
-
-              ...data.items.map((item){
-                final media = ref.watch(getLastMediaProvider(item.id));
-                return media.when(
-                  loading: () => ShimmerList(height: MediaQuery.sizeOf(context).height * 0.18, width: MediaQuery.sizeOf(context).height * 0.117),
-                  error: (error, stack) => ShimmerList(height: MediaQuery.sizeOf(context).height * 0.18, width: MediaQuery.sizeOf(context).height * 0.117),
-                  data: (value) => value.isEmpty || item.collectionType == 'music' || item.collectionType == 'livetv' ? const SizedBox() :
-                  ListCardsH(
-                    name: item.name,
-                    parentId: item.id,
-                    medias: value,
-                  )
-                );
-
-              })
-            ],
-          ),
-        );
+        return _libraryView(context, ref, data, site!);
+        // return SingleChildScrollView(
+        //   child: Column(
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //
+        //
+        //       const SizedBox(height: 10),
+        //
+        //       const HeaderText(text: '媒体库'),
+        //
+        //       ...data.items.map((item){
+        //         final media = ref.watch(getLastMediaProvider(item.id));
+        //         return media.when(
+        //           loading: () => ShimmerList(height: MediaQuery.sizeOf(context).height * 0.18, width: MediaQuery.sizeOf(context).height * 0.117),
+        //           error: (error, stack) => ShimmerList(height: MediaQuery.sizeOf(context).height * 0.18, width: MediaQuery.sizeOf(context).height * 0.117),
+        //           data: (value) => value.isEmpty || item.collectionType == 'music' || item.collectionType == 'livetv' ? const SizedBox() :
+        //           ListCardsH(
+        //             name: item.name,
+        //             parentId: item.id,
+        //             medias: value,
+        //           )
+        //         );
+        //
+        //       })
+        //     ],
+        //   ),
+        // );
       },
     );
   }

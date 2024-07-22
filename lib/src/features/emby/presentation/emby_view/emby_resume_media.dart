@@ -23,7 +23,6 @@ class EmbyResumeMedia extends ConsumerWidget{
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
     final resumes = ref.watch(getResumeMediaProvider());
 
-
     double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3);
     double cardHeight = cardWidth * 9 / 16;
 

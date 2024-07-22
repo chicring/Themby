@@ -9,7 +9,9 @@ import 'package:themby/src/common/widget/header_text.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
+import 'package:themby/src/features/emby/presentation/emby_view/emby_media_library.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_recommendations_media.dart';
+import 'package:themby/src/features/emby/presentation/emby_view/emby_resume_media.dart';
 import 'package:themby/src/features/emby/presentation/emby_view/emby_view.dart';
 
 class EmbyHomeScreen extends ConsumerWidget {
@@ -39,7 +41,13 @@ class EmbyHomeScreen extends ConsumerWidget {
             children: [
               EmbyRecommendationsMedia(),
 
+              EmbyResumeMedia(),
+
+              SizedBox(height: 10),
+              HeaderText(text: '媒体库'),
               EmbyView(),
+
+              EmbyMediaLibrary(),
             ],
           ),
         ),
