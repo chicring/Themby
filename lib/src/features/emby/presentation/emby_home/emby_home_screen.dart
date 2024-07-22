@@ -20,14 +20,10 @@ class EmbyHomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
-    final Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: PreferredSize(
-          preferredSize: Size(screenSize.width, 50),
-          child: _buildAppBar(site!,context)
-      ),
+      appBar: _buildAppBar(site!,context),
       body: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(getViewsProvider);
@@ -57,11 +53,12 @@ class EmbyHomeScreen extends ConsumerWidget {
 }
 
 
-Widget _buildAppBar(Site site,BuildContext context) {
+AppBar _buildAppBar(Site site,BuildContext context) {
   return AppBar(
+    scrolledUnderElevation: 0.0,
     backgroundColor: Colors.transparent,
     leading: IconButton(
-      icon: SvgPicture.asset('assets/emby.svg', width: 28, height: 28),
+      icon: SvgPicture.asset('assets/emby.svg', width: 30, height: 30),
       onPressed: () {
         GoRouter.of(context).go('/home');
       },

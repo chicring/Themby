@@ -43,15 +43,15 @@ class Episode {
       overview: json['Overview'] ?? '',
       seriesId: json['SeriesId'],
       seriesName: json['SeriesName'],
-      seasonId: json['SeasonId'],
+      seasonId: json['SeasonId'] ?? '',
       seasonName: json['SeasonName'],
       primaryImageAspectRatio: json['PrimaryImageAspectRatio'] ?? 0.0,
       indexNumber: json['IndexNumber'] ?? 0,
       imageTags: ImageTags.fromJson(json['ImageTags']),
       userData: UserData.fromJson(json['UserData']),
       runTimeTicks: json['RunTimeTicks'] ?? 0,
-      backdropImageTags: List<String>.from(json['BackdropImageTags']),
-      parentBackdropImageTags: List<String>.from(json['ParentBackdropImageTags']),
+      backdropImageTags: List<String>.from(json['BackdropImageTags'] ?? []),
+      parentBackdropImageTags: List<String>.from(json['ParentBackdropImageTags']  ?? []),
     );
   }
 }

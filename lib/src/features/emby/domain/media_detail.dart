@@ -37,6 +37,8 @@ class MediaDetail{
   ImageTags imageTags;
   UserData userData;
   int productionYear;
+  int indexNumber;
+  int parentIndexNumber;
   List<People> people;
   String parentId;
   String seasonId;
@@ -63,6 +65,8 @@ class MediaDetail{
     required this.imageTags,
     required this.userData,
     required this.productionYear,
+    required this.indexNumber,
+    required this.parentIndexNumber,
     required this.people,
     required this.parentId,
     required this.seasonId,
@@ -91,6 +95,8 @@ class MediaDetail{
       imageTags: ImageTags.fromJson(json['ImageTags']),
       userData: UserData.fromJson(json['UserData']),
       productionYear: json['ProductionYear'] ?? 0,
+      indexNumber: json['IndexNumber'] ?? 0,
+      parentIndexNumber: json['ParentIndexNumber'] ?? 0,
       people: (json['People'] as List)
           .map((item) => People.fromJson(item))
           .toList() ?? [],

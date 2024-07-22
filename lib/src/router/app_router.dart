@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
+import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/emby/presentation/emby_favorite/emby_favorite_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_home/emby_home_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_library/emby_library_screen.dart';
@@ -152,18 +153,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        path: '/player/:type/:id/:index',
+        path: '/player',
         name: AppRoute.player.name,
         pageBuilder: (context, state) {
-          final id = state.pathParameters['id']!;
-          final type = state.pathParameters['type']!;
-          final index = state.pathParameters['index'];
+
+          PlayInfo playInfo = state.extra as PlayInfo;
+
           return NoTransitionPage(
             key: state.pageKey,
             child: PlayerScreen(
-              id: id,
-              type: type,
-              index: index != null ? int.parse(index) : 0,
+              playInfo: playInfo,
             ),
           );
         }

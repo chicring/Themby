@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/player/domain/controls_state.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/medias_service.dart';
@@ -9,11 +10,9 @@ import 'package:themby/src/features/player/utils/fullscreen.dart';
 import 'package:themby/src/features/player/widget/custom_controls.dart';
 
 class HorizontalPlayer extends ConsumerStatefulWidget {
-  const HorizontalPlayer({super.key, required this.id, required this.type,required this.index});
+  const HorizontalPlayer({super.key, required this.playInfo});
 
-  final String id;
-  final String type;
-  final int index;
+  final PlayInfo playInfo;
 
 
   @override
@@ -33,7 +32,7 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
   void didChangeDependencies() {
     super.didChangeDependencies();
     final notifier = ref.watch(controlsServiceProvider.notifier);
-    notifier.startPlay(widget.id, widget.type);
+    notifier.startPlay(widget.playInfo);
   }
 
   @override
@@ -76,7 +75,7 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
         style: subTitleStyle,
         padding: EdgeInsets.all(24.0),
       ),
-      controls: (state) => CustomControls(state: state, id: widget.id),
+      controls: (state) => CustomControls(state: state, id: widget.playInfo.id),
     );
   }
 }

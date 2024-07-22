@@ -19,6 +19,7 @@ class CustomControls extends ConsumerStatefulWidget {
 }
 
 class _CustomControls extends ConsumerState<CustomControls> {
+
   List<StreamSubscription> subscriptions = [];
 
   @override
@@ -27,14 +28,7 @@ class _CustomControls extends ConsumerState<CustomControls> {
 
     subscriptions.addAll(
       [
-        // ref.read(videoControllerProvider).player.stream.buffering.listen((event) {
-        //   SmartDialog.showToast(event ? 'Buffering...' : 'Buffering finished');
-        //   if(event && !ref.read(videoControllerProvider).player.state.){
-        //     SmartDialog.showLoading(msg: 'Loading...');
-        //   }else{
-        //     SmartDialog.dismiss();
-        //   }
-        // }),
+
       ]
     );
   }
@@ -47,7 +41,6 @@ class _CustomControls extends ConsumerState<CustomControls> {
   @override
   Widget build(BuildContext context) {
     double totalWidth = MediaQuery.sizeOf(context).width;
-    double totalHeight = MediaQuery.sizeOf(context).height;
 
     final state = ref.watch(controlsServiceProvider);
     final notifier = ref.read(controlsServiceProvider.notifier);
@@ -58,6 +51,7 @@ class _CustomControls extends ConsumerState<CustomControls> {
       clipBehavior: Clip.none,
       alignment: Alignment.center,
       children: [
+        /// 手势操作
         Positioned.fill(
           left: 16,
           top: 25,
@@ -90,6 +84,7 @@ class _CustomControls extends ConsumerState<CustomControls> {
             },
           ),
         ),
+        /// 控制按钮
         Positioned(
             right: 6,
             child: AnimatedOpacity(
@@ -139,5 +134,6 @@ class _CustomControls extends ConsumerState<CustomControls> {
     );
   }
 }
+
 
 

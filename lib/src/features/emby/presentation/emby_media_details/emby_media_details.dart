@@ -12,6 +12,7 @@ import 'package:themby/src/common/data/emby_repository.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/dropdown_custom.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
@@ -66,7 +67,7 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
         return Scaffold(
             floatingActionButton: GestureDetector(
               onTap: () async{
-                GoRouter.of(context).push('/player/${mediaDetail.type}/${mediaDetail.id}/0');
+                GoRouter.of(context).push('/player', extra: getPlayInfo(mediaDetail));
               },
               onLongPress: (){
                 SmartDialog.showToast('别长按我，等待播放');

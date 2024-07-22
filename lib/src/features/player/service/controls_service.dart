@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/emby/data/play_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/player/domain/controls_state.dart';
@@ -23,23 +24,22 @@ class ControlsService extends _$ControlsService{
   @override
   ControlsState build() => ControlsState();
 
-  Future<void> startPlay(String id, String type, {int index = 0 } ) async {
+  Future<void> startPlay(PlayInfo info) async {
 
-    String url = await ref.read(getPlayerUrlProvider(id).future);
+    String url = await ref.read(getPlayerUrlProvider(info.id).future);
 
     ref.read(videoControllerProvider).player.open(Media(url));
-    ref.read(videoControllerProvider).player.play();
+    await ref.read(videoControllerProvider).player.play();
 
-    state = state.copyWith(mediaId: id);
+    seekTo(info.duration);
+    // ref.read(videoControllerProvider).player.seek(info.duration);
 
-    if(url.isEmpty){
-      SmartDialog.showToast('播放还没有准备好');
-      return;
-    }
+    state = state.copyWith(mediaId: info.id);
+
     print('播放链接：'+url);
     autoHideControls();
-    if(type == 'Episode') {
-      final media = await ref.watch(GetMediaProvider(id).future);
+    if(info.type == 'Episode') {
+      final media = await ref.watch(GetMediaProvider(info.id).future);
       final episodes = await ref.watch(getEpisodesProvider(media.parentId,media.parentId).future);
       ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
     }
