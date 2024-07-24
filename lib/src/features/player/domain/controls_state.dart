@@ -18,9 +18,6 @@ class ControlsState {
 
   Timer? timer;
 
-  //回传计时器
-  Timer? backTimer;
-
   String mediaId = '0';
 
   String mediaSourceId = '';
@@ -42,7 +39,6 @@ class ControlsState {
 
   ControlsState({
     this.timer,
-    this.backTimer,
     this.mediaId = '0',
     this.mediaSourceId = '',
     this.playSessionId = '',
@@ -70,7 +66,6 @@ class ControlsState {
   }) {
     return ControlsState(
       timer: timer ?? this.timer,
-      backTimer: backTimer ?? this.backTimer,
       mediaId: mediaId ?? this.mediaId,
       mediaSourceId: mediaSourceId ?? this.mediaSourceId,
       playSessionId: playSessionId ?? this.playSessionId,

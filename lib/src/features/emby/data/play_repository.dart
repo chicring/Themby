@@ -74,6 +74,8 @@ class PlayRepository{
             repeatMode: 'RepeatNone',
             playbackRate: 1,
             subtitleOffset: 0,
+            maxStreamingBitrate: 2147483647,
+            playbackStartTimeTicks: 0,
             positionTicks: position,
             subtitleStreamIndex: 0,
             audioStreamIndex: 0,
@@ -82,6 +84,7 @@ class PlayRepository{
             mediaSourceId: mId,
             canSeek: true,
             itemId: iId,
+            playlistLength: 1
         ).toJson()
     );
   }
@@ -109,6 +112,8 @@ class PlayRepository{
             repeatMode: 'RepeatNone',
             playbackRate: 1,
             subtitleOffset: 0,
+            maxStreamingBitrate: 2147483647,
+            playbackStartTimeTicks: 0,
             positionTicks: position,
             subtitleStreamIndex: 0,
             audioStreamIndex: 0,
@@ -117,7 +122,8 @@ class PlayRepository{
             mediaSourceId: mId,
             canSeek: true,
             itemId: iId,
-            eventName: 'timeupdate'
+            eventName: 'timeupdate',
+            playlistLength: 1
         ).toJson()
     );
   }
@@ -144,6 +150,8 @@ class PlayRepository{
             repeatMode: 'RepeatNone',
             playbackRate: 1,
             subtitleOffset: 0,
+            maxStreamingBitrate: 2147483647,
+            playbackStartTimeTicks: 0,
             positionTicks: position,
             subtitleStreamIndex: 0,
             audioStreamIndex: 0,
@@ -152,7 +160,8 @@ class PlayRepository{
             mediaSourceId: mId,
             canSeek: true,
             itemId: iId,
-            eventName: 'pause'
+            eventName: 'pause',
+            playlistLength: 1
         ).toJson()
     );
   }
@@ -175,6 +184,9 @@ Future<String> getPlayerUrl(GetPlayerUrlRef ref,String itemId) async {
   final playbackInfo = await ref.read(getPlaybackInfoProvider(itemId).future);
   return markPlayUrl(playbackInfo.mediaSources, ref.read(embyStateServiceProvider.select((value) => value.site!)));
 }
+
+@riverpod
+Future<void> positionStart(PositionStartRef ref, String iId, int position, String pId, String mId) => ref.read(playRepositoryProvider).positionStart(iId, position, pId, mId);
 
 @riverpod
 Future<void> positionBack(PositionBackRef ref, String iId, int position, String pId, String mId) => ref.read(playRepositoryProvider).positionBack(iId, position, pId, mId);

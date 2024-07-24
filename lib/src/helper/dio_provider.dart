@@ -20,7 +20,7 @@ Dio dio(DioRef ref) {
     )
   );
 
-  dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
+  // dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
   dio.interceptors.add(DioInterceptor());
   dio.interceptors.add(LoggerInterceptor());
   return dio;

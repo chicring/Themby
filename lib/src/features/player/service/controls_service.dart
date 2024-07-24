@@ -22,6 +22,9 @@ part 'controls_service.g.dart';
 @riverpod
 class ControlsService extends _$ControlsService{
 
+  //回传计时器
+  Timer? backTimer;
+
   @override
   ControlsState build() => ControlsState();
 
@@ -48,9 +51,9 @@ class ControlsService extends _$ControlsService{
       ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
     }
 
-    startRecordPosition(position: info.duration.inMicroseconds);
+    startRecordPosition(position: info.duration.inMicroseconds * 10);
 
-    state.backTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
+    backTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
       recordPosition();
     });
   }
@@ -68,6 +71,8 @@ class ControlsService extends _$ControlsService{
 
     ref.read(videoControllerProvider).player.open(Media(url));
     ref.read(videoControllerProvider).player.play();
+
+    startRecordPosition();
 
     SmartDialog.dismiss();
   }
@@ -112,7 +117,7 @@ class ControlsService extends _$ControlsService{
     final mediaId = state.mediaId;
     final mediaSourceId = state.mediaSourceId;
     final playSessionId = state.playSessionId;
-    await ref.read(positionBackProvider(mediaId, position ?? 0, playSessionId, mediaSourceId).future);
+    await ref.read(positionStartProvider(mediaId, position ?? 0, playSessionId, mediaSourceId).future);
   }
 
   //记录播放位置
@@ -124,9 +129,9 @@ class ControlsService extends _$ControlsService{
     final playSessionId = state.playSessionId;
 
     if (type == "update") {
-      await ref.read(positionBackProvider(mediaId, position.inMicroseconds, playSessionId, mediaSourceId).future);
+      await ref.read(positionBackProvider(mediaId, position.inMicroseconds * 10, playSessionId, mediaSourceId).future);
     } else {
-      await ref.read(positionStopProvider(mediaId, position.inMicroseconds, playSessionId, mediaSourceId).future);
+      await ref.read(positionStopProvider(mediaId, position.inMicroseconds * 10, playSessionId, mediaSourceId).future);
     }
   }
 
@@ -255,12 +260,12 @@ class ControlsService extends _$ControlsService{
 
   //销毁
   Future<void> dispose() async {
-    state.backTimer?.cancel();
+    backTimer?.cancel();
     state.timer?.cancel();
 
+    recordPosition(type: "stop");
 
     await ref.read(videoControllerProvider).player.stop();
-    await recordPosition(type: "stop");
 
     // await ref.read(videoControllerProvider).player.dispose();
     await ref.read(mediasServiceProvider.notifier).removeEpisode();
