@@ -298,5 +298,359 @@ class _GetPlayerUrlProviderElement
   @override
   String get itemId => (origin as GetPlayerUrlProvider).itemId;
 }
+
+String _$positionBackHash() => r'9ba38b91482576991b0d8645082fc5545ff355ec';
+
+/// See also [positionBack].
+@ProviderFor(positionBack)
+const positionBackProvider = PositionBackFamily();
+
+/// See also [positionBack].
+class PositionBackFamily extends Family<AsyncValue<void>> {
+  /// See also [positionBack].
+  const PositionBackFamily();
+
+  /// See also [positionBack].
+  PositionBackProvider call(
+    String iId,
+    int position,
+    String pId,
+    String mId,
+  ) {
+    return PositionBackProvider(
+      iId,
+      position,
+      pId,
+      mId,
+    );
+  }
+
+  @override
+  PositionBackProvider getProviderOverride(
+    covariant PositionBackProvider provider,
+  ) {
+    return call(
+      provider.iId,
+      provider.position,
+      provider.pId,
+      provider.mId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'positionBackProvider';
+}
+
+/// See also [positionBack].
+class PositionBackProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [positionBack].
+  PositionBackProvider(
+    String iId,
+    int position,
+    String pId,
+    String mId,
+  ) : this._internal(
+          (ref) => positionBack(
+            ref as PositionBackRef,
+            iId,
+            position,
+            pId,
+            mId,
+          ),
+          from: positionBackProvider,
+          name: r'positionBackProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$positionBackHash,
+          dependencies: PositionBackFamily._dependencies,
+          allTransitiveDependencies:
+              PositionBackFamily._allTransitiveDependencies,
+          iId: iId,
+          position: position,
+          pId: pId,
+          mId: mId,
+        );
+
+  PositionBackProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.iId,
+    required this.position,
+    required this.pId,
+    required this.mId,
+  }) : super.internal();
+
+  final String iId;
+  final int position;
+  final String pId;
+  final String mId;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(PositionBackRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: PositionBackProvider._internal(
+        (ref) => create(ref as PositionBackRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        iId: iId,
+        position: position,
+        pId: pId,
+        mId: mId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _PositionBackProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PositionBackProvider &&
+        other.iId == iId &&
+        other.position == position &&
+        other.pId == pId &&
+        other.mId == mId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, iId.hashCode);
+    hash = _SystemHash.combine(hash, position.hashCode);
+    hash = _SystemHash.combine(hash, pId.hashCode);
+    hash = _SystemHash.combine(hash, mId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin PositionBackRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `iId` of this provider.
+  String get iId;
+
+  /// The parameter `position` of this provider.
+  int get position;
+
+  /// The parameter `pId` of this provider.
+  String get pId;
+
+  /// The parameter `mId` of this provider.
+  String get mId;
+}
+
+class _PositionBackProviderElement
+    extends AutoDisposeFutureProviderElement<void> with PositionBackRef {
+  _PositionBackProviderElement(super.provider);
+
+  @override
+  String get iId => (origin as PositionBackProvider).iId;
+  @override
+  int get position => (origin as PositionBackProvider).position;
+  @override
+  String get pId => (origin as PositionBackProvider).pId;
+  @override
+  String get mId => (origin as PositionBackProvider).mId;
+}
+
+String _$positionStopHash() => r'2651971bae0f53c485ef3990a032856fc9f30fd9';
+
+/// See also [positionStop].
+@ProviderFor(positionStop)
+const positionStopProvider = PositionStopFamily();
+
+/// See also [positionStop].
+class PositionStopFamily extends Family<AsyncValue<void>> {
+  /// See also [positionStop].
+  const PositionStopFamily();
+
+  /// See also [positionStop].
+  PositionStopProvider call(
+    String iId,
+    int position,
+    String pId,
+    String mId,
+  ) {
+    return PositionStopProvider(
+      iId,
+      position,
+      pId,
+      mId,
+    );
+  }
+
+  @override
+  PositionStopProvider getProviderOverride(
+    covariant PositionStopProvider provider,
+  ) {
+    return call(
+      provider.iId,
+      provider.position,
+      provider.pId,
+      provider.mId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'positionStopProvider';
+}
+
+/// See also [positionStop].
+class PositionStopProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [positionStop].
+  PositionStopProvider(
+    String iId,
+    int position,
+    String pId,
+    String mId,
+  ) : this._internal(
+          (ref) => positionStop(
+            ref as PositionStopRef,
+            iId,
+            position,
+            pId,
+            mId,
+          ),
+          from: positionStopProvider,
+          name: r'positionStopProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$positionStopHash,
+          dependencies: PositionStopFamily._dependencies,
+          allTransitiveDependencies:
+              PositionStopFamily._allTransitiveDependencies,
+          iId: iId,
+          position: position,
+          pId: pId,
+          mId: mId,
+        );
+
+  PositionStopProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.iId,
+    required this.position,
+    required this.pId,
+    required this.mId,
+  }) : super.internal();
+
+  final String iId;
+  final int position;
+  final String pId;
+  final String mId;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(PositionStopRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: PositionStopProvider._internal(
+        (ref) => create(ref as PositionStopRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        iId: iId,
+        position: position,
+        pId: pId,
+        mId: mId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _PositionStopProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PositionStopProvider &&
+        other.iId == iId &&
+        other.position == position &&
+        other.pId == pId &&
+        other.mId == mId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, iId.hashCode);
+    hash = _SystemHash.combine(hash, position.hashCode);
+    hash = _SystemHash.combine(hash, pId.hashCode);
+    hash = _SystemHash.combine(hash, mId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin PositionStopRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `iId` of this provider.
+  String get iId;
+
+  /// The parameter `position` of this provider.
+  int get position;
+
+  /// The parameter `pId` of this provider.
+  String get pId;
+
+  /// The parameter `mId` of this provider.
+  String get mId;
+}
+
+class _PositionStopProviderElement
+    extends AutoDisposeFutureProviderElement<void> with PositionStopRef {
+  _PositionStopProviderElement(super.provider);
+
+  @override
+  String get iId => (origin as PositionStopProvider).iId;
+  @override
+  int get position => (origin as PositionStopProvider).position;
+  @override
+  String get pId => (origin as PositionStopProvider).pId;
+  @override
+  String get mId => (origin as PositionStopProvider).mId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

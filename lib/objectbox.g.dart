@@ -14,86 +14,11 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'common/models/emby_site.dart';
 import 'src/common/domiani/site.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <obx_int.ModelEntity>[
-  obx_int.ModelEntity(
-      id: const obx_int.IdUid(1, 7455008044318180262),
-      name: 'EmbySite',
-      lastPropertyId: const obx_int.IdUid(13, 8399095080819489311),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 1762118529947504797),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 3651706648616444539),
-            name: 'name',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 4641444923789978010),
-            name: 'type',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 8573089567954918477),
-            name: 'userId',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 3955013655561428620),
-            name: 'username',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 3849993164329572110),
-            name: 'password',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 4799706280379794334),
-            name: 'imageTag',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(8, 769655657430990892),
-            name: 'accessToken',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(9, 1067789483975296624),
-            name: 'serverName',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(10, 6471076450128067201),
-            name: 'serverId',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(11, 2656011792185097661),
-            name: 'host',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(12, 930762010843227438),
-            name: 'port',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(13, 8399095080819489311),
-            name: 'version',
-            type: 9,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
       id: const obx_int.IdUid(2, 5645114341643632039),
       name: 'Site',
@@ -214,116 +139,31 @@ obx_int.ModelDefinition getObjectBoxModel() {
       lastIndexId: const obx_int.IdUid(1, 2827523073541992988),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [],
+      retiredEntityUids: const [7455008044318180262],
       retiredIndexUids: const [2827523073541992988],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [
+        1762118529947504797,
+        3651706648616444539,
+        4641444923789978010,
+        8573089567954918477,
+        3955013655561428620,
+        3849993164329572110,
+        4799706280379794334,
+        769655657430990892,
+        1067789483975296624,
+        6471076450128067201,
+        2656011792185097661,
+        930762010843227438,
+        8399095080819489311
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
 
   final bindings = <Type, obx_int.EntityDefinition>{
-    EmbySite: obx_int.EntityDefinition<EmbySite>(
-        model: _entities[0],
-        toOneRelations: (EmbySite object) => [],
-        toManyRelations: (EmbySite object) => {},
-        getId: (EmbySite object) => object.id,
-        setId: (EmbySite object, int id) {
-          object.id = id;
-        },
-        objectToFB: (EmbySite object, fb.Builder fbb) {
-          final nameOffset =
-              object.name == null ? null : fbb.writeString(object.name!);
-          final typeOffset =
-              object.type == null ? null : fbb.writeString(object.type!);
-          final userIdOffset =
-              object.userId == null ? null : fbb.writeString(object.userId!);
-          final usernameOffset = object.username == null
-              ? null
-              : fbb.writeString(object.username!);
-          final passwordOffset = object.password == null
-              ? null
-              : fbb.writeString(object.password!);
-          final imageTagOffset = object.imageTag == null
-              ? null
-              : fbb.writeString(object.imageTag!);
-          final accessTokenOffset = object.accessToken == null
-              ? null
-              : fbb.writeString(object.accessToken!);
-          final serverNameOffset = object.serverName == null
-              ? null
-              : fbb.writeString(object.serverName!);
-          final serverIdOffset = object.serverId == null
-              ? null
-              : fbb.writeString(object.serverId!);
-          final hostOffset =
-              object.host == null ? null : fbb.writeString(object.host!);
-          final versionOffset =
-              object.version == null ? null : fbb.writeString(object.version!);
-          fbb.startTable(14);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nameOffset);
-          fbb.addOffset(2, typeOffset);
-          fbb.addOffset(3, userIdOffset);
-          fbb.addOffset(4, usernameOffset);
-          fbb.addOffset(5, passwordOffset);
-          fbb.addOffset(6, imageTagOffset);
-          fbb.addOffset(7, accessTokenOffset);
-          fbb.addOffset(8, serverNameOffset);
-          fbb.addOffset(9, serverIdOffset);
-          fbb.addOffset(10, hostOffset);
-          fbb.addInt64(11, object.port);
-          fbb.addOffset(12, versionOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final nameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 6);
-          final typeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 8);
-          final userIdParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 10);
-          final usernameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 12);
-          final passwordParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 14);
-          final imageTagParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 16);
-          final accessTokenParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 18);
-          final serverNameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 20);
-          final serverIdParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 22);
-          final hostParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 24);
-          final portParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 26);
-          final versionParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 28);
-          final object = EmbySite(
-              name: nameParam,
-              type: typeParam,
-              userId: userIdParam,
-              username: usernameParam,
-              password: passwordParam,
-              imageTag: imageTagParam,
-              accessToken: accessTokenParam,
-              serverName: serverNameParam,
-              serverId: serverIdParam,
-              host: hostParam,
-              port: portParam,
-              version: versionParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-
-          return object;
-        }),
     Site: obx_int.EntityDefinition<Site>(
-        model: _entities[1],
+        model: _entities[0],
         toOneRelations: (Site object) => [],
         toManyRelations: (Site object) => {},
         getId: (Site object) => object.id,
@@ -432,113 +272,58 @@ obx_int.ModelDefinition getObjectBoxModel() {
   return obx_int.ModelDefinition(model, bindings);
 }
 
-/// [EmbySite] entity fields to define ObjectBox queries.
-class EmbySite_ {
-  /// See [EmbySite.id].
-  static final id =
-      obx.QueryIntegerProperty<EmbySite>(_entities[0].properties[0]);
-
-  /// See [EmbySite.name].
-  static final name =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[1]);
-
-  /// See [EmbySite.type].
-  static final type =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[2]);
-
-  /// See [EmbySite.userId].
-  static final userId =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[3]);
-
-  /// See [EmbySite.username].
-  static final username =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[4]);
-
-  /// See [EmbySite.password].
-  static final password =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[5]);
-
-  /// See [EmbySite.imageTag].
-  static final imageTag =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[6]);
-
-  /// See [EmbySite.accessToken].
-  static final accessToken =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[7]);
-
-  /// See [EmbySite.serverName].
-  static final serverName =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[8]);
-
-  /// See [EmbySite.serverId].
-  static final serverId =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[9]);
-
-  /// See [EmbySite.host].
-  static final host =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[10]);
-
-  /// See [EmbySite.port].
-  static final port =
-      obx.QueryIntegerProperty<EmbySite>(_entities[0].properties[11]);
-
-  /// See [EmbySite.version].
-  static final version =
-      obx.QueryStringProperty<EmbySite>(_entities[0].properties[12]);
-}
-
 /// [Site] entity fields to define ObjectBox queries.
 class Site_ {
   /// See [Site.id].
-  static final id = obx.QueryIntegerProperty<Site>(_entities[1].properties[0]);
+  static final id = obx.QueryIntegerProperty<Site>(_entities[0].properties[0]);
 
   /// See [Site.remake].
   static final remake =
-      obx.QueryStringProperty<Site>(_entities[1].properties[1]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[1]);
 
   /// See [Site.type].
-  static final type = obx.QueryStringProperty<Site>(_entities[1].properties[2]);
+  static final type = obx.QueryStringProperty<Site>(_entities[0].properties[2]);
 
   /// See [Site.serverId].
   static final serverId =
-      obx.QueryStringProperty<Site>(_entities[1].properties[3]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[3]);
 
   /// See [Site.serverName].
   static final serverName =
-      obx.QueryStringProperty<Site>(_entities[1].properties[4]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[4]);
 
   /// See [Site.version].
   static final version =
-      obx.QueryStringProperty<Site>(_entities[1].properties[5]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[5]);
 
   /// See [Site.scheme].
   static final scheme =
-      obx.QueryStringProperty<Site>(_entities[1].properties[6]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[6]);
 
   /// See [Site.host].
-  static final host = obx.QueryStringProperty<Site>(_entities[1].properties[7]);
+  static final host = obx.QueryStringProperty<Site>(_entities[0].properties[7]);
 
   /// See [Site.port].
   static final port =
-      obx.QueryIntegerProperty<Site>(_entities[1].properties[8]);
+      obx.QueryIntegerProperty<Site>(_entities[0].properties[8]);
 
   /// See [Site.userId].
   static final userId =
-      obx.QueryStringProperty<Site>(_entities[1].properties[9]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[9]);
 
   /// See [Site.username].
   static final username =
-      obx.QueryStringProperty<Site>(_entities[1].properties[10]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[10]);
 
   /// See [Site.password].
   static final password =
-      obx.QueryStringProperty<Site>(_entities[1].properties[11]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[11]);
 
   /// See [Site.imageTag].
   static final imageTag =
-      obx.QueryStringProperty<Site>(_entities[1].properties[12]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[12]);
 
   /// See [Site.accessToken].
   static final accessToken =
-      obx.QueryStringProperty<Site>(_entities[1].properties[13]);
+      obx.QueryStringProperty<Site>(_entities[0].properties[13]);
 }

@@ -18,17 +18,19 @@ class ControlsState {
 
   Timer? timer;
 
+  //回传计时器
+  Timer? backTimer;
+
   String mediaId = '0';
 
-  bool isPlaying = false;
+  String mediaSourceId = '';
+
+  String playSessionId = '';
 
   double rate = 1.0;
 
   //控制器锁
   bool controlsLock = false;
-
-  //视频方向
-  bool horizontal = false;
 
   //控制器显示
   bool showControls = true;
@@ -38,23 +40,25 @@ class ControlsState {
   //填充方式
   int fitType = 0;
 
-  //播放位置时间
-  Duration position = const Duration();
-
   ControlsState({
+    this.timer,
+    this.backTimer,
     this.mediaId = '0',
-    this.isPlaying = false,
+    this.mediaSourceId = '',
+    this.playSessionId = '',
     this.controlsLock = false,
     this.fitType = 0,
-    this.horizontal = false,
     this.showControls = true,
-    this.position = const Duration(),
     this.rate = 1.0,
     this.isLongPressMultiple = false,
   });
 
   ControlsState copyWith({
+    Timer? timer,
+    Timer? backTimer,
     String? mediaId,
+    String? mediaSourceId,
+    String? playSessionId,
     bool? controlsLock,
     bool? horizontal,
     bool? showControls,
@@ -65,13 +69,14 @@ class ControlsState {
     bool? isLongPressMultiple,
   }) {
     return ControlsState(
+      timer: timer ?? this.timer,
+      backTimer: backTimer ?? this.backTimer,
       mediaId: mediaId ?? this.mediaId,
+      mediaSourceId: mediaSourceId ?? this.mediaSourceId,
+      playSessionId: playSessionId ?? this.playSessionId,
       controlsLock: controlsLock ?? this.controlsLock,
       fitType: fitType ?? this.fitType,
-      horizontal: horizontal ?? this.horizontal,
       showControls: showControls ?? this.showControls,
-      isPlaying: isPlaying ?? this.isPlaying,
-      position: position ?? this.position,
       rate: rate ?? this.rate,
       isLongPressMultiple: isLongPressMultiple ?? this.isLongPressMultiple,
     );

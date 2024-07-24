@@ -10,6 +10,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/emby/data/play_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
+import 'package:themby/src/features/emby/domain/playback_info.dart';
 import 'package:themby/src/features/player/domain/controls_state.dart';
 import 'package:themby/src/features/player/service/medias_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
@@ -26,15 +27,18 @@ class ControlsService extends _$ControlsService{
 
   Future<void> startPlay(PlayInfo info) async {
 
+    PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(info.id).future);
+
+    String mediaSourceId = playInfo.mediaSources[0].id;
+    String playSessionId = playInfo.playSessionId;
     String url = await ref.read(getPlayerUrlProvider(info.id).future);
 
     ref.read(videoControllerProvider).player.open(Media(url));
     await ref.read(videoControllerProvider).player.play();
 
     seekTo(info.duration);
-    // ref.read(videoControllerProvider).player.seek(info.duration);
 
-    state = state.copyWith(mediaId: info.id);
+    state = state.copyWith(mediaId: info.id, mediaSourceId: mediaSourceId, playSessionId: playSessionId);
 
     print('播放链接：'+url);
     autoHideControls();
@@ -43,16 +47,25 @@ class ControlsService extends _$ControlsService{
       final episodes = await ref.watch(getEpisodesProvider(media.parentId,media.parentId).future);
       ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
     }
+
+    startRecordPosition(position: info.duration.inMicroseconds);
+
+    state.backTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
+      recordPosition();
+    });
   }
 
   Future<void> togglePlayMedia(String id) async {
     state = state.copyWith(mediaId: id);
     ref.read(videoControllerProvider).player.stop();
+
+    PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(id).future);
+    String mediaSourceId = playInfo.mediaSources[0].id;
+    String playSessionId = playInfo.playSessionId;
     String url = await ref.read(getPlayerUrlProvider(id).future);
-    if(url.isEmpty){
-      SmartDialog.showToast('播放还没有准备好');
-      return;
-    }
+
+    state = state.copyWith(mediaId: id, mediaSourceId: mediaSourceId, playSessionId: playSessionId);
+
     ref.read(videoControllerProvider).player.open(Media(url));
     ref.read(videoControllerProvider).player.play();
 
@@ -94,6 +107,29 @@ class ControlsService extends _$ControlsService{
       return;
     }
   }
+
+  Future startRecordPosition({int? position}) async {
+    final mediaId = state.mediaId;
+    final mediaSourceId = state.mediaSourceId;
+    final playSessionId = state.playSessionId;
+    await ref.read(positionBackProvider(mediaId, position ?? 0, playSessionId, mediaSourceId).future);
+  }
+
+  //记录播放位置
+  Future recordPosition({String type = "update"}) async {
+    final player = ref.read(videoControllerProvider).player;
+    final position = player.state.position;
+    final mediaId = state.mediaId;
+    final mediaSourceId = state.mediaSourceId;
+    final playSessionId = state.playSessionId;
+
+    if (type == "update") {
+      await ref.read(positionBackProvider(mediaId, position.inMicroseconds, playSessionId, mediaSourceId).future);
+    } else {
+      await ref.read(positionStopProvider(mediaId, position.inMicroseconds, playSessionId, mediaSourceId).future);
+    }
+  }
+
 
   void cancelAutoHideControls() {
     state.timer?.cancel();
@@ -219,12 +255,19 @@ class ControlsService extends _$ControlsService{
 
   //销毁
   Future<void> dispose() async {
-    ref.read(videoControllerProvider).player.stop();
-    ref.read(videoControllerProvider).player.dispose();
-    ref.read(mediasServiceProvider.notifier).removeEpisode();
+    state.backTimer?.cancel();
+    state.timer?.cancel();
+
+
+    await ref.read(videoControllerProvider).player.stop();
+    await recordPosition(type: "stop");
+
+    // await ref.read(videoControllerProvider).player.dispose();
+    await ref.read(mediasServiceProvider.notifier).removeEpisode();
+
+    state = state.copyWith(mediaId: '0', mediaSourceId: '', playSessionId: '',timer: null, backTimer: null);
+
   }
-
-
 
   void showSetSpeedSheet(){
     final double currentSpeed = state.rate;

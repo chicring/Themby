@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
+import 'package:themby/src/features/emby/domain/playback_data.dart';
 import 'package:themby/src/features/emby/domain/playback_info.dart';
 import 'package:themby/src/helper/dio_provider.dart';
 import 'device.dart';
@@ -50,6 +51,111 @@ class PlayRepository{
     return PlaybackInfo.fromJson(response.data);
   }
 
+
+  Future<void> positionStart(String iId, int position, String pId, String mId, {CancelToken? cancelToken}) async {
+    await client.postUri(
+        Uri(
+            scheme: site.scheme,
+            host: site.host,
+            port: site.port,
+            path: '/emby/Sessions/Playing'
+        ),
+        options: Options(
+          headers: {
+            'X-Emby-Authorization': embyToken,
+            'x-emby-token': site.accessToken,
+          },
+        ),
+
+        data: PlaybackData(
+            volumeLevel: 100,
+            isMuted: false,
+            isPaused: false,
+            repeatMode: 'RepeatNone',
+            playbackRate: 1,
+            subtitleOffset: 0,
+            positionTicks: position,
+            subtitleStreamIndex: 0,
+            audioStreamIndex: 0,
+            playMethod: 'DirectStream',
+            playSessionId: pId,
+            mediaSourceId: mId,
+            canSeek: true,
+            itemId: iId,
+        ).toJson()
+    );
+  }
+
+
+  Future<void> positionBack(String iId, int position, String pId, String mId, {CancelToken? cancelToken}) async {
+    await client.postUri(
+        Uri(
+            scheme: site.scheme,
+            host: site.host,
+            port: site.port,
+            path: '/emby/Sessions/Playing/Progress'
+        ),
+        options: Options(
+          headers: {
+            'X-Emby-Authorization': embyToken,
+            'x-emby-token': site.accessToken,
+          },
+        ),
+
+        data: PlaybackData(
+          volumeLevel: 100,
+            isMuted: false,
+            isPaused: false,
+            repeatMode: 'RepeatNone',
+            playbackRate: 1,
+            subtitleOffset: 0,
+            positionTicks: position,
+            subtitleStreamIndex: 0,
+            audioStreamIndex: 0,
+            playMethod: 'DirectStream',
+            playSessionId: pId,
+            mediaSourceId: mId,
+            canSeek: true,
+            itemId: iId,
+            eventName: 'timeupdate'
+        ).toJson()
+    );
+  }
+
+  Future<void> positionStop(String iId, int position, String pId, String mId, {CancelToken? cancelToken}) async {
+    await client.postUri(
+        Uri(
+            scheme: site.scheme,
+            host: site.host,
+            port: site.port,
+            path: '/emby/Sessions/Playing/Stopped'
+        ),
+        options: Options(
+          headers: {
+            'X-Emby-Authorization': embyToken,
+            'x-emby-token': site.accessToken,
+          },
+        ),
+
+        data: PlaybackData(
+            volumeLevel: 100,
+            isMuted: false,
+            isPaused: false,
+            repeatMode: 'RepeatNone',
+            playbackRate: 1,
+            subtitleOffset: 0,
+            positionTicks: position,
+            subtitleStreamIndex: 0,
+            audioStreamIndex: 0,
+            playMethod: 'DirectStream',
+            playSessionId: pId,
+            mediaSourceId: mId,
+            canSeek: true,
+            itemId: iId,
+            eventName: 'pause'
+        ).toJson()
+    );
+  }
 }
 
 
@@ -69,6 +175,12 @@ Future<String> getPlayerUrl(GetPlayerUrlRef ref,String itemId) async {
   final playbackInfo = await ref.read(getPlaybackInfoProvider(itemId).future);
   return markPlayUrl(playbackInfo.mediaSources, ref.read(embyStateServiceProvider.select((value) => value.site!)));
 }
+
+@riverpod
+Future<void> positionBack(PositionBackRef ref, String iId, int position, String pId, String mId) => ref.read(playRepositoryProvider).positionBack(iId, position, pId, mId);
+
+@riverpod
+Future<void> positionStop(PositionStopRef ref, String iId, int position, String pId, String mId) => ref.read(playRepositoryProvider).positionStop(iId, position, pId, mId);
 
 Future<String> markPlayUrl(List<MediaSource> sources, Site site) async {
 
