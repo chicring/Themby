@@ -3,22 +3,26 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
+import 'package:themby/src/features/emby/data/favorite_repository.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
+import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 
 
-class DetailAppBar extends StatelessWidget {
+class DetailAppBar extends ConsumerWidget {
   final Site site;
   final MediaDetail mediaDetail;
   final StreamController<bool> titleStreamC;
   const DetailAppBar({super.key, required this.site, required this.mediaDetail, required this.titleStreamC});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final double heightBar = MediaQuery.sizeOf(context).width * 0.65;
 
     return SliverAppBar(
@@ -35,8 +39,51 @@ class DetailAppBar extends StatelessWidget {
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.favorite_outline_rounded),
-          onPressed: (){},
+            icon: Icon(
+              Icons.check_circle_outline_rounded,
+              size: 28,
+            ),
+            onPressed: () {
+              SmartDialog.showToast('在做');
+            }
+        ),
+        IconButton(
+          icon: (mediaDetail.userData.isFavorite ?? false)
+              ? const Icon(Icons.favorite_rounded, color: Color(0xFFc45a65),size: 28)
+              : const Icon(Icons.favorite_border_rounded, size: 28),
+          onPressed: () async {
+            // await ref.read(favoriteMediaProvider.notifier).toggleFavorite(mediaDetail);
+            ref.read(toggleFavoriteProvider(mediaDetail.id, !(mediaDetail.userData.isFavorite ?? false)).future).then((userData) {
+              if(userData.isFavorite == true) {
+                SmartDialog.showToast('已添加到收藏');
+              }
+              ref.refresh(GetMediaProvider(mediaDetail.id));
+              ref.refresh(
+                  getItemProvider(
+                      itemQuery: (
+                      page: 0,
+                      parentId: '',
+                      includeItemTypes: 'Movie',
+                      sortBy: 'SortName',
+                      sortOrder: 'Ascending',
+                      filters: 'IsFavorite',
+                      )
+                  )
+              );
+              ref.refresh(
+                  getItemProvider(
+                      itemQuery: (
+                      page: 0,
+                      parentId: '',
+                      includeItemTypes: 'Series',
+                      sortBy: 'SortName',
+                      sortOrder: 'Ascending',
+                      filters: 'IsFavorite',
+                      )
+                  )
+              );
+            });
+          },
         ),
       ],
       flexibleSpace: FlexibleSpaceBar(

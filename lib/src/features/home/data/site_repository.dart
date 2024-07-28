@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:themby/objectbox.g.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/helper/dio_provider.dart';
@@ -19,6 +20,14 @@ class SiteRepository{
 
   Future<List<Site>> getSites() async {
     return siteBox.getAllAsync();
+  }
+
+  Future<List<Site>> finaAllByText(String text) async {
+    Query<Site> query = siteBox.query(
+          Site_.serverName.contains(text)
+              .or(Site_.host.contains(text))
+        ).build();
+    return query.findAsync();
   }
 
   /*
@@ -86,6 +95,11 @@ SiteRepository siteRepository(SiteRepositoryRef ref) => SiteRepository(
 @riverpod
 Future<List<Site>> getSites(GetSitesRef ref) async {
   return ref.watch(siteRepositoryProvider).getSites();
+}
+
+@riverpod
+Future<List<Site>> finaAllByText(FinaAllByTextRef ref,{required String text}) async {
+  return ref.watch(siteRepositoryProvider).finaAllByText(text);
 }
 
 @riverpod

@@ -54,6 +54,7 @@ class EmbyLibraryScreen extends ConsumerWidget {
               includeItemTypes: itemQuery.includeItemTypes,
               sortBy: itemQuery.sortBy,
               sortOrder: itemQuery.sortOrder,
+              filters: '',
             )
           ).future);
         },
@@ -77,11 +78,12 @@ class EmbyLibraryScreen extends ConsumerWidget {
                     final responseAsync = ref.watch(
                         getItemProvider(
                             itemQuery: (
-                            page: page,
-                            parentId: parentId,
-                            includeItemTypes: itemQuery.includeItemTypes,
-                            sortBy: itemQuery.sortBy,
-                            sortOrder: itemQuery.sortOrder,
+                              page: page,
+                              parentId: parentId,
+                              includeItemTypes: itemQuery.includeItemTypes,
+                              sortBy: itemQuery.sortBy,
+                              sortOrder: itemQuery.sortOrder,
+                              filters: '',
                             )
                         )
                     );

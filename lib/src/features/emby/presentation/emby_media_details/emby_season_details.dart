@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
@@ -155,13 +156,6 @@ class SeasonCard extends StatelessWidget {
 
     final double height = MediaQuery.sizeOf(context).height * 0.12;
 
-    String convertRuntimeTicksToMinutes(int runtimeTicks) {
-      int totalSeconds = (runtimeTicks / 10000000).round();
-      int hours = totalSeconds ~/ 3600;
-      int minutes = (totalSeconds % 3600) ~/ 60;
-      return '${hours}h ${minutes}m';
-    }
-
     return Card(
       color: Colors.transparent,
       elevation: 0,
@@ -176,18 +170,32 @@ class SeasonCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                NetworkImgLayer(
-                  imageUrl: getImageUrl(
-                      site,
-                      episodes.id,
-                      ImageProps(
-                        type: ImageType.primary,
-                        tag: episodes.imageTags.primary,
-                      )
-                  ),
-                  width: height * episodes.primaryImageAspectRatio,
-                  height: height,
+                Stack(
+                  children: [
+                    NetworkImgLayer(
+                      imageUrl: getImageUrl(
+                          site,
+                          episodes.id,
+                          ImageProps(
+                            type: ImageType.primary,
+                            tag: episodes.imageTags.primary,
+                          )
+                      ),
+                      width: height * episodes.primaryImageAspectRatio,
+                      height: height,
+                    ),
+                    if(episodes.userData.played ?? false)
+                       Positioned(
+                        top: 3,
+                        right: 3,
+                        child: Icon(
+                          Icons.check_circle,
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                        ),
+                      ),
+                  ],
                 ),
+
                 const SizedBox(width: 10),
                 Flexible(
                   fit: FlexFit.tight,
@@ -202,7 +210,7 @@ class SeasonCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        convertRuntimeTicksToMinutes(episodes.runTimeTicks),
+                        tickToTime(episodes.runTimeTicks),
                         style: StyleString.subtitleStyle.copyWith(color: Colors.grey),
                       )
                     ],

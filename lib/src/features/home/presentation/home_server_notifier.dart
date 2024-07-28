@@ -19,6 +19,7 @@ class HomeServerNotifier extends _$HomeServerNotifier{
   Future<void> openAddDialog() async {
 
     await SmartDialog.show(
+        alignment: Alignment.centerRight,
         builder: (_) {
           return const HomeAddSite();
         }

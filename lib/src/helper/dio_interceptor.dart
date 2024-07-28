@@ -21,6 +21,11 @@ class DioInterceptor extends Interceptor{
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     String url = err.requestOptions.uri.toString();
     if (!url.contains('heartBeat')) {
+
+      if ( err.type == DioExceptionType.cancel){
+        return;
+      }
+
       SmartDialog.showToast(
         await dioError(err),
         displayType: SmartToastType.onlyRefresh,

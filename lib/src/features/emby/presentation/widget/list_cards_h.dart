@@ -8,12 +8,13 @@ import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
 import 'package:themby/src/helper/screen_helper.dart';
 
 class ListCardsH extends ConsumerWidget{
-  const ListCardsH({super.key, required this.name, required this.parentId, required this.medias, this.showMore = true});
+  const ListCardsH({super.key, required this.name, required this.parentId, required this.medias, this.showMore = true, this.onSelect});
 
   final String name;
   final String parentId;
   final List<Media> medias;
 
+  final Function? onSelect;
   final bool showMore;
 
 
@@ -37,6 +38,7 @@ class ListCardsH extends ConsumerWidget{
               child: IconButton(
                 padding: const EdgeInsets.all(0),
                 onPressed: () async{
+                  onSelect != null ? onSelect!() :
                   GoRouter.of(context).push(Uri(path: '/library/$parentId', queryParameters: {'title': name}).toString());
                 },
                 icon: const Icon(Icons.arrow_forward_ios_rounded,size: 13),
@@ -56,8 +58,13 @@ class ListCardsH extends ConsumerWidget{
                     margin: const EdgeInsets.only(
                       left: StyleString.safeSpace,
                     ),
-                    child: MediaCardV(
-                      media: medias.first,
+                    child: Column(
+                      children: [
+                        MediaCardV(
+                          media: medias.first,
+                        ),
+                        const SizedBox(height: 2),
+                      ],
                     )
                 ),
               ),

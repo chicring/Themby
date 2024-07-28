@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/badge.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
@@ -32,6 +33,12 @@ class MediaCardV extends ConsumerWidget{
       child: InkWell(
         onTap: () async {
           GoRouter.of(context).push('/details/${media.id}');
+        },
+        onLongPress: () async {
+          await Haptics.vibrate(HapticsType.selection);
+          if(longPress != null){
+            longPress!();
+          }
         },
         child: Column(
           children: [
@@ -82,6 +89,9 @@ class MediaCardV extends ConsumerWidget{
 
               ),
             ),
+            // Flexible(
+            //   child: MediaContent(media: media),
+            // ),
             MediaContent(media: media),
           ],
         ),

@@ -8,6 +8,7 @@ import 'package:themby/src/features/emby/presentation/emby_home/emby_home_screen
 import 'package:themby/src/features/emby/presentation/emby_library/emby_library_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_media_details.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_season_details.dart';
+import 'package:themby/src/features/emby/presentation/emby_search/emby_search_screen.dart';
 import 'package:themby/src/features/home/presentation/home_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
@@ -25,7 +26,8 @@ enum AppRoute {
   library,
   details,
   season,
-  player
+  player,
+  search,
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -34,6 +36,28 @@ final _mineNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'mine');
 final _embyNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'emby');
 final _favoriteNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'favorite');
 
+CustomTransitionPage buildPageWithDefaultTransition<T>({
+  required BuildContext context,
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage<T>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+        SlideTransition(
+          position: animation.drive(
+            Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).chain(
+              CurveTween(curve: Curves.easeIn),
+            ),
+          ),
+          child: child,
+        )
+  );
+}
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -42,47 +66,71 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     debugLogDiagnostics: true,
     observers: [FlutterSmartDialog.observer],
     routes: [
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return ScaffoldWithNestedNavigation(navigationShell: navigationShell);
-        },
-        branches: [
-          StatefulShellBranch(
-            navigatorKey: _homeNavigatorKey,
-            routes: [
-              GoRoute(
-                path: '/home',
-                name: AppRoute.home.name,
-                pageBuilder: (context, state) => NoTransitionPage(
-                  key: state.pageKey,
-                  child: const HomeScreen(),
-                ),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            navigatorKey: _mineNavigatorKey,
-            routes: [
-              GoRoute(
-                path: '/mine',
-                name: AppRoute.mine.name,
-                pageBuilder: (context, state) => NoTransitionPage(
-                  key: state.pageKey,
-                  child: const MineScreen(),
-                ),
-              ),
-              GoRoute(
-                path: '/app_setting',
-                name: AppRoute.mineAppSetting.name,
-                pageBuilder: (context, state) => NoTransitionPage(
-                  key: state.pageKey,
-                  child: const MineAppSettingScreen(),
-                ),
-              ),
-            ],
-          ),
-        ],
+      GoRoute(
+        path: '/home',
+        name: AppRoute.home.name,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const HomeScreen(),
+        ),
       ),
+      GoRoute(
+        path: '/mine',
+        name: AppRoute.mine.name,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const MineScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/app_setting',
+        name: AppRoute.mineAppSetting.name,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const MineAppSettingScreen(),
+        ),
+      ),
+      // StatefulShellRoute.indexedStack(
+      //   builder: (context, state, navigationShell) {
+      //     return ScaffoldWithNestedNavigation(navigationShell: navigationShell);
+      //   },
+      //   branches: [
+      //     StatefulShellBranch(
+      //       navigatorKey: _homeNavigatorKey,
+      //       routes: [
+      //         GoRoute(
+      //           path: '/home',
+      //           name: AppRoute.home.name,
+      //           pageBuilder: (context, state) => NoTransitionPage(
+      //             key: state.pageKey,
+      //             child: const HomeScreen(),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //     StatefulShellBranch(
+      //       navigatorKey: _mineNavigatorKey,
+      //       routes: [
+      //         GoRoute(
+      //           path: '/mine',
+      //           name: AppRoute.mine.name,
+      //           pageBuilder: (context, state) => NoTransitionPage(
+      //             key: state.pageKey,
+      //             child: const MineScreen(),
+      //           ),
+      //         ),
+      //         GoRoute(
+      //           path: '/app_setting',
+      //           name: AppRoute.mineAppSetting.name,
+      //           pageBuilder: (context, state) => NoTransitionPage(
+      //             key: state.pageKey,
+      //             child: const MineAppSettingScreen(),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ],
+      // ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return ScaffoldWithNestedNavigationEmby(navigationShell: navigationShell);
@@ -113,6 +161,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   );
                 },
               ),
+              GoRoute(
+                path: '/emby/search',
+                name: AppRoute.search.name,
+                pageBuilder: (context, state) => NoTransitionPage(
+                  key: state.pageKey,
+                  child: const EmbySearchScreen(),
+                )
+              )
             ],
           ),
           StatefulShellBranch(

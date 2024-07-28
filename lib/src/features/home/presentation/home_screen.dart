@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -10,28 +11,55 @@ import 'package:themby/src/features/home/data/site_repository.dart';
 import 'package:themby/src/features/home/presentation/home_server_notifier.dart';
 import 'package:themby/src/localization/string_hardcoded.dart';
 
+import 'home_ search.dart';
+import 'home_search_query_notifier.dart';
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
+    final String query = ref.watch(homeSearchQueryNotifierProvider);
+
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ref.read(homeServerNotifierProvider.notifier).openAddDialog();
+        },
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(
-        title: Text('链接'.hardcoded),
+        title: Text('连接'.hardcoded, style: StyleString.headerStyle.copyWith(fontSize: 30)),
         actions: [
           IconButton(
-            color: Theme.of(context).colorScheme.primary,
-            icon: const Icon(Icons.add_circle_outline),
+              icon: const Icon(Icons.cloud_sync),
+              onPressed: () {
+              }
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings_rounded),
             onPressed: () {
-              ref.read(homeServerNotifierProvider.notifier).openAddDialog();
+              GoRouter.of(context).push('/mine');
             },
           ),
         ],
       ),
-      body: Container(
-        margin: const EdgeInsets.all(StyleString.safeSpace),
-        child: const ServerList(),
+      body:  Column(
+        children: [
+          const SizedBox(height: 10),
+          const HomeSearch(),
+          const SizedBox(height: 10),
+
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                ref.refresh(finaAllByTextProvider(text: query));
+              },
+              child: const ServerList(),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -43,11 +71,14 @@ class ServerList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final sites = ref.watch(getSitesProvider);
+    final String query = ref.watch(homeSearchQueryNotifierProvider);
+
+    final sites = ref.watch(finaAllByTextProvider(text: query));
 
     return ListView.builder(
-      shrinkWrap: true,
+      key: ValueKey(query),
       itemCount: sites.valueOrNull?.length ?? 0,
+      padding: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
       itemBuilder: (context, index) {
         return sites.when(
             error:  (error, stack) {
@@ -59,6 +90,7 @@ class ServerList extends ConsumerWidget {
             data: (data) {
               return Card(
                 clipBehavior: Clip.antiAlias,
+                elevation: 0,
                 child: ListTile(
                   contentPadding: const EdgeInsets.only(right: 8, left: 16),
                   dense: true,

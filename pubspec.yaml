@@ -84,7 +84,11 @@ dependencies:
   media_kit_libs_video: ^1.0.4
   url_launcher: ^6.3.0
   audio_video_progress_bar: ^2.0.3
+  flutter_displaymode: ^0.6.0
+  easy_debounce: ^2.0.3
+  haptic_feedback: ^0.5.1+1
 
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -109,6 +113,7 @@ dev_dependencies:
 
   custom_lint: ^0.6.4
   objectbox_generator: any
+  json_serializable: ^6.8.0
 
 
 # For information on the generic Dart part of this file, see the
@@ -125,6 +130,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/
+     - assets/loading/
+     - assets/icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

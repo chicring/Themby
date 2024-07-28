@@ -1,14 +1,27 @@
 
 import 'package:flutter/material.dart';
 
+import 'emby_favorite_item.dart';
+
 class EmbyFavoriteScreen extends StatelessWidget {
-  const EmbyFavoriteScreen({Key? key}) : super(key: key);
+  const EmbyFavoriteScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('EmbyFavoriteScreen'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('我的收藏'),
+      ),
+      body: const SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            EmbyFavoriteItem(type: 'movie'),
+
+            EmbyFavoriteItem(type: 'series')
+
+          ],
+        ),
       ),
     );
   }

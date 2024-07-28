@@ -76,10 +76,24 @@ class EpisodeCard extends ConsumerWidget{
                 child: LayoutBuilder(builder: (context, boxConstraints) {
                   final double maxHeight = boxConstraints.maxHeight;
                   final double maxWidth = boxConstraints.maxWidth;
-                  return NetworkImgLayer(
-                    imageUrl: getImage(episode),
-                    width: maxWidth,
-                    height: maxHeight,
+                  return Stack(
+                    children: [
+                      NetworkImgLayer(
+                        imageUrl: getImage(episode),
+                        width: maxWidth,
+                        height: maxHeight,
+                      ),
+
+                      if(episode.userData.played ?? false)
+                        const Positioned(
+                          top: 0,
+                          right: 0 ,
+                          child: Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                          ),
+                        ),
+                    ],
                   );
                 }),
               ),

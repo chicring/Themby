@@ -30,32 +30,45 @@ class ControlsService extends _$ControlsService{
 
   Future<void> startPlay(PlayInfo info) async {
 
-    PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(info.id).future);
+    String requestId = info.id;
+
+    if (info.type == 'Series') {
+      await ref.read(getNextUpProvider(info.id).future)
+          .then((value) {
+            requestId = value.items[0].id;
+        });
+    }
+
+    PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(requestId).future);
 
     String mediaSourceId = playInfo.mediaSources[0].id;
     String playSessionId = playInfo.playSessionId;
-    String url = await ref.read(getPlayerUrlProvider(info.id).future);
+    String url = await ref.read(getPlayerUrlProvider(requestId).future);
 
     ref.read(videoControllerProvider).player.open(Media(url));
-    await ref.read(videoControllerProvider).player.play();
+    ref.read(videoControllerProvider).player.play();
 
     seekTo(info.duration);
 
-    state = state.copyWith(mediaId: info.id, mediaSourceId: mediaSourceId, playSessionId: playSessionId);
-
-    print('播放链接：'+url);
-    autoHideControls();
     if(info.type == 'Episode') {
-      final media = await ref.watch(GetMediaProvider(info.id).future);
-      final episodes = await ref.watch(getEpisodesProvider(media.parentId,media.parentId).future);
+      final media = await ref.read(GetMediaProvider(info.id).future);
+      final episodes = await ref.read(getEpisodesProvider(media.parentId,media.parentId).future);
+      ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
+    } else if(info.type == 'Series') {
+      await ref.read(getNextUpProvider(info.id).future);
+      final episodes = await ref.read(getEpisodesProvider(info.id,info.id).future);
       ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
     }
 
-    startRecordPosition(position: info.duration.inMicroseconds * 10);
+    state = state.copyWith(mediaId: info.id, mediaSourceId: mediaSourceId, playSessionId: playSessionId);
 
+    /// 记录播放位置
+    startRecordPosition(position: info.duration.inMicroseconds * 10);
     backTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
       recordPosition();
     });
+
+    autoHideControls();
   }
 
   Future<void> togglePlayMedia(String id) async {
@@ -123,6 +136,11 @@ class ControlsService extends _$ControlsService{
   //记录播放位置
   Future recordPosition({String type = "update"}) async {
     final player = ref.read(videoControllerProvider).player;
+
+    if (player.state.playing == false) {
+      return;
+    }
+
     final position = player.state.position;
     final mediaId = state.mediaId;
     final mediaSourceId = state.mediaSourceId;
@@ -263,12 +281,14 @@ class ControlsService extends _$ControlsService{
     backTimer?.cancel();
     state.timer?.cancel();
 
-    recordPosition(type: "stop");
+    ref.read(videoControllerProvider).player.stop();
 
-    await ref.read(videoControllerProvider).player.stop();
+    await recordPosition(type: "stop").then((v) {
+      ref.refresh(GetMediaProvider(state.mediaId));
+    });
 
     // await ref.read(videoControllerProvider).player.dispose();
-    await ref.read(mediasServiceProvider.notifier).removeEpisode();
+    ref.read(mediasServiceProvider.notifier).removeEpisode();
 
     state = state.copyWith(mediaId: '0', mediaSourceId: '', playSessionId: '',timer: null, backTimer: null);
 

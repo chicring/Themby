@@ -38,7 +38,6 @@ class _HorizontalPlayer extends ConsumerState<HorizontalPlayer> with TickerProvi
   @override
   void deactivate(){
     ref.read(controlsServiceProvider.notifier).dispose();
-
     super.deactivate();
   }
 

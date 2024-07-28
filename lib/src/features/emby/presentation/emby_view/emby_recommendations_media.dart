@@ -1,9 +1,12 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
@@ -99,7 +102,13 @@ class SmallSlider extends ConsumerWidget {
                   Positioned(
                     bottom: 30,
                     child: ElevatedButton.icon(
-                      onPressed: (){},
+                      onPressed: () async {
+                        EasyDebounce.debounce(
+                            'my-debouncer',
+                            const Duration(milliseconds: 500),
+                                () => GoRouter.of(context).push('/player', extra: getPlayInfoByMedia(media))
+                        );
+                      },
                       icon: const Icon(Icons.play_arrow_rounded, color: Colors.black, size: 28),
                       label: const Text('播放', style: TextStyle(color: Colors.black)),
                       style: ElevatedButton.styleFrom(

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:media_kit/media_kit.dart';
@@ -23,6 +24,7 @@ Future<void> appStartup(AppStartupRef ref) async {
   await ref.read(deviceNameProvider.notifier).initDeviceName();
   await ref.read(storeInitProvider.future);
   if (Platform.isAndroid){
+    await FlutterDisplayMode.setHighRefreshRate();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.transparent,

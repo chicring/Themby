@@ -183,14 +183,14 @@ class _GetMediaProviderElement
   String get id => (origin as GetMediaProvider).id;
 }
 
-String _$getLastMediaHash() => r'dbfdabe5823afd37ca08e0e5bcde5d2aa8610b4b';
+String _$getLastMediaHash() => r'b72fba5be93a1d9654718c7fac380923dc031529';
 
 /// See also [getLastMedia].
 @ProviderFor(getLastMedia)
 const getLastMediaProvider = GetLastMediaFamily();
 
 /// See also [getLastMedia].
-class GetLastMediaFamily extends Family<AsyncValue<List<Media>>> {
+class GetLastMediaFamily extends Family<AsyncValue<List<Item>>> {
   /// See also [getLastMedia].
   const GetLastMediaFamily();
 
@@ -228,7 +228,7 @@ class GetLastMediaFamily extends Family<AsyncValue<List<Media>>> {
 }
 
 /// See also [getLastMedia].
-class GetLastMediaProvider extends AutoDisposeFutureProvider<List<Media>> {
+class GetLastMediaProvider extends AutoDisposeFutureProvider<List<Item>> {
   /// See also [getLastMedia].
   GetLastMediaProvider(
     String parentId,
@@ -263,7 +263,7 @@ class GetLastMediaProvider extends AutoDisposeFutureProvider<List<Media>> {
 
   @override
   Override overrideWith(
-    FutureOr<List<Media>> Function(GetLastMediaRef provider) create,
+    FutureOr<List<Item>> Function(GetLastMediaRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -280,7 +280,7 @@ class GetLastMediaProvider extends AutoDisposeFutureProvider<List<Media>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Media>> createElement() {
+  AutoDisposeFutureProviderElement<List<Item>> createElement() {
     return _GetLastMediaProviderElement(this);
   }
 
@@ -298,13 +298,13 @@ class GetLastMediaProvider extends AutoDisposeFutureProvider<List<Media>> {
   }
 }
 
-mixin GetLastMediaRef on AutoDisposeFutureProviderRef<List<Media>> {
+mixin GetLastMediaRef on AutoDisposeFutureProviderRef<List<Item>> {
   /// The parameter `parentId` of this provider.
   String get parentId;
 }
 
 class _GetLastMediaProviderElement
-    extends AutoDisposeFutureProviderElement<List<Media>> with GetLastMediaRef {
+    extends AutoDisposeFutureProviderElement<List<Item>> with GetLastMediaRef {
   _GetLastMediaProviderElement(super.provider);
 
   @override
@@ -758,6 +758,7 @@ class GetItemFamily extends Family<AsyncValue<EmbyResponse<Media>>> {
   /// See also [getItem].
   GetItemProvider call({
     required ({
+      String filters,
       String includeItemTypes,
       int page,
       String parentId,
@@ -799,6 +800,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
   /// See also [getItem].
   GetItemProvider({
     required ({
+      String filters,
       String includeItemTypes,
       int page,
       String parentId,
@@ -832,6 +834,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
   }) : super.internal();
 
   final ({
+    String filters,
     String includeItemTypes,
     int page,
     String parentId,
@@ -879,6 +882,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
 mixin GetItemRef on AutoDisposeFutureProviderRef<EmbyResponse<Media>> {
   /// The parameter `itemQuery` of this provider.
   ({
+    String filters,
     String includeItemTypes,
     int page,
     String parentId,
@@ -894,6 +898,7 @@ class _GetItemProviderElement
 
   @override
   ({
+    String filters,
     String includeItemTypes,
     int page,
     String parentId,
@@ -1030,6 +1035,134 @@ class _GetSimilarProviderElement
 
   @override
   String get id => (origin as GetSimilarProvider).id;
+}
+
+String _$getNextUpHash() => r'6971a7c50acb8cffede4107699a221474037c202';
+
+/// See also [getNextUp].
+@ProviderFor(getNextUp)
+const getNextUpProvider = GetNextUpFamily();
+
+/// See also [getNextUp].
+class GetNextUpFamily extends Family<AsyncValue<EmbyResponse<Media>>> {
+  /// See also [getNextUp].
+  const GetNextUpFamily();
+
+  /// See also [getNextUp].
+  GetNextUpProvider call(
+    String seriesId,
+  ) {
+    return GetNextUpProvider(
+      seriesId,
+    );
+  }
+
+  @override
+  GetNextUpProvider getProviderOverride(
+    covariant GetNextUpProvider provider,
+  ) {
+    return call(
+      provider.seriesId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getNextUpProvider';
+}
+
+/// See also [getNextUp].
+class GetNextUpProvider extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
+  /// See also [getNextUp].
+  GetNextUpProvider(
+    String seriesId,
+  ) : this._internal(
+          (ref) => getNextUp(
+            ref as GetNextUpRef,
+            seriesId,
+          ),
+          from: getNextUpProvider,
+          name: r'getNextUpProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getNextUpHash,
+          dependencies: GetNextUpFamily._dependencies,
+          allTransitiveDependencies: GetNextUpFamily._allTransitiveDependencies,
+          seriesId: seriesId,
+        );
+
+  GetNextUpProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.seriesId,
+  }) : super.internal();
+
+  final String seriesId;
+
+  @override
+  Override overrideWith(
+    FutureOr<EmbyResponse<Media>> Function(GetNextUpRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetNextUpProvider._internal(
+        (ref) => create(ref as GetNextUpRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        seriesId: seriesId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<EmbyResponse<Media>> createElement() {
+    return _GetNextUpProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetNextUpProvider && other.seriesId == seriesId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, seriesId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetNextUpRef on AutoDisposeFutureProviderRef<EmbyResponse<Media>> {
+  /// The parameter `seriesId` of this provider.
+  String get seriesId;
+}
+
+class _GetNextUpProviderElement
+    extends AutoDisposeFutureProviderElement<EmbyResponse<Media>>
+    with GetNextUpRef {
+  _GetNextUpProviderElement(super.provider);
+
+  @override
+  String get seriesId => (origin as GetNextUpProvider).seriesId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

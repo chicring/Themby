@@ -24,8 +24,12 @@ import 'package:themby/src/features/emby/presentation/widget/list_cards_h.dart';
 import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart';
 import 'package:themby/src/helper/screen_helper.dart';
 
+import 'emby_detail_external_links.dart';
+import 'emby_details_nextup.dart';
 import 'emby_media_details_appbar.dart';
 import 'emby_media_details_shimmer.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 
 class EmbyMediaDetails extends ConsumerStatefulWidget {
   final String id;
@@ -110,6 +114,9 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
                       if(mediaDetail.type == 'Series') ...{
                         const SizedBox(height: 10),
+
+                        EmbyDetailsNextUp(seriesId: mediaDetail.id),
+
                         _Seasons(mediaDetail: mediaDetail),
                       },
 
@@ -118,10 +125,13 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
                         _DetailPeople(people: mediaDetail.people, site: site),
                       },
 
-                      if(mediaDetail.type != 'Episode') ...{
-                        const SizedBox(height: 15),
-                        _ExternalLinks(externalUrls: mediaDetail.externalUrls),
+                      const SizedBox(height: 15),
+                      EmbyDetailExternalLinks(externalUrls: mediaDetail.externalUrls),
 
+
+                      if(mediaDetail.type != 'Episode') ...{
+                        // const SizedBox(height: 15),
+                        // _ExternalLinks(externalUrls: mediaDetail.externalUrls),
                         const SizedBox(height: 10),
                         _SimilarMedias(medias: mediaDetail),
                       },
@@ -257,13 +267,6 @@ class _DetailContent extends StatelessWidget {
   final MediaDetail mediaDetail;
   const _DetailContent({required this.mediaDetail, required this.site});
 
-  String _convertRuntimeTicksToMinutes(int runtimeTicks) {
-    int totalSeconds = (runtimeTicks / 10000000).round();
-    int hours = totalSeconds ~/ 3600;
-    int minutes = (totalSeconds % 3600) ~/ 60;
-    return '${hours}h ${minutes}m';
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -300,7 +303,7 @@ class _DetailContent extends StatelessWidget {
 
               if(mediaDetail.mediaType == 'Video') ...{
                 Text(
-                  _convertRuntimeTicksToMinutes(mediaDetail.runTimeTicks),
+                  tickToTime(mediaDetail.runTimeTicks),
                   style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.normal
@@ -398,11 +401,12 @@ class _DetailGenres extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Theme.of(context).colorScheme.primary;
+    Color color = Theme.of(context).colorScheme.primaryContainer;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
       child: Wrap(
         spacing: 6,
+        runSpacing: 5,
         alignment: WrapAlignment.start,
         children: genres.map((genre) => buildTag(genre,color)).toList(),
       ),
@@ -620,7 +624,9 @@ class _ExternalLinks extends StatelessWidget {
                 return Container(
                   margin: const EdgeInsets.only(right: 10), // Add this line to add space to the right of each item
                   child: ActionChip(
-                    onPressed: (){},
+                    onPressed: (){
+                      launchUrl(Uri.parse(externalUrls[index].url));
+                    },
                     avatar: const Icon(Icons.link),
                     shape: RoundedRectangleBorder(
                       borderRadius: StyleString.mdRadius,

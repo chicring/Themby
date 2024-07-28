@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
-import 'package:themby/src/common/widget/badge.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/domain/Resume.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
-import 'package:themby/src/features/emby/domain/media.dart';
 
 class MediaCardH extends ConsumerWidget{
 
@@ -84,6 +82,15 @@ class MediaCardH extends ConsumerWidget{
                           ),
                         ),
 
+                      if(media.userData?.played ?? false)
+                        Positioned(
+                          top: 3,
+                          right: 3,
+                          child: Icon(
+                            Icons.check_circle,
+                            color: Theme.of(context).colorScheme.primaryContainer,
+                          ),
+                        ),
                     ],
                   );
                 }),

@@ -6,7 +6,7 @@ final cacheOptions = CacheOptions(
   store: MemCacheStore(),
   policy: CachePolicy.request,
   maxStale: const Duration(days: 2),
-  priority: CachePriority.normal,
+  priority: CachePriority.high,
   hitCacheOnErrorExcept: [401, 403],
   keyBuilder: (request) {
     // If the request has a custom option set to bypass cache, generate a unique key

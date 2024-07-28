@@ -20,15 +20,16 @@ class EmbyResumeMedia extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
     final resumes = ref.watch(getResumeMediaProvider());
 
-    double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3);
+    double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3) * 1.3;
     double cardHeight = cardWidth * 9 / 16;
 
     return resumes.when(
         data: (data) {
-          return Column(
+          return data.isNotEmpty
+              ?
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(width: StyleString.safeSpace),
@@ -38,31 +39,55 @@ class EmbyResumeMedia extends ConsumerWidget{
                 ],
               ),
               const SizedBox(height: 10),
-              SizedBox(
-                height: cardHeight + 40,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: data.length,
-                  padding: const EdgeInsets.only(left: StyleString.safeSpace),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: cardWidth,
-                      height: cardHeight,
-                      margin: const EdgeInsets.only(
-                        right: StyleString.safeSpace,
+              Stack(
+                children: [
+                  IgnorePointer(
+                    child: Opacity(
+                      opacity: 0.0,
+                      child: Container(
+                          width: cardWidth,
+                          margin: const EdgeInsets.only(
+                            left: StyleString.safeSpace,
+                          ),
+                          child: Column(
+                            children: [
+                              MediaCardH(
+                                media: data.first,
+                              ),
+                              const SizedBox(height: 2),
+                            ],
+                          )
                       ),
-                      child: MediaCardH(
-                        media: data[index],
-                      ),
-                    );
-                  },
-                ),
-              )
+                    ),
+                  ),
+                  const SizedBox(width: double.infinity),
+                  Positioned.fill(
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.length,
+                        padding: const EdgeInsets.only(left: StyleString.safeSpace),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: cardWidth,
+                            height: cardHeight,
+                            margin: const EdgeInsets.only(
+                              right: StyleString.safeSpace,
+                            ),
+                            child: MediaCardH(
+                              media: data[index],
+                            ),
+                          );
+                        },
+                      )
+                  )
+                ],
+              ),
             ],
-          );
+          )
+              : const SizedBox();
         },
-        error: (error, stack) => ShimmerList(height: cardHeight + 55, width: cardWidth),
-        loading: () => ShimmerList(height: cardHeight, width: cardWidth),
+        error: (error, stack) => const SizedBox(),
+        loading: () => const SizedBox(),
     );
   }
 }

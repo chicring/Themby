@@ -70,7 +70,7 @@ class ScreenHelper {
     }
   }
 
-  static double getPortionAuto({int xs = 3, int sm = 2, int md = 1}){
+  static double getPortionAuto({int xs = 3, int sm = 2, int md = 1, int? custom}){
     if(screenWidth < 650){
       return xs.pw;
     }else if(screenWidth >= 650 && screenWidth < 1000){

@@ -7,7 +7,7 @@ part of 'emby_library_query_notifier.dart';
 // **************************************************************************
 
 String _$embyLibraryQueryNotifierHash() =>
-    r'522dce930a4ada58f575ac8620c27bba9c48656e';
+    r'5b81334712da02285133356258da84ea64dbd5c9';
 
 /// See also [EmbyLibraryQueryNotifier].
 @ProviderFor(EmbyLibraryQueryNotifier)

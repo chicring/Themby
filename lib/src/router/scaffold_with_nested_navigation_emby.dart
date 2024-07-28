@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/localization/string_hardcoded.dart';
 
 
-class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
+class ScaffoldWithNestedNavigationEmby extends ConsumerWidget {
   const ScaffoldWithNestedNavigationEmby({
     Key? key,
     required this.navigationShell,
@@ -18,7 +20,7 @@ class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.sizeOf(context);
     backButtonListener(Widget child) => BackButtonListener(
       onBackButtonPressed: () async {
@@ -26,7 +28,12 @@ class ScaffoldWithNestedNavigationEmby extends StatelessWidget {
 
         final currentPath = GoRouter.of(context).routerDelegate.currentConfiguration.last.route.path;
 
-        if (currentPath.startsWith('/details/') || currentPath.startsWith('/season/') || currentPath.startsWith('/player') ) {
+        if (currentPath.startsWith('/details/')) {
+          ref.refresh(getResumeMediaProvider());
+          return false;
+        }
+
+        if (currentPath.startsWith('/season/') || currentPath.startsWith('/player') ) {
           return false;
         }
 
@@ -87,11 +94,13 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
         selectedIndex: currentIndex,
         destinations: [
           NavigationDestination(
+            selectedIcon: Icon(Icons.video_library, color: Theme.of(context).colorScheme.primary),
             icon: const Icon(Icons.video_library),
             label: 'library'.hardcoded,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.favorite),
+            selectedIcon: Icon(Icons.favorite_rounded, color: Theme.of(context).colorScheme.primary),
+            icon: const Icon(Icons.favorite_border_rounded),
             label: 'favorite'.hardcoded,
           ),
         ],

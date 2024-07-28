@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/constants.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/medias_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
@@ -89,7 +90,7 @@ class _BottomControl extends ConsumerState<BottomControl> {
               const SizedBox(width: StyleString.safeSpace),
               SizedBox(
                 child: Text(
-                  '${position.inMinutes}:${position.inSeconds.remainder(60)} / ${duration.inMinutes}:${duration.inSeconds.remainder(60)}',
+                  '${durationToTime(position)} / ${durationToTime(duration)}',
                   style: StyleString.subtitleStyle.copyWith(color: Colors.white),
                 ),
               ),

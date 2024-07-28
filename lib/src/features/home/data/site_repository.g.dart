@@ -35,7 +35,7 @@ final getSitesProvider = AutoDisposeFutureProvider<List<Site>>.internal(
 );
 
 typedef GetSitesRef = AutoDisposeFutureProviderRef<List<Site>>;
-String _$addEmbySiteHash() => r'08e3f30c94fef520c70ac3d69c3a723dd9d79a06';
+String _$finaAllByTextHash() => r'f67f875e1dd4263e272492ac6e72d654d009a9e1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -57,6 +57,134 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [finaAllByText].
+@ProviderFor(finaAllByText)
+const finaAllByTextProvider = FinaAllByTextFamily();
+
+/// See also [finaAllByText].
+class FinaAllByTextFamily extends Family<AsyncValue<List<Site>>> {
+  /// See also [finaAllByText].
+  const FinaAllByTextFamily();
+
+  /// See also [finaAllByText].
+  FinaAllByTextProvider call({
+    required String text,
+  }) {
+    return FinaAllByTextProvider(
+      text: text,
+    );
+  }
+
+  @override
+  FinaAllByTextProvider getProviderOverride(
+    covariant FinaAllByTextProvider provider,
+  ) {
+    return call(
+      text: provider.text,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'finaAllByTextProvider';
+}
+
+/// See also [finaAllByText].
+class FinaAllByTextProvider extends AutoDisposeFutureProvider<List<Site>> {
+  /// See also [finaAllByText].
+  FinaAllByTextProvider({
+    required String text,
+  }) : this._internal(
+          (ref) => finaAllByText(
+            ref as FinaAllByTextRef,
+            text: text,
+          ),
+          from: finaAllByTextProvider,
+          name: r'finaAllByTextProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$finaAllByTextHash,
+          dependencies: FinaAllByTextFamily._dependencies,
+          allTransitiveDependencies:
+              FinaAllByTextFamily._allTransitiveDependencies,
+          text: text,
+        );
+
+  FinaAllByTextProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.text,
+  }) : super.internal();
+
+  final String text;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Site>> Function(FinaAllByTextRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: FinaAllByTextProvider._internal(
+        (ref) => create(ref as FinaAllByTextRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        text: text,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<Site>> createElement() {
+    return _FinaAllByTextProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FinaAllByTextProvider && other.text == text;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, text.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin FinaAllByTextRef on AutoDisposeFutureProviderRef<List<Site>> {
+  /// The parameter `text` of this provider.
+  String get text;
+}
+
+class _FinaAllByTextProviderElement
+    extends AutoDisposeFutureProviderElement<List<Site>> with FinaAllByTextRef {
+  _FinaAllByTextProviderElement(super.provider);
+
+  @override
+  String get text => (origin as FinaAllByTextProvider).text;
+}
+
+String _$addEmbySiteHash() => r'08e3f30c94fef520c70ac3d69c3a723dd9d79a06';
 
 /// See also [addEmbySite].
 @ProviderFor(addEmbySite)

@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/domain/Resume.dart';
+import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/domain/emby_response.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
@@ -25,6 +26,7 @@ typedef ItemQuery = ({
   String includeItemTypes,
   String sortBy,
   String sortOrder,
+  String filters
 });
 
 class ViewRepository{
@@ -77,7 +79,7 @@ class ViewRepository{
   }
 
 
-  Future<List<Media>> getLastMedia(String parentId, {CancelToken? cancelToken}) async {
+  Future<List<Item>> getLastMedia(String parentId, {CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -101,7 +103,7 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return List<Media>.from(response.data.map((e) => Media.fromJson(e)));
+    return List<Item>.from(response.data.map((e) => Item.fromJson(e)));
   }
 
   Future<List<Resume>> getResumeMedia({String? parentId, CancelToken? cancelToken}) async {
@@ -112,7 +114,7 @@ class ViewRepository{
         port: site.port,
         path: '/emby/Users/${site.userId}/Items/Resume',
         queryParameters: {
-          'Limit': '16',
+          'Limit': '25',
           'Fields': 'BasicSyncInfo,CanDelete,Container,PrimaryImageAspectRatio,ProductionYear,EndDate,CriticRating,OfficialRating,CommunityRating,Status',
           'ImageTypeLimit': '1',
           'EnableImageTypes': 'Primary,Backdrop,Thumb',
@@ -253,12 +255,16 @@ class ViewRepository{
           'Fields': 'BasicSyncInfo,CanDelete,CanDownload,Container,PrimaryImageAspectRatio,ProductionYear,CommunityRating,OfficialRating,Status,CriticRating,EndDate,Path',
           'SortOrder': itemQuery.sortOrder,
           'EnableUserData': 'true',
+          'Filters': itemQuery.filters,
         }
       ),
       options: Options(
         headers: {
           'X-Emby-Authorization': embyToken,
           'x-emby-token': site.accessToken,
+        },
+        extra: {
+          "bypassCache": itemQuery.filters.isEmpty ? false : true,
         }
       ),
       cancelToken: cancelToken,
@@ -292,6 +298,32 @@ class ViewRepository{
   }
 
 
+  Future<EmbyResponse<Media>> getNextUp({required String seriesId, CancelToken? cancelToken}) async {
+    final response = await client.getUri(
+      Uri(
+        scheme: site.scheme,
+        host: site.host,
+        port: site.port,
+        path: '/emby/Shows/NextUp',
+        queryParameters: {
+          'Fields': 'BasicSyncInfo,CanDelete,CanDownload,Container,PrimaryImageAspectRatio,ProductionYear,CommunityRating,OfficialRating',
+          "EnableUserData": "true",
+          "Limit": "20",
+          "EnableTotalRecordCount": "false",
+          "SeriesId": seriesId,
+        },
+      ),
+      options: Options(
+          headers: {
+            'X-Emby-Authorization': embyToken,
+            'x-emby-token': site.accessToken,
+          }
+      ),
+      cancelToken: cancelToken,
+    );
+
+    return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
+  }
 
 }
 
@@ -334,7 +366,7 @@ Future<MediaDetail> getMedia(GetMediaRef ref, String id){
 
 
 @riverpod
-Future<List<Media>> getLastMedia(GetLastMediaRef ref, String parentId ){
+Future<List<Item>> getLastMedia(GetLastMediaRef ref, String parentId ){
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getLastMedia(parentId,cancelToken: cancelToken);
 }
@@ -401,4 +433,10 @@ Future<EmbyResponse<Media>> getItem(GetItemRef ref,{required ItemQuery itemQuery
 Future<EmbyResponse<Media>> getSimilar(GetSimilarRef ref, String id) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getSimilar(id: id, cancelToken: cancelToken);
+}
+
+@riverpod
+Future<EmbyResponse<Media>> getNextUp(GetNextUpRef ref, String seriesId) {
+  final cancelToken = ref.cancelToken();
+  return ref.read(viewRepositoryProvider).getNextUp(seriesId: seriesId, cancelToken: cancelToken);
 }

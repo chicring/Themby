@@ -14,7 +14,12 @@ class EmbyLibraryQueryNotifier extends _$EmbyLibraryQueryNotifier{
       includeItemTypes: 'Series,Movie',
       sortBy: 'DateLastContentAdded,SortName',
       sortOrder: 'Descending',
+      filters: '',
     );
+  }
+
+  void setItemQuery(ItemQuery itemQuery){
+    state = itemQuery;
   }
 
 }

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
@@ -40,7 +41,6 @@ class EmbyHomeScreen extends ConsumerWidget {
               EmbyResumeMedia(),
 
               SizedBox(height: 10),
-              HeaderText(text: '媒体库'),
               EmbyView(),
 
               EmbyMediaLibrary(),
@@ -63,11 +63,12 @@ AppBar _buildAppBar(Site site,BuildContext context) {
         GoRouter.of(context).go('/home');
       },
     ),
+
     actions: [
         IconButton(
-          icon: const Icon(Icons.search, color: Colors.white),
+          icon: const Icon(Icons.search_rounded, size: 30,),
           onPressed: () {
-
+            GoRouter.of(context).push('/emby/search');
           },
         ),
         IconButton(
