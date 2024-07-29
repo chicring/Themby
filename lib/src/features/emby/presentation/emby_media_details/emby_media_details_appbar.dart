@@ -39,7 +39,7 @@ class DetailAppBar extends ConsumerWidget {
       ),
       actions: [
         IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.check_circle_outline_rounded,
               size: 28,
             ),

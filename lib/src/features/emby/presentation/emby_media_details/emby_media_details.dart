@@ -20,16 +20,20 @@ import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/domain/people.dart';
+import 'package:themby/src/features/emby/presentation/emby_media_details/emby_detail_season.dart';
 import 'package:themby/src/features/emby/presentation/widget/list_cards_h.dart';
 import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart';
 import 'package:themby/src/helper/screen_helper.dart';
 
 import 'emby_detail_external_links.dart';
+import 'emby_detail_people.dart';
 import 'emby_details_nextup.dart';
 import 'emby_media_details_appbar.dart';
 import 'emby_media_details_shimmer.dart';
 
 import 'package:url_launcher/url_launcher.dart';
+
+import 'emby_media_similar.dart';
 
 class EmbyMediaDetails extends ConsumerStatefulWidget {
   final String id;
@@ -117,25 +121,18 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
                         EmbyDetailsNextUp(seriesId: mediaDetail.id),
 
-                        _Seasons(mediaDetail: mediaDetail),
+                        EmbyDetailSeason(id: mediaDetail.id),
                       },
 
                       if(mediaDetail.people.isNotEmpty)...{
                         const SizedBox(height: 10),
-                        _DetailPeople(people: mediaDetail.people, site: site),
+                        // DetailPeople(people: mediaDetail.people, site: site),
                       },
 
                       const SizedBox(height: 15),
                       EmbyDetailExternalLinks(externalUrls: mediaDetail.externalUrls),
 
-
-                      if(mediaDetail.type != 'Episode') ...{
-                        // const SizedBox(height: 15),
-                        // _ExternalLinks(externalUrls: mediaDetail.externalUrls),
-                        const SizedBox(height: 10),
-                        _SimilarMedias(medias: mediaDetail),
-                      },
-
+                      SimilarMedias(id: mediaDetail.id),
 
                       const SizedBox(height: 10),
                       if (mediaDetail.mediaType == 'Video')
@@ -513,194 +510,89 @@ class _DetailOverview extends StatelessWidget {
   }
 }
 
-/// 演员
-class _DetailPeople extends StatelessWidget {
-  final Site site;
-  final List<People> people;
-  const _DetailPeople({required this.people, required this.site});
-
-  @override
-  Widget build(BuildContext context) {
-
-    double cardWidth = ScreenHelper.getPortionAuto();
-    double cardHeight = cardWidth / 0.65;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Row(
-          children: [
-            SizedBox(width: StyleString.safeSpace),
-            Text(
-              '演员',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: StyleString.safeSpace),
-        SizedBox(
-          height: cardHeight + 50,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: people.length,
-            padding: const EdgeInsets.only(left: StyleString.safeSpace),
-            itemBuilder: (context,index) {
-              return Container(
-                margin: const EdgeInsets.only(right: StyleString.safeSpace),
-                width: cardWidth,
-                child: Column(
-                  children: [
-                    NetworkImgLayer(
-                      imageUrl: getImageUrl(
-                          site,
-                          people[index].id,
-                          ImageProps(
-                            tag: people[index].primaryImageTag,
-                            type: ImageType.primary,
-                          )
-                      ),
-                      width: cardWidth,
-                      height: cardHeight,
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      people[index].name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      people[index].role,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// 外部链接
-class _ExternalLinks extends StatelessWidget {
-  final List<ExternalUrl> externalUrls;
-  const _ExternalLinks({required this.externalUrls});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            '外部链接',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 40,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: externalUrls.length,
-              itemBuilder: (context,index) {
-                return Container(
-                  margin: const EdgeInsets.only(right: 10), // Add this line to add space to the right of each item
-                  child: ActionChip(
-                    onPressed: (){
-                      launchUrl(Uri.parse(externalUrls[index].url));
-                    },
-                    avatar: const Icon(Icons.link),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: StyleString.mdRadius,
-                    ),
-                    label: Text(externalUrls[index].name),
-                  ),
-                );
-              },
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-/// 季
-class _Seasons extends ConsumerWidget {
-  final MediaDetail mediaDetail;
-  const _Seasons({required this.mediaDetail});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(getSeasonsProvider(mediaDetail.id));
-
-    double cardWidth = ScreenHelper.getPortionAuto();
-    double cardHeight = cardWidth /0.65;
+// /// 演员
+// class _DetailPeople extends StatelessWidget {
+//   final Site site;
+//   final List<People> people;
+//   const _DetailPeople({required this.people, required this.site});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//
+//     double cardWidth = ScreenHelper.getPortionAuto();
+//     double cardHeight = cardWidth / 0.65;
+//
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const Row(
+//           children: [
+//             SizedBox(width: StyleString.safeSpace),
+//             Text(
+//               '演员',
+//               style: TextStyle(
+//                 fontSize: 16,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//           ],
+//         ),
+//         const SizedBox(height: StyleString.safeSpace),
+//         SizedBox(
+//           height: cardHeight + 50,
+//           child: ListView.builder(
+//             scrollDirection: Axis.horizontal,
+//             itemCount: people.length,
+//             padding: const EdgeInsets.only(left: StyleString.safeSpace),
+//             itemBuilder: (context,index) {
+//               return Container(
+//                 margin: const EdgeInsets.only(right: StyleString.safeSpace),
+//                 width: cardWidth,
+//                 child: Column(
+//                   children: [
+//                     NetworkImgLayer(
+//                       imageUrl: getImageUrl(
+//                           site,
+//                           people[index].id,
+//                           ImageProps(
+//                             tag: people[index].primaryImageTag,
+//                             type: ImageType.primary,
+//                           )
+//                       ),
+//                       width: cardWidth,
+//                       height: cardHeight,
+//                     ),
+//                     const SizedBox(height: 5),
+//                     Text(
+//                       people[index].name,
+//                       maxLines: 1,
+//                       overflow: TextOverflow.ellipsis,
+//                       style: const TextStyle(
+//                         fontSize: 12,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 3),
+//                     Text(
+//                       people[index].role,
+//                       maxLines: 1,
+//                       overflow: TextOverflow.ellipsis,
+//                       style: const TextStyle(
+//                         fontSize: 11,
+//                         color: Colors.grey,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               );
+//             },
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 
-    return data.when(
-      data: (seasons) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(width: StyleString.safeSpace),
-                Text(
-                  '季',
-                  style: StyleString.titleStyle,
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: cardHeight + 30,
-              child: seasons.isEmpty ?
-              const Center(child: Text('暂无数据')) :
-              ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: seasons.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: cardWidth,
-                    height: cardHeight,
-                    margin: const EdgeInsets.only(
-                      left: StyleString.safeSpace,
-                    ),
-                    child: SeasonCardV(
-                      season: seasons[index],
-                    ),
-                  );
-                },
-              ),
-            )
-          ],
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace'))
-    );
-  }
-}
 
 class _Episodes extends ConsumerWidget {
   final List<Episode> episodes;
@@ -725,65 +617,6 @@ class _Collections extends StatelessWidget {
   }
 }
 
-/// 相似影片
-class _SimilarMedias extends ConsumerWidget{
-  final MediaDetail medias;
-  const _SimilarMedias({required this.medias});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(getSimilarProvider(medias.id));
-
-    return data.when(
-        data: (data) => ListCardsH(name: '相似推荐', parentId: '1', medias: data.items, showMore: false),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace')),
-    );
-    // return data.when(
-    //   data: (medias) {
-    //     return Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         const Row(
-    //           crossAxisAlignment: CrossAxisAlignment.start,
-    //           children: [
-    //             SizedBox(width: StyleString.safeSpace),
-    //             Text(
-    //               '相似影片',
-    //               style: StyleString.titleStyle,
-    //             ),
-    //           ],
-    //         ),
-    //         const SizedBox(height: 8),
-    //         SizedBox(
-    //           height: MediaQuery.sizeOf(context).height * 0.18 + 50,
-    //           child: medias.items.isEmpty ?
-    //           const Center(child: Text('暂无数据')) :
-    //           ListView.builder(
-    //             scrollDirection: Axis.horizontal,
-    //             itemCount: medias.totalRecordCount,
-    //             itemBuilder: (context, index) {
-    //               return Container(
-    //                 width: MediaQuery.sizeOf(context).height * 0.117,
-    //                 height: MediaQuery.sizeOf(context).height * 0.18,
-    //                 margin: const EdgeInsets.only(
-    //                   left: StyleString.safeSpace,
-    //                 ),
-    //                 child: MediaCardV(
-    //                   media: medias.items[index],
-    //                 ),
-    //               );
-    //             },
-    //           ),
-    //         )
-    //       ],
-    //     );
-    //   },
-    //   loading: () => const Center(child: CircularProgressIndicator()),
-    //   error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace')),
-    // );
-  }
-}
 
 /// 媒体详细信息
 class _MediaDetail extends StatelessWidget {

@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:themby/src/helper/screen_helper.dart';
 
-import 'media_card_v.dart';
+import 'season_card_v.dart';
 
-class ListCardsH extends ConsumerWidget{
-  const ListCardsH({super.key, required this.name, required this.parentId, required this.items, this.showMore = true, this.onSelect});
+
+
+class ListSeasonCardH extends ConsumerWidget{
+  const ListSeasonCardH({super.key, required this.name, required this.items,});
 
   final String name;
-  final String parentId;
   final List<Item> items;
-
-  final Function? onSelect;
-  final bool showMore;
 
 
   @override
@@ -34,18 +33,6 @@ class ListCardsH extends ConsumerWidget{
               padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
               child: Text(name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
-            Opacity(
-                opacity: showMore ? 1.0 : 0.0,
-                child: IconButton(
-                  padding: const EdgeInsets.all(0),
-                  onPressed: () async{
-                    onSelect != null ? onSelect!() :
-                    GoRouter.of(context).push(Uri(path: '/library/$parentId', queryParameters: {'title': name}).toString());
-                  },
-                  icon: const Icon(Icons.arrow_forward_ios_rounded,size: 13),
-                  // child: const Text('查看更多'),
-                )
-            ),
           ],
         ),
         const SizedBox(height: 5),
@@ -61,7 +48,7 @@ class ListCardsH extends ConsumerWidget{
                       margin: const EdgeInsets.only(
                         left: StyleString.safeSpace,
                       ),
-                      child: MediaCardV(
+                      child: SeasonCardV(
                         item: items.first,
                         width: cardWidth,
                         height: cardHeight,
@@ -81,7 +68,7 @@ class ListCardsH extends ConsumerWidget{
                   itemBuilder: (context, index) {
                     return Container(
                       padding: const EdgeInsets.only(left: StyleString.safeSpace),
-                      child: MediaCardV(
+                      child: SeasonCardV(
                         item: items[index],
                         width: cardWidth,
                         height: cardHeight,

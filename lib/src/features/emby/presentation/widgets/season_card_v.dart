@@ -5,14 +5,12 @@ import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/badge.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
-import 'package:themby/src/features/emby/application/emby_state_service.dart';
-import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
-import 'package:themby/src/features/emby/domain/image_props.dart';
 
-class MediaCardV extends ConsumerWidget{
 
-  const MediaCardV({
+class SeasonCardV extends ConsumerWidget{
+
+  const SeasonCardV({
     super.key,
     required this.item,
     required this.width,
@@ -44,7 +42,7 @@ class MediaCardV extends ConsumerWidget{
       color: Colors.transparent,
       child: InkWell(
         onTap: () async {
-          GoRouter.of(context).push('/details/${item.id}');
+          GoRouter.of(context).push('/season/${item.id}');
         },
         onLongPress: () async {
           await Haptics.vibrate(HapticsType.selection);
@@ -71,28 +69,7 @@ class MediaCardV extends ConsumerWidget{
                       top: 6,
                       right: 6,
                     ),
-                  if(item.communityRating != null)
-                    PBadge(
-                      text: item.communityRating.toString(),
-                      bottom: 6,
-                      left: 6,
-                      type: 'gray',
-                    ),
 
-                  if(item.userData?.playedPercentage != null)
-                    Positioned(
-                      bottom: 0,
-                      child: Container(
-                        width: width,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 2,
-                        ),
-                        child: LinearProgressIndicator(
-                          value: (item.userData?.playedPercentage ?? 0) / 100,
-                          backgroundColor: Colors.grey.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),
@@ -100,7 +77,6 @@ class MediaCardV extends ConsumerWidget{
               width: width,
               child: MediaContent(item: item),
             ),
-
           ],
         ),
       ),
@@ -132,14 +108,6 @@ class MediaContent extends StatelessWidget{
             ),
           ),
           const SizedBox(height: 1),
-          Text(
-            item.productionYear.toString(),
-            maxLines: 1,
-            style: TextStyle(
-              fontSize: 12,
-              color: Theme.of(context).colorScheme.outline,
-            ),
-          ),
         ],
       ),
     );

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
-import 'package:themby/src/features/emby/presentation/widget/list_cards_hh.dart';
+import 'package:themby/src/features/emby/presentation/widgets/list_cards_hh.dart';
 
 class EmbyDetailsNextUp extends ConsumerWidget{
   const EmbyDetailsNextUp({super.key, required this.seriesId});
@@ -20,7 +20,7 @@ class EmbyDetailsNextUp extends ConsumerWidget{
         return data.items.isNotEmpty
         ? ListCardsHh(
           name: '继续观看',
-          medias: data.items,
+          items: data.items,
           onSelect: () {
           },
         )

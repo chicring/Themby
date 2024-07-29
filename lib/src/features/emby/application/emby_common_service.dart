@@ -50,6 +50,3 @@ String tickToTime(int ticks) {
 }
 
 
-// String getImageUrl(String site, String id, String tag) {
-//   return '$site/emby/Items/$id/Images/$tag';
-// }

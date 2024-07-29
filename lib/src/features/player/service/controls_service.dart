@@ -35,7 +35,7 @@ class ControlsService extends _$ControlsService{
     if (info.type == 'Series') {
       await ref.read(getNextUpProvider(info.id).future)
           .then((value) {
-            requestId = value.items[0].id;
+            requestId = value.items[0].id!;
         });
     }
 
@@ -53,11 +53,11 @@ class ControlsService extends _$ControlsService{
     if(info.type == 'Episode') {
       final media = await ref.read(GetMediaProvider(info.id).future);
       final episodes = await ref.read(getEpisodesProvider(media.parentId,media.parentId).future);
-      ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
+      // ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
     } else if(info.type == 'Series') {
       await ref.read(getNextUpProvider(info.id).future);
       final episodes = await ref.read(getEpisodesProvider(info.id,info.id).future);
-      ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
+      // ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
     }
 
     state = state.copyWith(mediaId: info.id, mediaSourceId: mediaSourceId, playSessionId: playSessionId);

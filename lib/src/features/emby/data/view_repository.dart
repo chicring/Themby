@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/domain/Resume.dart';
+import 'package:themby/src/features/emby/domain/emby/custom/images_custom.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/domain/emby_response.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
@@ -103,10 +104,18 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return List<Item>.from(response.data.map((e) => Item.fromJson(e)));
+    final list = List<Item>.from(
+      response.data.map((e) {
+        final item = Item.fromJson(e);
+        item.imagesCustom = ImagesCustom.builder(item, site);
+        return item;
+      }),
+    );
+    return list;
+
   }
 
-  Future<List<Resume>> getResumeMedia({String? parentId, CancelToken? cancelToken}) async {
+  Future<List<Item>> getResumeMedia({String? parentId, CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -132,7 +141,14 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return List<Resume>.from(response.data["Items"].map((e) => Resume.fromJson(e)));
+    final list = List<Item>.from(
+      response.data["Items"].map((e) {
+        final item = Item.fromJson(e);
+        item.imagesCustom = ImagesCustom.builder(item, site);
+        return item;
+      }),
+    );
+    return list;
   }
 
   Future<List<Media>> getRecommendations({CancelToken? cancelToken}) async {
@@ -187,7 +203,7 @@ class ViewRepository{
     return List<Media>.from(response.data["Items"].map((e) => Media.fromJson(e)));
   }
 
-  Future<List<Season>> getSeasons(String seriesId, {CancelToken? cancelToken}) async {
+  Future<List<Item>> getSeasons(String seriesId, {CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -208,10 +224,17 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return EmbyResponse<Season>.fromJson(response.data, (json) => Season.fromJson(json)).items;
+    final list = List<Item>.from(
+      response.data['Items'].map((e) {
+        final item = Item.fromJson(e);
+        item.imagesCustom = ImagesCustom.builder(item, site);
+        return item;
+      }),
+    );
+    return list;
   }
 
-  Future<List<Episode>> getEpisodes(String sid, String vid, {CancelToken? cancelToken}) async {
+  Future<List<Item>> getEpisodes(String sid, String vid, {CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -233,7 +256,14 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return EmbyResponse<Episode>.fromJson(response.data, (json) => Episode.fromJson(json)).items;
+    final list = List<Item>.from(
+      response.data['Items'].map((e) {
+        final item = Item.fromJson(e);
+        item.imagesCustom = ImagesCustom.builder(item, site);
+        return item;
+      }),
+    );
+    return list;
   }
 
   Future<EmbyResponse<Media>> getItem({required ItemQuery itemQuery, CancelToken? cancelToken}) async {
@@ -272,7 +302,7 @@ class ViewRepository{
     return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
   }
 
-  Future<EmbyResponse<Media>> getSimilar({required String id, CancelToken? cancelToken}) async {
+  Future<EmbyResponse<Item>> getSimilar({required String id, CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -294,11 +324,17 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
+    final resp = EmbyResponse<Item>.fromJson(response.data, (json) {
+      final item = Item.fromJson(json);
+      item.imagesCustom = ImagesCustom.builder(item, site);
+      return item;
+    });
+
+    return resp;
   }
 
 
-  Future<EmbyResponse<Media>> getNextUp({required String seriesId, CancelToken? cancelToken}) async {
+  Future<EmbyResponse<Item>> getNextUp({required String seriesId, CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -322,7 +358,13 @@ class ViewRepository{
       cancelToken: cancelToken,
     );
 
-    return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
+    final resp = EmbyResponse<Item>.fromJson(response.data, (json) {
+      final item = Item.fromJson(json);
+      item.imagesCustom = ImagesCustom.builder(item, site);
+      return item;
+    });
+
+    return resp;
   }
 
 }
@@ -372,7 +414,7 @@ Future<List<Item>> getLastMedia(GetLastMediaRef ref, String parentId ){
 }
 
 @riverpod
-Future<List<Resume>> getResumeMedia(GetResumeMediaRef ref, {String? parentId }) {
+Future<List<Item>> getResumeMedia(GetResumeMediaRef ref, {String? parentId }) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getResumeMedia(parentId: parentId, cancelToken: cancelToken);
 }
@@ -390,13 +432,13 @@ Future<List<Media>> getSuggestions(GetSuggestionsRef ref) {
 }
 
 @riverpod
-Future<List<Season>> getSeasons(GetSeasonsRef ref, String seriesId) {
+Future<List<Item>> getSeasons(GetSeasonsRef ref, String seriesId) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getSeasons(seriesId, cancelToken: cancelToken);
 }
 
 @riverpod
-Future<List<Episode>> getEpisodes(GetEpisodesRef ref, String sid, String vid) {
+Future<List<Item>> getEpisodes(GetEpisodesRef ref, String sid, String vid) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getEpisodes(sid, vid, cancelToken: cancelToken);
 }
@@ -430,13 +472,13 @@ Future<EmbyResponse<Media>> getItem(GetItemRef ref,{required ItemQuery itemQuery
 
 
 @riverpod
-Future<EmbyResponse<Media>> getSimilar(GetSimilarRef ref, String id) {
+Future<EmbyResponse<Item>> getSimilar(GetSimilarRef ref, String id) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getSimilar(id: id, cancelToken: cancelToken);
 }
 
 @riverpod
-Future<EmbyResponse<Media>> getNextUp(GetNextUpRef ref, String seriesId) {
+Future<EmbyResponse<Item>> getNextUp(GetNextUpRef ref, String seriesId) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getNextUp(seriesId: seriesId, cancelToken: cancelToken);
 }

@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'album_artist.dart';
 import 'chapter.dart';
+import 'custom/images_custom.dart';
 import 'external_url.dart';
 import 'genre_item.dart';
 import 'image_tags.dart';
@@ -290,6 +291,8 @@ class Item {
   // int? songCount;
   // @JsonKey(name: "MusicVideoCount")
   // int? musicVideoCount;
+  @JsonKey(ignore: true)
+  ImagesCustom? imagesCustom;
 
   Item({
     this.name,
@@ -409,6 +412,7 @@ class Item {
     this.currentProgram,
     this.movieCount,
     this.seriesCount,
+    this.imagesCustom,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
