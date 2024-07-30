@@ -26,6 +26,10 @@ class MediaCardH extends ConsumerWidget{
   @override
   Widget build(BuildContext context,WidgetRef ref) {
 
+    final String imageUrl = (item.imagesCustom?.primary.isNotEmpty ?? false)
+        ? item.imagesCustom?.primary ?? ''
+        : item.imagesCustom?.backdrop ?? '';
+
     return Card(
       elevation: 0,
       clipBehavior: Clip.hardEdge,
@@ -47,7 +51,7 @@ class MediaCardH extends ConsumerWidget{
               child: Stack(
                 children: [
                   NetworkImgLayer(
-                    imageUrl: item.imagesCustom!.primary,
+                    imageUrl: imageUrl,
                     width: width,
                     height: height,
                   ),

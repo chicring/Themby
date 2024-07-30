@@ -68,14 +68,14 @@ class EpisodeCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${item.indexNumber}.  ${item.name}',
+                        '${item.indexNumber}. ${item.name}',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: StyleString.titleStyle,
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        tickToTime(item.runTimeTicks ?? 0),
+                        tickToTimeWithSeconds(item.runTimeTicks ?? 0),
                         style: StyleString.subtitleStyle.copyWith(color: Colors.grey),
                       )
                     ],

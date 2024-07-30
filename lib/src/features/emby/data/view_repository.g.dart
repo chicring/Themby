@@ -35,7 +35,7 @@ final getViewsProvider = AutoDisposeFutureProvider<View>.internal(
 );
 
 typedef GetViewsRef = AutoDisposeFutureProviderRef<View>;
-String _$getMediaHash() => r'25c02dce441036fee6ce342c09ca4d92f04a127e';
+String _$getMediaHash() => r'0cba85fbb6dd4cf2348e7cb9a55d1e259c619900';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -63,7 +63,7 @@ class _SystemHash {
 const getMediaProvider = GetMediaFamily();
 
 /// See also [getMedia].
-class GetMediaFamily extends Family<AsyncValue<MediaDetail>> {
+class GetMediaFamily extends Family<AsyncValue<Item>> {
   /// See also [getMedia].
   const GetMediaFamily();
 
@@ -101,7 +101,7 @@ class GetMediaFamily extends Family<AsyncValue<MediaDetail>> {
 }
 
 /// See also [getMedia].
-class GetMediaProvider extends AutoDisposeFutureProvider<MediaDetail> {
+class GetMediaProvider extends AutoDisposeFutureProvider<Item> {
   /// See also [getMedia].
   GetMediaProvider(
     String id,
@@ -135,7 +135,7 @@ class GetMediaProvider extends AutoDisposeFutureProvider<MediaDetail> {
 
   @override
   Override overrideWith(
-    FutureOr<MediaDetail> Function(GetMediaRef provider) create,
+    FutureOr<Item> Function(GetMediaRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -152,7 +152,7 @@ class GetMediaProvider extends AutoDisposeFutureProvider<MediaDetail> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<MediaDetail> createElement() {
+  AutoDisposeFutureProviderElement<Item> createElement() {
     return _GetMediaProviderElement(this);
   }
 
@@ -170,13 +170,13 @@ class GetMediaProvider extends AutoDisposeFutureProvider<MediaDetail> {
   }
 }
 
-mixin GetMediaRef on AutoDisposeFutureProviderRef<MediaDetail> {
+mixin GetMediaRef on AutoDisposeFutureProviderRef<Item> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
-class _GetMediaProviderElement
-    extends AutoDisposeFutureProviderElement<MediaDetail> with GetMediaRef {
+class _GetMediaProviderElement extends AutoDisposeFutureProviderElement<Item>
+    with GetMediaRef {
   _GetMediaProviderElement(super.provider);
 
   @override

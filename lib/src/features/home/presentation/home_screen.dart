@@ -33,12 +33,12 @@ class HomeScreen extends ConsumerWidget {
         title: Text('连接'.hardcoded, style: StyleString.headerStyle.copyWith(fontSize: 30)),
         actions: [
           IconButton(
-              icon: const Icon(Icons.cloud_sync),
+              icon: const Icon(Icons.cloud_sync_outlined),
               onPressed: () {
               }
           ),
           IconButton(
-            icon: const Icon(Icons.settings_rounded),
+            icon: const Icon(Icons.settings_outlined),
             onPressed: () {
               GoRouter.of(context).push('/mine');
             },

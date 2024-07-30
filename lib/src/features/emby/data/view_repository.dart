@@ -6,15 +6,12 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
-import 'package:themby/src/features/emby/domain/Resume.dart';
 import 'package:themby/src/features/emby/domain/emby/custom/images_custom.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/domain/emby_response.dart';
-import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/domain/query/item_options.dart';
-import 'package:themby/src/features/emby/domain/season.dart';
 import 'package:themby/src/features/emby/domain/view.dart';
 import 'package:themby/src/helper/cancel_token_ref.dart';
 import 'package:themby/src/helper/dio_provider.dart';
@@ -59,7 +56,7 @@ class ViewRepository{
     return View.fromJson(response.data);
   }
 
-  Future<MediaDetail> getMedia(String id, {CancelToken? cancelToken }) async{
+  Future<Item> getMedia(String id, {CancelToken? cancelToken }) async{
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -75,8 +72,9 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-
-    return MediaDetail.fromJson(response.data);
+    final item = Item.fromJson(response.data);
+    item.imagesCustom = ImagesCustom.builder(item, site);
+    return item;
   }
 
 
@@ -398,7 +396,7 @@ Future<View> getViews(GetViewsRef ref){
 }
 
 @riverpod
-Future<MediaDetail> getMedia(GetMediaRef ref, String id){
+Future<Item> getMedia(GetMediaRef ref, String id){
   final viewRepo = ref.read(viewRepositoryProvider);
 
   final cancelToken = ref.cancelToken();

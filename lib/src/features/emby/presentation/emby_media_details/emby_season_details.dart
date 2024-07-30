@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
@@ -45,6 +46,8 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
     final Site? site = ref.watch(embyStateServiceProvider.select((value) => value.site));
     final episodes = ref.watch(getEpisodesProvider(widget.id,widget.id));
 
+    final item = ref.watch(GetMediaProvider(widget.id)).valueOrNull;
+
     double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3);
     double cardHeight = cardWidth * 9 / 16;
 
@@ -54,8 +57,7 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
           controller: _controller,
           slivers: [
             SeasonAppBar(
-              episodes: data[0],
-              site: site!,
+              item: item!,
               titleStreamC: titleStreamC,
             ),
             SliverList(
@@ -83,15 +85,18 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
 
 
 class SeasonAppBar extends StatelessWidget {
-  final Item episodes;
-  final Site site;
+  final Item item;
   final StreamController<bool> titleStreamC;
-  const SeasonAppBar({super.key, required this.episodes, required this.site, required this.titleStreamC});
+  const SeasonAppBar({super.key, required this.item,required this.titleStreamC});
 
 
   @override
   Widget build(BuildContext context) {
     final double heightBar = MediaQuery.sizeOf(context).width * 0.65;
+
+    final String imageUrl = (item.imagesCustom?.backdrop.isNotEmpty ?? false)
+        ? item.imagesCustom?.backdrop ?? ''
+        : item.imagesCustom?.primary ?? '';
 
     return SliverAppBar(
       expandedHeight: heightBar - MediaQuery.of(context).padding.top,
@@ -102,28 +107,49 @@ class SeasonAppBar extends StatelessWidget {
         stream: titleStreamC.stream,
         initialData: false,
         builder: (context, snapshot) {
-          return snapshot.data == true ? Text('${episodes.seriesName} ${episodes.seasonName}', style: StyleString.titleStyle) : const SizedBox();
+          return snapshot.data == true ? Text('${item.seriesName} ${item.name}', style: StyleString.titleStyle) : const SizedBox();
         },
       ),
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         stretchModes: const [StretchMode.fadeTitle],
-        background: Container(
-          foregroundDecoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.center,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Theme.of(context).scaffoldBackgroundColor,
-              ],
+        background: Stack(
+          children: [
+            SizedBox(
+              child: NetworkImgLayer(
+                imageUrl: imageUrl,
+                width: MediaQuery.sizeOf(context).width,
+                height: MediaQuery.sizeOf(context).width * 0.65,
+              ),
             ),
-          ),
-          child: NetworkImgLayer(
-            imageUrl: episodes.imagesCustom?.backdrop,
-            width: MediaQuery.sizeOf(context).width,
-            height: heightBar,
-          ),
+            Container(
+              height: heightBar,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.transparent, Theme.of(context).scaffoldBackgroundColor],
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                  stops: const [0.0, 0.9],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 20,
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: heightBar * 0.33,
+                  // maxWidth: width * 0.5,
+                  minHeight: heightBar * 0.2,
+                  // minWidth: width * 0.3,
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: item.imagesCustom!.logo,
+                  errorWidget: (_,__,___) => Text('${item.seriesName} ${item.name}', style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

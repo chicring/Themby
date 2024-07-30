@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:themby/src/common/constants.dart';
-import 'package:themby/src/features/emby/domain/media_detail.dart';
+import 'package:themby/src/features/emby/domain/emby/external_url.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EmbyDetailExternalLinks extends StatelessWidget{
@@ -49,13 +49,13 @@ class EmbyDetailExternalLinks extends StatelessWidget{
                   margin: const EdgeInsets.only(right: 10), // Add this line to add space to the right of each item
                   child: ActionChip(
                     onPressed: (){
-                      launchUrl(Uri.parse(externalUrls[index].url));
+                      launchUrl(Uri.parse(externalUrls[index].url!));
                     },
-                    avatar: buildAvatar(externalUrls[index].name),
+                    avatar: buildAvatar(externalUrls[index].name!),
                     shape: RoundedRectangleBorder(
                       borderRadius: StyleString.mdRadius,
                     ),
-                    label: Text(externalUrls[index].name),
+                    label: Text(externalUrls[index].name!),
                   ),
                 );
               },

@@ -68,6 +68,7 @@ class _HomeAddState extends ConsumerState<HomeAddSite> {
                           borderRadius: StyleString.lgRadius,
                         ),
                       ),
+                      keyboardType: TextInputType.url,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a host';
@@ -144,10 +145,12 @@ class _HomeAddState extends ConsumerState<HomeAddSite> {
                         username: state.usernameController.text,
                         password: state.passwordController.text,
                       )).future);
-                      await ref.refresh(getSitesProvider.future);
 
                       await SmartDialog.showToast('添加成功');
+                      await ref.refresh(getSitesProvider.future);
                       SmartDialog.dismiss();
+                      SmartDialog.dismiss();
+
                     }
                   },
                 ),

@@ -19,19 +19,15 @@ import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
-import 'package:themby/src/features/emby/domain/people.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_detail_season.dart';
-import 'package:themby/src/features/emby/presentation/widget/list_cards_h.dart';
-import 'package:themby/src/features/emby/presentation/widget/season_card_v.dart';
-import 'package:themby/src/helper/screen_helper.dart';
 
 import 'emby_detail_external_links.dart';
+
 import 'emby_detail_people.dart';
 import 'emby_details_nextup.dart';
 import 'emby_media_details_appbar.dart';
 import 'emby_media_details_shimmer.dart';
 
-import 'package:url_launcher/url_launcher.dart';
 
 import 'emby_media_similar.dart';
 
@@ -102,41 +98,42 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
             body: CustomScrollView(
               controller: _controller,
               slivers: [
-                DetailAppBar(site: site!, mediaDetail: mediaDetail, titleStreamC: titleStreamC),
+                DetailAppBar(id: mediaDetail.id!, titleStreamC: titleStreamC),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
 
-                      const SizedBox(height: 10),
-                      _DetailContent(mediaDetail: mediaDetail,site: site),
-
-                      const SizedBox(height: 10),
-                      _DetailGenres(genres: mediaDetail.genres),
-
-                      const SizedBox(height: 5),
-                      _DetailOverview(mediaDetail: mediaDetail, site: site),
+                      // const SizedBox(height: 10),
+                      // _DetailContent(mediaDetail: mediaDetail,site: site),
+                      //
+                      // const SizedBox(height: 10),
+                      // _DetailGenres(genres: mediaDetail.genres),
+                      //
+                      // const SizedBox(height: 5),
+                      // _DetailOverview(mediaDetail: mediaDetail, site: site),
 
                       if(mediaDetail.type == 'Series') ...{
                         const SizedBox(height: 10),
 
-                        EmbyDetailsNextUp(seriesId: mediaDetail.id),
+                        EmbyDetailsNextUp(seriesId: mediaDetail.id!),
 
-                        EmbyDetailSeason(id: mediaDetail.id),
+                        EmbyDetailSeason(id: mediaDetail.id!),
                       },
 
-                      if(mediaDetail.people.isNotEmpty)...{
+
+                      if(mediaDetail.people?.isNotEmpty == true)...{
                         const SizedBox(height: 10),
-                        // DetailPeople(people: mediaDetail.people, site: site),
+                        DetailPeople(people: mediaDetail.people!),
                       },
 
                       const SizedBox(height: 15),
-                      EmbyDetailExternalLinks(externalUrls: mediaDetail.externalUrls),
+                      EmbyDetailExternalLinks(externalUrls: mediaDetail.externalUrls!),
 
-                      SimilarMedias(id: mediaDetail.id),
+                      SimilarMedias(id: mediaDetail.id!),
 
                       const SizedBox(height: 10),
                       if (mediaDetail.mediaType == 'Video')
-                        _MediaDetail(mediaDetail: mediaDetail),
+                        // _MediaDetail(mediaDetail: mediaDetail),
 
                       const SizedBox(height: 100),
                     ],

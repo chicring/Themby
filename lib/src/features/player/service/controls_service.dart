@@ -52,7 +52,7 @@ class ControlsService extends _$ControlsService{
 
     if(info.type == 'Episode') {
       final media = await ref.read(GetMediaProvider(info.id).future);
-      final episodes = await ref.read(getEpisodesProvider(media.parentId,media.parentId).future);
+      // final episodes = await ref.read(getEpisodesProvider(media.parentId,media.parentId).future);
       // ref.read(mediasServiceProvider.notifier).setEpisode(episodes);
     } else if(info.type == 'Series') {
       await ref.read(getNextUpProvider(info.id).future);

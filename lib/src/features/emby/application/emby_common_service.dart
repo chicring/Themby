@@ -1,18 +1,19 @@
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/domiani/play_info.dart';
+import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 
 
 /// 获取视频播放信息
-PlayInfo getPlayInfo(MediaDetail detail) {
+PlayInfo getPlayInfo(Item item) {
 
-  final int duration = detail.userData.playbackPositionTicks ?? 0;
+  final int duration = item.userData?.playbackPositionTicks ?? 0;
 
   return PlayInfo(
-    id: detail.id,
-    type: detail.type,
-    index: detail.indexNumber,
+    id: item.id!,
+    type: item.type!,
+    index: item.indexNumber ?? 0,
     duration:  Duration(milliseconds: duration ~/ 10000),
   );
 }
@@ -49,4 +50,12 @@ String tickToTime(int ticks) {
   return '${hours > 0 ? '$hours' 'h ' : ''}$minutes''m';
 }
 
+/// tick 转换成 HH h mm m s 格式
+String tickToTimeWithSeconds(int ticks) {
+  final int duration = ticks ~/ 10000000;
+  final int hours = duration ~/ 3600;
+  final int minutes = (duration % 3600) ~/ 60;
+  final int seconds = duration % 60;
 
+  return '${hours > 0 ? '$hours' 'h ' : ''}$minutes''m $seconds''s';
+}

@@ -22,7 +22,7 @@ class ListCardsHh extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3) * 1.2;
+    double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3) * 1.3;
     double cardHeight = cardWidth * 9 / 16;
 
     return Column(
