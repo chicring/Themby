@@ -99,8 +99,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
       specialFeatureCount: (json['SpecialFeatureCount'] as num?)?.toInt(),
       displayPreferencesId: json['DisplayPreferencesId'] as String?,
       tags: (json['Tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      primaryImageAspectRatio:
-          (json['PrimaryImageAspectRatio'] as num?)?.toInt(),
+      primaryImageAspectRatio: json['PrimaryImageAspectRatio'] as num?,
       collectionType: json['CollectionType'] as String?,
       displayOrder: json['DisplayOrder'] as String?,
       seriesPrimaryImageTag: json['SeriesPrimaryImageTag'] as String?,

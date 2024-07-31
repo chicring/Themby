@@ -329,6 +329,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  dropdown_button2:
+    dependency: "direct main"
+    description:
+      name: dropdown_button2
+      sha256: "68845af17775c57628d8018b450be3467c5f8de386b801fbad4eaa6fff7a9ee5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0-beta.16"
   dynamic_color:
     dependency: "direct main"
     description:
@@ -789,6 +797,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  palette_generator:
+    dependency: "direct main"
+    description:
+      name: palette_generator
+      sha256: d50fbcd69abb80c5baec66d700033b1a320108b1aa17a5961866a12c0abb7c0c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3+4"
   path:
     dependency: transitive
     description:
@@ -1406,10 +1422,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: a79dbe579cb51ecd6d30b17e0cae4e0ea15e2c0e66f69ad4198f22a6789e94f4
+      sha256: "015002c060f1ae9f41a818f2d5640389cc05283e368be19dc8d77cecb43c40c9"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.1"
+    version: "5.5.3"
   win32_registry:
     dependency: transitive
     description:

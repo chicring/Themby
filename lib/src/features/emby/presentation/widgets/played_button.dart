@@ -36,7 +36,7 @@ class _LikeButton extends ConsumerState<PlayedButton>{
 
   Future<void> press() async {
 
-    ref.read(togglePlayedProvider(widget.id, played).future).then((userData) {
+    ref.read(togglePlayedProvider(widget.id, !played).future).then((userData) {
       if(userData.played == true) {
 
       }
@@ -64,8 +64,8 @@ class _LikeButton extends ConsumerState<PlayedButton>{
               )
           )
       );
+      ref.refresh(GetMediaProvider(widget.id));
     });
-
     setState(() {
       played = !played;
     });

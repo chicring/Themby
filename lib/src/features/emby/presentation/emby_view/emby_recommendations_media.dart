@@ -5,7 +5,9 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
@@ -13,101 +15,85 @@ import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 
-class EmbyRecommendationsMedia extends ConsumerWidget{
+class EmbyRecommendationsMedia extends ConsumerStatefulWidget{
   const EmbyRecommendationsMedia({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return MediaQuery.of(context).size.width < 800 ? const SmallSlider() : const LargeSlider();
-  }
+  ConsumerState<ConsumerStatefulWidget> createState() => _SmallSlider();
 }
 
 
-class SmallSlider extends ConsumerWidget {
-  const SmallSlider({super.key});
+class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
+  Color? dominantColor;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> getDominantColor(String imageUrl) async {
+    final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(
+      NetworkImage(imageUrl),
+    );
+    dominantColor = paletteGenerator.dominantColor?.color ?? Colors.white;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final medias = ref.watch(getSuggestionsProvider);
-    final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
+
+    double width = MediaQuery.sizeOf(context).width;
+    double height = MediaQuery.sizeOf(context).width * 100 / 166;
 
     return medias.when(
-      loading: () => Shimmer.fromColors(
-        baseColor: Colors.black26,
-        highlightColor: Colors.black12,
-        child: Container(
-          color: Colors.black,
-          height: 555.0,
-          width: MediaQuery.sizeOf(context).width,
-        ),
-      ),
-      error: (error, stack) => Shimmer.fromColors(
-        baseColor: Colors.black26,
-        highlightColor: Colors.black12,
-        child: Container(
-          color: Colors.black,
-          height: 555.0,
-          width: MediaQuery.sizeOf(context).width,
-        ),
-      ),
+      loading: () => const SizedBox(),
+      error: (error, stack) => const SizedBox(),
       data: (data) {
+        getDominantColor(data.first.imagesCustom?.backdrop ?? "");
         return CarouselSlider(
           options: CarouselOptions(
-            height: 555.0,
+            height: height + 90,
             autoPlay: true,
             viewportFraction: 1,
           ),
           items: data.map((media) {
-            final imageTag = media.imageTags.primary;
-            if(imageTag == null){
-              return const SizedBox();
-            }else{
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                   child: Column(
-                     children: [
-                       Container(
-                         constraints: const BoxConstraints.expand(height: 550),
-                         child: CachedNetworkImage(
-                           imageUrl: getImageUrl(
-                               site!,
-                               media.id,
-                               ImageProps(
-                                 quality: 90,
-                                 type: ImageType.primary,
-                                 tag: imageTag,
-                               )
-                           ),
-                           height: 550,
-                           fit: BoxFit.cover,
-                         ),
-                       ),
-                       const SizedBox(height: 5),
-                     ],
-                   ),
+            return Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                ShaderMask(
+                  shaderCallback: (Rect bounds){
+                    return LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.center,
+                        stops: const [0, 1],
+                        colors: [
+                          const Color.fromRGBO(0, 0, 0, 0),
+                          Theme.of(context).scaffoldBackgroundColor
+                        ]
+                    ).createShader(bounds);
+                  },
+                  blendMode: BlendMode.dstIn,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 90),
+                      NetworkImgLayer(
+                        imageUrl: media.imagesCustom?.backdrop ?? "",
+                        width: width,
+                        height: height,
+                      )
+                    ],
                   ),
-                  Container(
-                    height: 550.0,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.transparent, Theme.of(context).scaffoldBackgroundColor],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter, // 指定渐变方向从上到下
-                        stops: const [0.6, 1.0], // 0.5处开始转变，到1.0处完全是黑色
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 30,
+                ),
+                Positioned(
+                    left: 18,
+                    bottom: 10,
                     child: ElevatedButton.icon(
                       onPressed: () async {
-                        EasyDebounce.debounce(
-                            'my-debouncer',
-                            const Duration(milliseconds: 500),
-                                () => GoRouter.of(context).push('/player', extra: getPlayInfoByMedia(media))
-                        );
+                        // EasyDebounce.debounce(
+                        //     'my-debouncer',
+                        //     const Duration(milliseconds: 500),
+                        //         () => GoRouter.of(context).push('/player', extra: getPlayInfoByMedia(media)),
+                        // );
                       },
                       icon: const Icon(Icons.play_arrow_rounded, color: Colors.black, size: 28),
                       label: const Text('播放', style: TextStyle(color: Colors.black)),
@@ -116,10 +102,9 @@ class SmallSlider extends ConsumerWidget {
                         elevation: 0,
                       ),
                     )
-                  )
-                ],
-              );
-            }
+                )
+              ],
+            );
           }).toList(),
         );
       },
@@ -127,151 +112,151 @@ class SmallSlider extends ConsumerWidget {
   }
 }
 
-class LargeSlider extends ConsumerWidget {
-  const LargeSlider({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final medias = ref.watch(getSuggestionsProvider);
-    final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
-    final Size screenSize = MediaQuery.sizeOf(context);
-
-    return medias.when(
-      loading: () => Shimmer.fromColors(
-        baseColor: Colors.black26,
-        highlightColor: Colors.black12,
-        child: Container(
-          color: Colors.black,
-          height: screenSize.height * 0.7 + 5,
-          width: screenSize.width,
-        ),
-      ),
-      error: (error, stack) => Center(child: Text(error.toString() + stack.toString())),
-      data: (data) {
-        return CarouselSlider(
-          options: CarouselOptions(
-            height: screenSize.height * 0.7 + 5,
-            autoPlay: true,
-            viewportFraction: 1,
-          ),
-          items: data.map((media) {
-            final imageTag = media.backdropImageTags.first;
-            final logoTag = media.imageTags.logo;
-            if(imageTag.isEmpty || logoTag == null){
-              return const SizedBox();
-            }else{
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    child: Column(
-                      children: [
-                        Container(
-                          constraints: BoxConstraints.expand(height: screenSize.height * 0.7),
-                          child: CachedNetworkImage(
-                            imageUrl: getImageUrl(
-                                site!,
-                                media.id,
-                                ImageProps(
-                                  quality: 90,
-                                  type: ImageType.backdrop,
-                                  tag: imageTag,
-                                )
-                            ),
-                            height: screenSize.height * 0.6,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: screenSize.height * 0.7,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.transparent, Colors.black26],
-                        begin: Alignment.center,
-                        end: Alignment.topCenter,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: screenSize.height * 0.7,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.transparent, Theme.of(context).scaffoldBackgroundColor],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: const [0.8, 1.0],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 50,
-                    right: 50,
-                    child: CachedNetworkImage(
-                      imageUrl: getImageUrl(
-                          site,
-                          media.id,
-                          ImageProps(
-                            quality: 90,
-                            type: ImageType.logo,
-                            tag: logoTag,
-                          )
-                      ),
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 50,
-                    left: 50,
-                    child: MaterialButton(
-                      onPressed: (){},
-                      color: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Text(
-                        'MORE',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Positioned(
-                  //   left: 100,
-                  //   bottom: 225,
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Text(
-                  //         media.overview,
-                  //         maxLines: 4,
-                  //         style: const TextStyle(
-                  //           fontSize: 30,
-                  //           fontWeight: FontWeight.bold,
-                  //         ),
-                  //       ),
-                  //       Text(
-                  //         media.productionYear.toString(),
-                  //         style: const TextStyle(
-                  //           fontSize: 20,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                ],
-              );
-            }
-          }).toList(),
-        );
-      },
-    );
-  }
-}
+// class LargeSlider extends ConsumerWidget {
+//   const LargeSlider({super.key});
+//
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final medias = ref.watch(getSuggestionsProvider);
+//     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
+//     final Size screenSize = MediaQuery.sizeOf(context);
+//
+//     return medias.when(
+//       loading: () => Shimmer.fromColors(
+//         baseColor: Colors.black26,
+//         highlightColor: Colors.black12,
+//         child: Container(
+//           color: Colors.black,
+//           height: screenSize.height * 0.7 + 5,
+//           width: screenSize.width,
+//         ),
+//       ),
+//       error: (error, stack) => Center(child: Text(error.toString() + stack.toString())),
+//       data: (data) {
+//         return CarouselSlider(
+//           options: CarouselOptions(
+//             height: screenSize.height * 0.7 + 5,
+//             autoPlay: true,
+//             viewportFraction: 1,
+//           ),
+//           items: data.map((media) {
+//             final imageTag = media.backdropImageTags.first;
+//             final logoTag = media.imageTags.logo;
+//             if(imageTag.isEmpty || logoTag == null){
+//               return const SizedBox();
+//             }else{
+//               return Stack(
+//                 alignment: Alignment.center,
+//                 children: [
+//                   SizedBox(
+//                     child: Column(
+//                       children: [
+//                         Container(
+//                           constraints: BoxConstraints.expand(height: screenSize.height * 0.7),
+//                           child: CachedNetworkImage(
+//                             imageUrl: getImageUrl(
+//                                 site!,
+//                                 media.id,
+//                                 ImageProps(
+//                                   quality: 90,
+//                                   type: ImageType.backdrop,
+//                                   tag: imageTag,
+//                                 )
+//                             ),
+//                             height: screenSize.height * 0.6,
+//                             fit: BoxFit.cover,
+//                           ),
+//                         ),
+//                         const SizedBox(height: 5),
+//                       ],
+//                     ),
+//                   ),
+//                   Container(
+//                     height: screenSize.height * 0.7,
+//                     decoration: const BoxDecoration(
+//                       gradient: LinearGradient(
+//                         colors: [Colors.transparent, Colors.black26],
+//                         begin: Alignment.center,
+//                         end: Alignment.topCenter,
+//                       ),
+//                     ),
+//                   ),
+//                   Container(
+//                     height: screenSize.height * 0.7,
+//                     decoration: BoxDecoration(
+//                       gradient: LinearGradient(
+//                         colors: [Colors.transparent, Theme.of(context).scaffoldBackgroundColor],
+//                         begin: Alignment.topCenter,
+//                         end: Alignment.bottomCenter,
+//                         stops: const [0.8, 1.0],
+//                       ),
+//                     ),
+//                   ),
+//                   Positioned(
+//                     bottom: 50,
+//                     right: 50,
+//                     child: CachedNetworkImage(
+//                       imageUrl: getImageUrl(
+//                           site,
+//                           media.id,
+//                           ImageProps(
+//                             quality: 90,
+//                             type: ImageType.logo,
+//                             tag: logoTag,
+//                           )
+//                       ),
+//                       height: 100,
+//                       fit: BoxFit.cover,
+//                     ),
+//                   ),
+//                   Positioned(
+//                     bottom: 50,
+//                     left: 50,
+//                     child: MaterialButton(
+//                       onPressed: (){},
+//                       color: Colors.white,
+//                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//                       shape: RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.circular(10),
+//                       ),
+//                       child: const Text(
+//                         'MORE',
+//                         style: TextStyle(
+//                           fontSize: 30,
+//                           fontWeight: FontWeight.bold,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   // Positioned(
+//                   //   left: 100,
+//                   //   bottom: 225,
+//                   //   child: Column(
+//                   //     crossAxisAlignment: CrossAxisAlignment.start,
+//                   //     children: [
+//                   //       Text(
+//                   //         media.overview,
+//                   //         maxLines: 4,
+//                   //         style: const TextStyle(
+//                   //           fontSize: 30,
+//                   //           fontWeight: FontWeight.bold,
+//                   //         ),
+//                   //       ),
+//                   //       Text(
+//                   //         media.productionYear.toString(),
+//                   //         style: const TextStyle(
+//                   //           fontSize: 20,
+//                   //         ),
+//                   //       ),
+//                   //     ],
+//                   //   ),
+//                   // ),
+//                 ],
+//               );
+//             }
+//           }).toList(),
+//         );
+//       },
+//     );
+//   }
+// }

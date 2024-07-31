@@ -18,11 +18,10 @@ class EmbyDetailStreams extends StatelessWidget{
     Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         const Row(
+        const Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(width: StyleString.safeSpace),
-
             Text(
               '媒体信息',
               style: TextStyle(
@@ -32,6 +31,7 @@ class EmbyDetailStreams extends StatelessWidget{
             ),
           ],
         ),
+        const SizedBox(height: 6),
         Stack(
           children: [
             IgnorePointer(

@@ -26,7 +26,7 @@ class EmbyResumeMedia extends ConsumerWidget{
     return resumes.when(
         data: (data) {
           return data.isNotEmpty
-              ? ListCardsHh(name: "继续观看", items: data)
+              ? ListCardsHh(name: "继续观看", items: data,)
               : const SizedBox();
         },
         error: (error, stack) => const SizedBox(),

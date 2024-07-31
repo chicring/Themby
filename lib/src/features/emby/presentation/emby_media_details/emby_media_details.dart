@@ -10,12 +10,8 @@ import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/data/emby_repository.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/dropdown_custom.dart';
-import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_common_service.dart';
-import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
-import 'package:themby/src/features/emby/domain/episode.dart';
-import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/appbar/emby_detail_content.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_detail_season.dart';
@@ -23,6 +19,7 @@ import 'package:themby/src/features/emby/presentation/emby_media_details/emby_de
 import 'emby_detail_external_links.dart';
 
 import 'emby_detail_genres.dart';
+import 'emby_detail_media_selection.dart';
 import 'emby_detail_people.dart';
 import 'emby_detail_streams.dart';
 import 'emby_details_nextup.dart';
@@ -112,6 +109,9 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
                       const SizedBox(height: 10),
                       EmbyDetailGenres(items: mediaDetail.genreItems!),
+
+                      const SizedBox(height: 10),
+                      EmbyDetailMediaSelection(item: mediaDetail),
 
                       if(mediaDetail.type == 'Series') ...{
                         const SizedBox(height: 10),

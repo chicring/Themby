@@ -88,8 +88,15 @@ dependencies:
   easy_debounce: ^2.0.3
   haptic_feedback: ^0.5.1+1
 
+  #josn
   json_annotation: ^4.9.0
+
+  #文本展开
   expandable_text: ^2.3.0
+
+  #下拉菜单
+  dropdown_button2: ^3.0.0-beta.16
+  palette_generator: ^0.3.3+4
 
 dev_dependencies:
   flutter_test:

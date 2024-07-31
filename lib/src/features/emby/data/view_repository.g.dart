@@ -441,12 +441,12 @@ class _GetResumeMediaProviderElement
 }
 
 String _$getRecommendationsHash() =>
-    r'742807af605c09e2ca9ffc0177c4f95acf05579f';
+    r'7aba0b93cd10fd00e58f6bc299a5cd4a5ff71da8';
 
 /// See also [getRecommendations].
 @ProviderFor(getRecommendations)
 final getRecommendationsProvider =
-    AutoDisposeFutureProvider<List<Media>>.internal(
+    AutoDisposeFutureProvider<List<Item>>.internal(
   getRecommendations,
   name: r'getRecommendationsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -456,12 +456,12 @@ final getRecommendationsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef GetRecommendationsRef = AutoDisposeFutureProviderRef<List<Media>>;
-String _$getSuggestionsHash() => r'e17f2534108740ed3210f90d81f3e058c7139699';
+typedef GetRecommendationsRef = AutoDisposeFutureProviderRef<List<Item>>;
+String _$getSuggestionsHash() => r'1c15cb5c0f323eaf34fabbf93d927f6f347d30a3';
 
 /// See also [getSuggestions].
 @ProviderFor(getSuggestions)
-final getSuggestionsProvider = AutoDisposeFutureProvider<List<Media>>.internal(
+final getSuggestionsProvider = AutoDisposeFutureProvider<List<Item>>.internal(
   getSuggestions,
   name: r'getSuggestionsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -471,7 +471,7 @@ final getSuggestionsProvider = AutoDisposeFutureProvider<List<Media>>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GetSuggestionsRef = AutoDisposeFutureProviderRef<List<Media>>;
+typedef GetSuggestionsRef = AutoDisposeFutureProviderRef<List<Item>>;
 String _$getSeasonsHash() => r'95037f30f22790a4d71d9b0894e87d6e493059e9';
 
 /// See also [getSeasons].

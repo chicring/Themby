@@ -101,6 +101,7 @@ class DetailBackground extends StatelessWidget {
           child: Container(
             constraints: BoxConstraints(
               maxWidth: width * 0.5,
+              maxHeight: height * 0.5,
               // maxHeight: height * 0.4,
               // minHeight: height * 0.2,
             ),

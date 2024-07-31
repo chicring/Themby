@@ -160,7 +160,7 @@ class Item {
   @JsonKey(name: "Tags")
   List<String>? tags;
   @JsonKey(name: "PrimaryImageAspectRatio")
-  int? primaryImageAspectRatio;
+  num? primaryImageAspectRatio;
   // @JsonKey(name: "Artists")
   // List<String>? artists;
   // @JsonKey(name: "ArtistItems")

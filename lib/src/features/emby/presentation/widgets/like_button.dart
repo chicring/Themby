@@ -37,7 +37,7 @@ class _LikeButton extends ConsumerState<LikeButton>{
 
   Future<void> press() async {
 
-    ref.read(toggleFavoriteProvider(widget.id, liked).future).then((userData) {
+    ref.read(toggleFavoriteProvider(widget.id, !liked).future).then((userData) {
       if(userData.isFavorite == true) {
         SmartDialog.showToast('收藏成功');
 
@@ -66,6 +66,7 @@ class _LikeButton extends ConsumerState<LikeButton>{
               )
           )
       );
+      ref.refresh(GetMediaProvider(widget.id));
     });
 
     setState(() {

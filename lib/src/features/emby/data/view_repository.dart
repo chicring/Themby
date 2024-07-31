@@ -149,7 +149,7 @@ class ViewRepository{
     return list;
   }
 
-  Future<List<Media>> getRecommendations({CancelToken? cancelToken}) async {
+  Future<List<Item>> getRecommendations({CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -165,10 +165,17 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return List<Media>.from(response.data["Items"].map((e) => Media.fromJson(e)));
+    final list = List<Item>.from(
+      response.data["Items"].map((e) {
+        final item = Item.fromJson(e);
+        item.imagesCustom = ImagesCustom.builder(item, site);
+        return item;
+      }),
+    );
+    return list;
   }
 
-  Future<List<Media>> getSuggestions({CancelToken? cancelToken}) async {
+  Future<List<Item>> getSuggestions({CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -197,8 +204,14 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-
-    return List<Media>.from(response.data["Items"].map((e) => Media.fromJson(e)));
+    final list = List<Item>.from(
+      response.data["Items"].map((e) {
+        final item = Item.fromJson(e);
+        item.imagesCustom = ImagesCustom.builder(item, site);
+        return item;
+      }),
+    );
+    return list;
   }
 
   Future<List<Item>> getSeasons(String seriesId, {CancelToken? cancelToken}) async {
@@ -418,13 +431,13 @@ Future<List<Item>> getResumeMedia(GetResumeMediaRef ref, {String? parentId }) {
 }
 
 @riverpod
-Future<List<Media>> getRecommendations(GetRecommendationsRef ref) {
+Future<List<Item>> getRecommendations(GetRecommendationsRef ref) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getRecommendations(cancelToken: cancelToken);
 }
 
 @riverpod
-Future<List<Media>> getSuggestions(GetSuggestionsRef ref) {
+Future<List<Item>> getSuggestions(GetSuggestionsRef ref) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getSuggestions(cancelToken: cancelToken);
 }

@@ -26,9 +26,17 @@ class MediaCardH extends ConsumerWidget{
   @override
   Widget build(BuildContext context,WidgetRef ref) {
 
-    final String imageUrl = (item.imagesCustom?.primary.isNotEmpty ?? false)
-        ? item.imagesCustom?.primary ?? ''
-        : item.imagesCustom?.backdrop ?? '';
+    String imageUrl = "";
+
+    if(item.type == "Episode") {
+      imageUrl = (item.primaryImageAspectRatio ?? 0 ) >= 1
+          ? item.imagesCustom!.primary
+          : item.imagesCustom!.backdrop;
+    }else{
+      imageUrl = item.imagesCustom?.backdrop.isNotEmpty == true
+          ? item.imagesCustom!.backdrop
+          : item.imagesCustom!.primary;
+    }
 
     return Card(
       elevation: 0,
@@ -56,14 +64,17 @@ class MediaCardH extends ConsumerWidget{
                     height: height,
                   ),
 
-                  if(item.userData?.playbackPositionTicks != null)
+                  if(item.userData?.playedPercentage != null)
                     Positioned(
-                      bottom: 0,
+                      left: 8,
+                      right: 8,
+                      bottom: 6,
                       child: SizedBox(
                         width: width,
                         child: LinearProgressIndicator(
                           value: (item.userData?.playedPercentage ?? 0) / 100,
                           backgroundColor: Colors.grey.withOpacity(0.5),
+                          borderRadius: StyleString.lgRadius,
                         ),
                       ),
                     ),
