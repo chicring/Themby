@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:shimmer/shimmer.dart';
@@ -36,6 +37,7 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
       NetworkImage(imageUrl),
     );
     dominantColor = paletteGenerator.dominantColor?.color ?? Colors.white;
+    setState(() {});
   }
 
   @override
@@ -45,11 +47,12 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
     double width = MediaQuery.sizeOf(context).width;
     double height = MediaQuery.sizeOf(context).width * 100 / 166;
 
+
+
     return medias.when(
       loading: () => const SizedBox(),
       error: (error, stack) => const SizedBox(),
       data: (data) {
-        getDominantColor(data.first.imagesCustom?.backdrop ?? "");
         return CarouselSlider(
           options: CarouselOptions(
             height: height + 90,
@@ -58,7 +61,6 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
           ),
           items: data.map((media) {
             return Stack(
-              alignment: Alignment.bottomCenter,
               children: [
                 ShaderMask(
                   shaderCallback: (Rect bounds){
@@ -75,7 +77,10 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
                   blendMode: BlendMode.dstIn,
                   child: Column(
                     children: [
-                      const SizedBox(height: 90),
+                      Container(
+                        height: 90,
+                        color: dominantColor,
+                      ),
                       NetworkImgLayer(
                         imageUrl: media.imagesCustom?.backdrop ?? "",
                         width: width,
