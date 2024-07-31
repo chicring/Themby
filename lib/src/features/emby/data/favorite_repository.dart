@@ -1,14 +1,9 @@
 
 
-import 'dart:ffi';
-
 import 'package:dio/dio.dart';
-import 'package:media_kit/media_kit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
-import 'package:themby/src/features/emby/data/view_repository.dart';
-import 'package:themby/src/features/emby/domain/emby_response.dart';
 import 'package:themby/src/features/emby/domain/user_data.dart';
 import 'package:themby/src/helper/dio_provider.dart';
 
@@ -44,6 +39,25 @@ class FavoriteRepository{
     );
     return UserData.fromJson(response.data);
   }
+
+  Future<UserData> togglePlayed(String id, bool played) async{
+    final response = await client.postUri(
+      Uri(
+        scheme: site.scheme,
+        host: site.host,
+        port: site.port,
+        path: played ? '/emby/Users/${site.userId}/PlayedItems/$id'
+            : '/emby/Users/${site.userId}/PlayedItems/$id/Delete',
+      ),
+      options: Options(
+        headers: {
+          'X-Emby-Authorization': embyToken,
+          'x-emby-token': site.accessToken,
+        },
+      ),
+    );
+    return UserData.fromJson(response.data);
+  }
 }
 
 
@@ -58,4 +72,9 @@ FavoriteRepository favoriteRepository(FavoriteRepositoryRef ref)  => FavoriteRep
 @riverpod
 Future<UserData> toggleFavorite(ToggleFavoriteRef ref, String id, bool favorite) async {
   return ref.read(favoriteRepositoryProvider).toggleFavorite(id, favorite);
+}
+
+@riverpod
+Future<UserData> togglePlayed(TogglePlayedRef ref, String id, bool played) async {
+  return ref.read(favoriteRepositoryProvider).togglePlayed(id, played);
 }

@@ -1,8 +1,9 @@
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'dart:math';
+
+
 import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
-import 'package:themby/src/features/emby/domain/media_detail.dart';
 
 
 /// 获取视频播放信息
@@ -58,4 +59,20 @@ String tickToTimeWithSeconds(int ticks) {
   final int seconds = duration % 60;
 
   return '${hours > 0 ? '$hours' 'h ' : ''}$minutes''m $seconds''s';
+}
+
+/// 返回 year - year  or year
+String yearArea(Item item){
+  String start = (item.productionYear ?? '').toString();
+  String? end = item.endDate?.year.toString();
+  return end != null ? '$start - $end' : start;
+}
+
+/// 格式化文件大小
+String formatFileSize(int size) {
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  if (size <= 0) return '0 B';
+
+  int digitGroups = (log(size) / log(1024)).floor();
+  return '${(size / pow(1024, digitGroups)).toStringAsFixed(2)} ${units[digitGroups]}';
 }

@@ -89,6 +89,7 @@ dependencies:
   haptic_feedback: ^0.5.1+1
 
   json_annotation: ^4.9.0
+  expandable_text: ^2.3.0
 
 dev_dependencies:
   flutter_test:

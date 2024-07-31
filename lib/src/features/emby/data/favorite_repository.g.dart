@@ -188,5 +188,150 @@ class _ToggleFavoriteProviderElement
   @override
   bool get favorite => (origin as ToggleFavoriteProvider).favorite;
 }
+
+String _$togglePlayedHash() => r'b70e524c09b72b0a626d62110a4c2fac5703a630';
+
+/// See also [togglePlayed].
+@ProviderFor(togglePlayed)
+const togglePlayedProvider = TogglePlayedFamily();
+
+/// See also [togglePlayed].
+class TogglePlayedFamily extends Family<AsyncValue<UserData>> {
+  /// See also [togglePlayed].
+  const TogglePlayedFamily();
+
+  /// See also [togglePlayed].
+  TogglePlayedProvider call(
+    String id,
+    bool played,
+  ) {
+    return TogglePlayedProvider(
+      id,
+      played,
+    );
+  }
+
+  @override
+  TogglePlayedProvider getProviderOverride(
+    covariant TogglePlayedProvider provider,
+  ) {
+    return call(
+      provider.id,
+      provider.played,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'togglePlayedProvider';
+}
+
+/// See also [togglePlayed].
+class TogglePlayedProvider extends AutoDisposeFutureProvider<UserData> {
+  /// See also [togglePlayed].
+  TogglePlayedProvider(
+    String id,
+    bool played,
+  ) : this._internal(
+          (ref) => togglePlayed(
+            ref as TogglePlayedRef,
+            id,
+            played,
+          ),
+          from: togglePlayedProvider,
+          name: r'togglePlayedProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$togglePlayedHash,
+          dependencies: TogglePlayedFamily._dependencies,
+          allTransitiveDependencies:
+              TogglePlayedFamily._allTransitiveDependencies,
+          id: id,
+          played: played,
+        );
+
+  TogglePlayedProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+    required this.played,
+  }) : super.internal();
+
+  final String id;
+  final bool played;
+
+  @override
+  Override overrideWith(
+    FutureOr<UserData> Function(TogglePlayedRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TogglePlayedProvider._internal(
+        (ref) => create(ref as TogglePlayedRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+        played: played,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<UserData> createElement() {
+    return _TogglePlayedProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TogglePlayedProvider &&
+        other.id == id &&
+        other.played == played;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, played.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin TogglePlayedRef on AutoDisposeFutureProviderRef<UserData> {
+  /// The parameter `id` of this provider.
+  String get id;
+
+  /// The parameter `played` of this provider.
+  bool get played;
+}
+
+class _TogglePlayedProviderElement
+    extends AutoDisposeFutureProviderElement<UserData> with TogglePlayedRef {
+  _TogglePlayedProviderElement(super.provider);
+
+  @override
+  String get id => (origin as TogglePlayedProvider).id;
+  @override
+  bool get played => (origin as TogglePlayedProvider).played;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -2,7 +2,6 @@
 
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -13,17 +12,19 @@ import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/dropdown_custom.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_common_service.dart';
-import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
 import 'package:themby/src/features/emby/domain/media_detail.dart';
+import 'package:themby/src/features/emby/presentation/emby_media_details/appbar/emby_detail_content.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_detail_season.dart';
 
 import 'emby_detail_external_links.dart';
 
+import 'emby_detail_genres.dart';
 import 'emby_detail_people.dart';
+import 'emby_detail_streams.dart';
 import 'emby_details_nextup.dart';
 import 'emby_media_details_appbar.dart';
 import 'emby_media_details_shimmer.dart';
@@ -60,7 +61,6 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
   @override
   Widget build(BuildContext context) {
-    final Site? site = ref.watch(embyStateServiceProvider.select((value) => value.site));
 
     final data = ref.watch(GetMediaProvider(widget.id));
 
@@ -102,15 +102,16 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-
+                      const SizedBox(height: 12),
+                      EmbyDetailContent(item: mediaDetail),
                       // const SizedBox(height: 10),
                       // _DetailContent(mediaDetail: mediaDetail,site: site),
-                      //
-                      // const SizedBox(height: 10),
-                      // _DetailGenres(genres: mediaDetail.genres),
-                      //
+
                       // const SizedBox(height: 5),
                       // _DetailOverview(mediaDetail: mediaDetail, site: site),
+
+                      const SizedBox(height: 10),
+                      EmbyDetailGenres(items: mediaDetail.genreItems!),
 
                       if(mediaDetail.type == 'Series') ...{
                         const SizedBox(height: 10),
@@ -133,7 +134,7 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
                       const SizedBox(height: 10),
                       if (mediaDetail.mediaType == 'Video')
-                        // _MediaDetail(mediaDetail: mediaDetail),
+                        EmbyDetailStreams(mediaStreams: mediaDetail.mediaStreams),
 
                       const SizedBox(height: 100),
                     ],
@@ -150,111 +151,6 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 }
 
 
-
-class _DetailAppBar extends StatelessWidget {
-  final Site site;
-  final MediaDetail mediaDetail;
-  final StreamController<bool> titleStreamC;
-  const _DetailAppBar({required this.site, required this.mediaDetail, required this.titleStreamC});
-
-  @override
-  Widget build(BuildContext context) {
-    final double heightBar = MediaQuery.sizeOf(context).width * 0.65;
-
-    return SliverAppBar(
-      expandedHeight: heightBar - MediaQuery.of(context).padding.top,
-      pinned: true,
-      centerTitle: true,
-      iconTheme: const IconThemeData(color: Colors.grey),
-      title: StreamBuilder(
-        stream: titleStreamC.stream,
-        initialData: false,
-        builder: (context, snapshot) {
-          return snapshot.data == true ? Text(mediaDetail.name, style: StyleString.titleStyle) : const SizedBox();
-        },
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.favorite),
-          onPressed: (){},
-        ),
-        IconButton(
-          icon: const Icon(Icons.share),
-          onPressed: (){},
-        ),
-      ],
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.pin,
-        stretchModes: const [StretchMode.fadeTitle],
-        background: _DetailBackground(mediaDetail: mediaDetail,site: site),
-      ),
-    );
-  }
-}
-
-class _DetailBackground extends StatelessWidget {
-  final Site site;
-  final MediaDetail mediaDetail;
-  const _DetailBackground({super.key, required this.mediaDetail, required this.site});
-
-  @override
-  Widget build(BuildContext context) {
-    final double height = MediaQuery.sizeOf(context).width * 0.65;
-    final double width = MediaQuery.sizeOf(context).width;
-
-    return Stack(
-      children: [
-        SizedBox(
-          child: NetworkImgLayer(
-            imageUrl: getImageUrl(
-                site,
-                mediaDetail.id,
-                ImageProps(
-                  tag: mediaDetail.imageTags.backdrop,
-                  type: ImageType.backdrop,
-                )
-            ),
-            width: MediaQuery.sizeOf(context).width,
-            height: MediaQuery.sizeOf(context).width * 0.65,
-          ),
-        ),
-        Container(
-          height: height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.transparent, Theme.of(context).scaffoldBackgroundColor],
-              begin: Alignment.center,
-              end: Alignment.bottomCenter,
-              stops: const [0.0, 0.9],
-            ),
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          left: 20,
-          child: Container(
-            constraints: BoxConstraints(
-              maxHeight: height * 0.33,
-              maxWidth: width * 0.5,
-              minHeight: height * 0.2,
-              minWidth: width * 0.3,
-            ),
-            child: CachedNetworkImage(
-              imageUrl: getImageUrl(
-                  site,
-                  mediaDetail.id,
-                  ImageProps(
-                    tag: mediaDetail.imageTags.logo,
-                    type: ImageType.logo,
-                  )
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class _DetailContent extends StatelessWidget {
   final Site site;

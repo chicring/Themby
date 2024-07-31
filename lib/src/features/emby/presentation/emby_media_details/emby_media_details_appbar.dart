@@ -4,16 +4,13 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/constants.dart';
-import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
-import 'package:themby/src/features/emby/data/favorite_repository.dart';
-import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
-import 'package:themby/src/features/emby/domain/image_props.dart';
-import 'package:themby/src/features/emby/domain/media_detail.dart';
+import 'package:themby/src/features/emby/presentation/widgets/like_button.dart';
+import 'package:themby/src/features/emby/presentation/widgets/played_button.dart';
+import 'package:themby/src/helper/screen_helper.dart';
 
 
 class DetailAppBar extends ConsumerWidget {
@@ -23,7 +20,7 @@ class DetailAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final double heightBar = MediaQuery.sizeOf(context).width * 0.65;
+    final double heightBar = MediaQuery.sizeOf(context).height * 0.4;
 
     final data = ref.watch(GetMediaProvider(id));
 
@@ -32,7 +29,7 @@ class DetailAppBar extends ConsumerWidget {
           expandedHeight: heightBar - MediaQuery.of(context).padding.top,
           pinned: true,
           centerTitle: true,
-          iconTheme: const IconThemeData(color: Colors.grey),
+          iconTheme: const IconThemeData(color: Colors.white),
           title: StreamBuilder(
             stream: titleStreamC.stream,
             initialData: false,
@@ -41,53 +38,14 @@ class DetailAppBar extends ConsumerWidget {
             },
           ),
           actions: [
-            IconButton(
-                icon: const Icon(
-                  Icons.check_circle_outline_rounded,
-                  size: 28,
-                ),
-                onPressed: () {
-                  SmartDialog.showToast('在做');
-                }
+            PlayedButton(
+              id: data.id!,
+              played: data.userData?.played ?? false,
             ),
-            IconButton(
-              icon: (data.userData?.isFavorite ?? false)
-                  ? const Icon(Icons.favorite_rounded, color: Color(0xFFc45a65),size: 28)
-                  : const Icon(Icons.favorite_border_rounded, size: 28),
-              onPressed: () async {
-                // await ref.read(favoriteMediaProvider.notifier).toggleFavorite(mediaDetail);
-                ref.read(toggleFavoriteProvider(data.id!, !(data.userData?.isFavorite ?? false)).future).then((userData) {
-                  if(userData.isFavorite == true) {
-                    SmartDialog.showToast('已添加到收藏');
-                  }
-                  ref.refresh(GetMediaProvider(data.id!));
-                  ref.refresh(
-                      getItemProvider(
-                          itemQuery: (
-                          page: 0,
-                          parentId: '',
-                          includeItemTypes: 'Movie',
-                          sortBy: 'SortName',
-                          sortOrder: 'Ascending',
-                          filters: 'IsFavorite',
-                          )
-                      )
-                  );
-                  ref.refresh(
-                      getItemProvider(
-                          itemQuery: (
-                          page: 0,
-                          parentId: '',
-                          includeItemTypes: 'Series',
-                          sortBy: 'SortName',
-                          sortOrder: 'Ascending',
-                          filters: 'IsFavorite',
-                          )
-                      )
-                  );
-                });
-              },
-            ),
+            LikeButton(
+              id: data.id!,
+              liked: data.userData?.isFavorite ?? false,
+            )
           ],
           flexibleSpace: FlexibleSpaceBar(
             collapseMode: CollapseMode.pin,
@@ -107,8 +65,10 @@ class DetailBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.sizeOf(context).width * 0.65;
+    final double height = MediaQuery.sizeOf(context).height * 0.4;
     final double width = MediaQuery.sizeOf(context).width;
+
+    double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3) * 1.3;
 
     final String imageUrl = (item.imagesCustom?.backdrop.isNotEmpty ?? false)
         ? item.imagesCustom?.backdrop ?? ''
@@ -116,37 +76,37 @@ class DetailBackground extends StatelessWidget {
 
     return Stack(
       children: [
-        SizedBox(
+        ShaderMask(
+          shaderCallback: (Rect bounds){
+            return LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.center,
+                stops: const [0, 1],
+                colors: [
+                  const Color.fromRGBO(0, 0, 0, 0),
+                  Theme.of(context).scaffoldBackgroundColor
+                ]
+            ).createShader(bounds);
+          },
+          blendMode: BlendMode.dstIn,
           child: NetworkImgLayer(
             imageUrl: imageUrl,
-            width: MediaQuery.sizeOf(context).width,
-            height: MediaQuery.sizeOf(context).width * 0.65,
-          ),
-        ),
-        Container(
-          height: height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.transparent, Theme.of(context).scaffoldBackgroundColor],
-              begin: Alignment.center,
-              end: Alignment.bottomCenter,
-              stops: const [0.0, 0.9],
-            ),
+            width: width,
+            height: height,
           ),
         ),
         Positioned(
           bottom: 0,
-          left: 20,
+          left: 12,
           child: Container(
             constraints: BoxConstraints(
-              maxHeight: height * 0.33,
               maxWidth: width * 0.5,
-              minHeight: height * 0.2,
-              minWidth: width * 0.3,
+              // maxHeight: height * 0.4,
+              // minHeight: height * 0.2,
             ),
             child: CachedNetworkImage(
               imageUrl: item.imagesCustom!.logo,
-              errorWidget: (_,__,___) => Text(item.name!, style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+              errorWidget: (_,__,___) => Text(item.name!,maxLines: 1,  style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
             ),
           ),
         ),
