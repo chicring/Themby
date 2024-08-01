@@ -1,8 +1,11 @@
 
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:media_kit_video/media_kit_video_controls/src/controls/extensions/duration.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/widget/control_toast.dart';
@@ -17,6 +20,7 @@ class HorizontalScreenGestures extends ConsumerStatefulWidget{
 }
 
 class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
+
 
   @override
   void initState() {
@@ -87,13 +91,13 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
       onLongPressStart: (details){
         final rate = controllerState.player.state.rate * 2;
         SmartDialog.show(
-              tag: "show_long_press",
-              alignment: Alignment.topCenter,
-              maskColor: Colors.transparent,
-              builder: (context) {
-                return iconToast('$rate倍速快进中', Icons.fast_forward_rounded);
-              }
-          );
+            tag: "show_long_press",
+            alignment: Alignment.topCenter,
+            maskColor: Colors.transparent,
+            builder: (context) {
+              return iconToast('$rate倍速快进中', Icons.fast_forward_rounded);
+            }
+        );
         controllerState.player.setRate( rate);
       },
       onLongPressEnd: (details){
@@ -102,12 +106,14 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         SmartDialog.dismiss(tag: "show_long_press");
       },
       /// 横向滑动开始
-      onHorizontalDragStart: (details){
+      onHorizontalDragStart: (details) async{
         /// 打开进度条提示
-        final duration = controllerState.player.state.position;
-        ref.read(dragingTimeProvider.notifier).update(duration);
 
-        SmartDialog.show(
+        final position = controllerState.player.state.position;
+        ref.read(dragingTimeProvider.notifier).update(position);
+        print('duration1: ${position.inSeconds}');
+
+        await SmartDialog.show(
             tag: "progress_toast",
             alignment: Alignment.topCenter,
             maskColor: Colors.transparent,
@@ -115,22 +121,28 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         );
       },
       /// 横向滑动更新
-      onHorizontalDragUpdate: (details){
-        final dx = details.primaryDelta;
-        final rate = dx! / width;
-        final position = controllerState.player.state.position;
-        final duration = position + Duration(seconds: (rate * 50).toInt());
-        ref.read(dragingTimeProvider.notifier).update(duration);
+      onHorizontalDragUpdate: (details) async{
+
+        final current = ref.read(dragingTimeProvider);
+
+        final double scale = 90000 / width;
+        final pos = Duration(
+            milliseconds: current.inMilliseconds + (details.delta.dx * scale).round()
+        );
+
+        final Duration result = pos.clamp(Duration.zero, controllerState.player.state.duration);
+
+        ref.read(dragingTimeProvider.notifier).update(result);
       },
       /// 横向滑动结束
-      onHorizontalDragEnd: (details) {
-        final velocity = details.velocity.pixelsPerSecond.dx;
-        final rate = velocity / width;
-        final position = controllerState.player.state.position;
-        final duration = position + Duration(seconds: (rate * 50).toInt());
-        controllerState.player.seek(duration);
+      onHorizontalDragEnd: (details) async{
+        final pos = ref.read(dragingTimeProvider);
+        controllerState.player.seek(pos);
         ///关闭toast 并 进行跳转
-        SmartDialog.dismiss(tag: "progress_toast");
+        await SmartDialog.dismiss(tag: "progress_toast");
+      },
+      onHorizontalDragCancel: () async{
+        await SmartDialog.dismiss(tag: "progress_toast");
       },
     );
   }

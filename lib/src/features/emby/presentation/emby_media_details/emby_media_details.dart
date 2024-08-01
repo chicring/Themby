@@ -87,8 +87,10 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
                       const SizedBox(height: 10),
                       EmbyDetailGenres(items: mediaDetail.genreItems!),
 
-                      const SizedBox(height: 10),
-                      EmbyDetailMediaSelection(item: mediaDetail),
+                      if(mediaDetail.mediaType == 'Video') ...{
+                        const SizedBox(height: 10),
+                        EmbyDetailMediaSelection(item: mediaDetail),
+                      },
 
                       if(mediaDetail.type == 'Series') ...{
                         const SizedBox(height: 10),
@@ -111,7 +113,7 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
                       const SizedBox(height: 10),
                       if (mediaDetail.mediaType == 'Video')
-                        EmbyDetailStreams(mediaStreams: mediaDetail.mediaStreams),
+                        EmbyDetailStreams(source: mediaDetail.mediaSources),
 
                       const SizedBox(height: 100),
                     ],

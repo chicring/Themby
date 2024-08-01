@@ -6,7 +6,7 @@ part of 'medias_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mediasServiceHash() => r'608cadd406efaa26aa5e67cc95a5a27830f0d60f';
+String _$mediasServiceHash() => r'd069a1648999457eed095dd196a477fa6196b1ac';
 
 /// See also [MediasService].
 @ProviderFor(MediasService)

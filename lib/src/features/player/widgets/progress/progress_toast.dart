@@ -9,8 +9,6 @@ import 'package:themby/src/features/player/service/video_controller.dart';
 
 import 'package:themby/src/features/player/widgets/progress/draging_time.dart';
 
-
-
 class ProgressToast extends ConsumerWidget {
   const ProgressToast({super.key});
 
@@ -21,6 +19,7 @@ class ProgressToast extends ConsumerWidget {
 
     Duration duration = ref.read(videoControllerProvider).player.state.duration;
 
+    print('duration2: ${position.inSeconds}');
     return Container(
       margin: const EdgeInsets.only(top: 12),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),

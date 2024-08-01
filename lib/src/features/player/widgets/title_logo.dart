@@ -24,15 +24,34 @@ class TitleLogo extends ConsumerWidget{
     return item.when(
         data: (value) => Row(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CachedNetworkImage(
               imageUrl: value.imagesCustom!.logo,
               height: height * 0.1,
-              errorWidget: (_,__,___) => Text(value.name!,maxLines: 1,  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+              errorWidget: (_,__,___) =>
+                  SizedBox(
+                    width: 200,
+                    child: Text(
+                        value.seriesName ?? value.name ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.visible,
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
+                    ),
+                  ),
             ),
-
+            const SizedBox(width: 10),
             if(value.type == "Episode")
-              Text('S${value.parentIndexNumber}E${value.indexNumber} - ${value.name}', style: const TextStyle(color: Colors.white)),
+              SizedBox(
+                width: 400,
+                child: Text(
+                    'S${value.parentIndexNumber}E${value.indexNumber} - ${value.name}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white,fontSize: 18)
+                ),
+              )
           ],
         ),
         error: (_,__) => const SizedBox(),

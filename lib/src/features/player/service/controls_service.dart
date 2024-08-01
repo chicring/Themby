@@ -28,6 +28,7 @@ class ControlsService extends _$ControlsService{
   ///首次开始播放
   Future<void> startPlay(SelectedMedia media) async{
 
+    late String currentId;
     late String url;
     late String mediaSourceId;
     late String playSessionId;
@@ -37,15 +38,33 @@ class ControlsService extends _$ControlsService{
       mediaSourceId = playInfo.mediaSources[0].id;
       playSessionId = playInfo.playSessionId;
       url = await ref.read(getPlayerUrlProvider(media.id!).future);
+      currentId = media.id!;
+    }else if(media.type == "Series"){
+      await ref.read(getNextUpProvider(media.id!).future)
+          .then((value) {
+        currentId = value.items[0].id!;
+      });
+
+      PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(currentId).future);
+      mediaSourceId = playInfo.mediaSources[0].id;
+      playSessionId = playInfo.playSessionId;
+      url = await ref.read(getPlayerUrlProvider(currentId).future);
+    }else if(media.type == "Episode"){
+      PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(media.id!).future);
+      mediaSourceId = playInfo.mediaSources[0].id;
+      playSessionId = playInfo.playSessionId;
+      url = await ref.read(getPlayerUrlProvider(media.id!).future);
+      currentId = media.id!;
     }
-      ref.read(videoControllerProvider).player.open(Media(url));
-      ref.read(videoControllerProvider).player.play();
+
+    ref.read(videoControllerProvider).player.open(Media(url));
+    ref.read(videoControllerProvider).player.play();
 
     if(media.position != null){
       seekTo(media.position!);
     }
 
-    state = state.copyWith(mediaId: media.id, mediaSourceId: mediaSourceId, playSessionId: playSessionId);
+    state = state.copyWith(mediaId: media.id, currentMediaId: currentId, mediaSourceId: mediaSourceId, playSessionId: playSessionId);
   }
 
   ///跳转到指定位置

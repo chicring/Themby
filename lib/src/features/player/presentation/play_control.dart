@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/emby/domain/selected_media.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
+import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/utils/fullscreen.dart';
 import 'package:themby/src/features/player/widgets/buttons/play_next_button.dart';
 import 'package:themby/src/features/player/widgets/buttons/play_or_pause_button.dart';
@@ -33,15 +34,16 @@ class _PlayControl extends ConsumerState<PlayControl>{
   void initState() {
     super.initState();
     ref.read(controlsServiceProvider.notifier).startPlay(widget.media);
-    enterFullScreen();
-    landScape();
+  }
+
+  @override
+  void deactivate(){
+    ref.read(videoControllerProvider).player.stop();
+    super.deactivate();
   }
 
   @override
   void dispose() {
-    exitFullScreen();
-    verticalScreen();
-
     super.dispose();
   }
 
@@ -53,8 +55,14 @@ class _PlayControl extends ConsumerState<PlayControl>{
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          Positioned.fill(child: HorizontalScreenGestures()),
-          Positioned(
+          const Positioned.fill(
+             left: 12,
+             right: 12,
+             bottom: 12,
+             top: 12,
+              child: HorizontalScreenGestures()
+          ),
+          const Positioned(
             top: 6,
             left: 6,
             child: TitleLogo(),
@@ -64,7 +72,7 @@ class _PlayControl extends ConsumerState<PlayControl>{
             right: 6,
             child: _buildTapSheet(),
           ),
-          Positioned(
+          const Positioned(
             bottom: 0,
             left: 6,
             right: 6,
@@ -96,10 +104,13 @@ class _PlayControl extends ConsumerState<PlayControl>{
     );
   }
 
-
   Widget _buildTapSheet(){
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xAA333333),
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: const Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,

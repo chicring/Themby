@@ -6,7 +6,7 @@ part of 'draging_time.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dragingTimeHash() => r'02790228fdf75eecb3e50a20dc4f98c2add697f3';
+String _$dragingTimeHash() => r'3216eea8446809e096b56db18f7f81627c0a41cd';
 
 /// See also [DragingTime].
 @ProviderFor(DragingTime)
