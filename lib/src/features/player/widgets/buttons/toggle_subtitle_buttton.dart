@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ToggleSubtitleButton extends ConsumerWidget{
-  const ToggleSubtitleButton({super.key, this.size = 24, this.color = Colors.white});
+  const ToggleSubtitleButton({super.key, this.size = 30, this.color = Colors.white});
 
   final double size;
   final Color color;
@@ -20,7 +20,7 @@ class ToggleSubtitleButton extends ConsumerWidget{
           color: color,
         ),
         onPressed: () async {
-
+          ///选择字幕的弹窗
         }
     );
   }

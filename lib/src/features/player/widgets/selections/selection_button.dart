@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:themby/src/common/constants.dart';
 
 class PlayNextButton extends ConsumerWidget{
   const PlayNextButton({super.key, this.size = 30, this.color = Colors.white});
@@ -13,15 +14,14 @@ class PlayNextButton extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    return IconButton(
-        icon: Icon(
-          Icons.skip_next_rounded,
-          size: size,
-          color: color,
-        ),
-        onPressed: () async {
-
-        }
+    return TextButton(
+      onPressed: () async {
+        ///打开选集的弹窗
+      },
+      child: Text(
+        '选集',
+        style: StyleString.titleStyle.copyWith(color: Colors.white),
+      ),
     );
   }
 }

@@ -31,6 +31,12 @@ class _PlayOrPauseButtonState extends ConsumerState<PlayOrPauseButton>{
   }
 
   @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(

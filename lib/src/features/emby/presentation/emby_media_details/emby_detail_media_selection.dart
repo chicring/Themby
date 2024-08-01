@@ -25,7 +25,7 @@ class EmbyDetailMediaSelection extends ConsumerWidget{
 
     final valueListenable = ValueNotifier<String?>(null);
 
-    return Padding(
+    return i Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

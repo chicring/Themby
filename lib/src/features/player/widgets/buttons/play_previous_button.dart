@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PlayPreviousButton extends ConsumerWidget{
-  const PlayPreviousButton({super.key, this.size = 24, this.color = Colors.white});
+  const PlayPreviousButton({super.key, this.size = 30, this.color = Colors.white});
 
   final double size;
   final Color color;

@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -10,6 +7,7 @@ import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/emby/domain/selected_media.dart';
 import 'package:themby/src/features/player/service/fit_type_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
+import 'package:themby/src/features/player/utils/fullscreen.dart';
 
 import 'horizontal_player.dart';
 import 'play_control.dart';

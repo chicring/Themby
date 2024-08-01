@@ -6,6 +6,8 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/widget/control_toast.dart';
+import 'package:themby/src/features/player/widgets/progress/draging_time.dart';
+import 'package:themby/src/features/player/widgets/progress/progress_toast.dart';
 
 class HorizontalScreenGestures extends ConsumerStatefulWidget{
   const HorizontalScreenGestures({super.key});
@@ -27,7 +29,17 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
   }
 
   Future<void> onDoublePressLeft() async {
-
+    final position = ref.read(videoControllerProvider).player.state.position;
+    ref.read(videoControllerProvider).player.seek(position - const Duration(seconds: 10));
+      SmartDialog.showToast(
+        '',
+        alignment: Alignment.topCenter,
+        displayTime: const Duration(milliseconds: 800),
+        displayType: SmartToastType.last,
+        builder: (context) {
+          return textToast('快退10秒');
+        }
+      );
   }
 
   Future<void> onDoublePressCenter() async{
@@ -35,7 +47,18 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
   }
 
   Future<void> onDoublePressRight() async {
+    final position = ref.read(videoControllerProvider).player.state.position;
+    ref.read(videoControllerProvider).player.seek(position - const Duration(seconds: 10));
 
+      SmartDialog.showToast(
+        '',
+        alignment: Alignment.topCenter,
+        displayTime: const Duration(milliseconds: 800),
+        displayType: SmartToastType.last,
+        builder: (context) {
+          return textToast('快退10秒');
+        }
+      );
   }
 
   @override
@@ -77,6 +100,37 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         final rate = controllerState.player.state.rate;
         controllerState.player.setRate(rate / 2);
         SmartDialog.dismiss(tag: "show_long_press");
+      },
+      /// 横向滑动开始
+      onHorizontalDragStart: (details){
+        /// 打开进度条提示
+        final duration = controllerState.player.state.position;
+        ref.read(dragingTimeProvider.notifier).update(duration);
+
+        SmartDialog.show(
+            tag: "progress_toast",
+            alignment: Alignment.topCenter,
+            maskColor: Colors.transparent,
+            builder: (_) => const ProgressToast()
+        );
+      },
+      /// 横向滑动更新
+      onHorizontalDragUpdate: (details){
+        final dx = details.primaryDelta;
+        final rate = dx! / width;
+        final position = controllerState.player.state.position;
+        final duration = position + Duration(seconds: (rate * 50).toInt());
+        ref.read(dragingTimeProvider.notifier).update(duration);
+      },
+      /// 横向滑动结束
+      onHorizontalDragEnd: (details) {
+        final velocity = details.velocity.pixelsPerSecond.dx;
+        final rate = velocity / width;
+        final position = controllerState.player.state.position;
+        final duration = position + Duration(seconds: (rate * 50).toInt());
+        controllerState.player.seek(duration);
+        ///关闭toast 并 进行跳转
+        SmartDialog.dismiss(tag: "progress_toast");
       },
     );
   }

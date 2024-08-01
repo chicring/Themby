@@ -8,7 +8,10 @@ import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/utils/fullscreen.dart';
 import 'package:themby/src/features/player/widgets/buttons/play_next_button.dart';
 import 'package:themby/src/features/player/widgets/buttons/play_or_pause_button.dart';
+import 'package:themby/src/features/player/widgets/buttons/toggle_audio_buttoon.dart';
+import 'package:themby/src/features/player/widgets/buttons/toggle_fit_button.dart';
 import 'package:themby/src/features/player/widgets/buttons/toggle_rate_button.dart';
+import 'package:themby/src/features/player/widgets/buttons/toggle_subtitle_buttton.dart';
 import 'package:themby/src/features/player/widgets/gestures/horizontal_screen_gestures.dart';
 import 'package:themby/src/features/player/widgets/progress/media_progress_bar.dart';
 import 'package:themby/src/features/player/widgets/title_logo.dart';
@@ -29,7 +32,6 @@ class _PlayControl extends ConsumerState<PlayControl>{
   @override
   void initState() {
     super.initState();
-
     ref.read(controlsServiceProvider.notifier).startPlay(widget.media);
     enterFullScreen();
     landScape();
@@ -39,13 +41,14 @@ class _PlayControl extends ConsumerState<PlayControl>{
   void dispose() {
     exitFullScreen();
     verticalScreen();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      minimum: EdgeInsets.all(StyleString.safeSpace),
+    return SafeArea(
+      minimum: const EdgeInsets.all(StyleString.safeSpace),
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
@@ -57,13 +60,19 @@ class _PlayControl extends ConsumerState<PlayControl>{
             child: TitleLogo(),
           ),
           Positioned(
+            top: 6,
+            right: 6,
+            child: _buildTapSheet(),
+          ),
+          Positioned(
             bottom: 0,
-            left: 12,
-            right: 12,
+            left: 6,
+            right: 6,
             child: Column(
               children: [
                 MediaProgressBar(),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 
@@ -82,6 +91,26 @@ class _PlayControl extends ConsumerState<PlayControl>{
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildTapSheet(){
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ToggleFitButton(),
+
+          SizedBox(width: 5),
+          ToggleAudioButtoon(),
+
+          SizedBox(width: 5),
+          ToggleSubtitleButton()
         ],
       ),
     );
