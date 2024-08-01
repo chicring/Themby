@@ -64,6 +64,7 @@ class PeopleCard extends ConsumerWidget{
                       type: ImageType.primary,
                     )
                 ),
+                type: "people",
                 width: width,
                 height: height,
               ),

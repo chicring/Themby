@@ -84,7 +84,7 @@ class NetworkImgLayer extends StatelessWidget {
             placeholder(context),
       ),
     )
-        : placeholder(context);
+        : errorWidget(context);
   }
 
   Widget placeholder(BuildContext context) {
@@ -139,9 +139,9 @@ class NetworkImgLayer extends StatelessWidget {
             ),
             height: width,
             width: height,
-            child: const Center(
+            child: Center(
               child: Icon(
-                Icons.movie_creation_outlined,
+                type == 'people' ? Icons.person_outline_outlined : Icons.movie_creation_outlined,
                 size: 50,
               ),
             )

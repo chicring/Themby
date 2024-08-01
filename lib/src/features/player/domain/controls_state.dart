@@ -4,25 +4,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 
-const List<Map<String, dynamic>> videoFitType = [
-  {'attr': BoxFit.contain, 'desc': '包含'},
-  {'attr': BoxFit.cover, 'desc': '覆盖'},
-  {'attr': BoxFit.fill, 'desc': '填充'},
-  {'attr': BoxFit.fitHeight, 'desc': '高度适应'},
-  {'attr': BoxFit.fitWidth, 'desc': '宽度适应'},
-  {'attr': BoxFit.scaleDown, 'desc': '缩小适应'},
-];
 
 
 class ControlsState {
 
-  Timer? timer;
+  String? mediaId;
 
-  String mediaId = '0';
+  String? currentMediaId;
 
-  String mediaSourceId = '';
+  String? mediaSourceId;
 
-  String playSessionId = '';
+  String? playSessionId;
 
   double rate = 1.0;
 
@@ -32,48 +24,34 @@ class ControlsState {
   //控制器显示
   bool showControls = true;
 
-  bool isLongPressMultiple = false;
-
-  //填充方式
-  int fitType = 0;
 
   ControlsState({
-    this.timer,
-    this.mediaId = '0',
-    this.mediaSourceId = '',
-    this.playSessionId = '',
-    this.controlsLock = false,
-    this.fitType = 0,
-    this.showControls = true,
+    this.mediaId,
+    this.currentMediaId,
+    this.mediaSourceId,
+    this.playSessionId,
     this.rate = 1.0,
-    this.isLongPressMultiple = false,
+    this.controlsLock = false,
+    this.showControls = true,
   });
 
   ControlsState copyWith({
-    Timer? timer,
-    Timer? backTimer,
     String? mediaId,
+    String? currentMediaId,
     String? mediaSourceId,
     String? playSessionId,
-    bool? controlsLock,
-    bool? horizontal,
-    bool? showControls,
-    int? fitType,
-    bool? isPlaying,
-    Duration? position,
     double? rate,
-    bool? isLongPressMultiple,
+    bool? controlsLock,
+    bool? showControls,
   }) {
     return ControlsState(
-      timer: timer ?? this.timer,
       mediaId: mediaId ?? this.mediaId,
+      currentMediaId: currentMediaId ?? this.currentMediaId,
       mediaSourceId: mediaSourceId ?? this.mediaSourceId,
       playSessionId: playSessionId ?? this.playSessionId,
-      controlsLock: controlsLock ?? this.controlsLock,
-      fitType: fitType ?? this.fitType,
-      showControls: showControls ?? this.showControls,
       rate: rate ?? this.rate,
-      isLongPressMultiple: isLongPressMultiple ?? this.isLongPressMultiple,
+      controlsLock: controlsLock ?? this.controlsLock,
+      showControls: showControls ?? this.showControls,
     );
   }
 }

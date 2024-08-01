@@ -2,15 +2,13 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
-import 'package:themby/src/common/widget/dropdown_custom.dart';
+import 'package:themby/src/common/domiani/Select.dart';
+import 'package:themby/src/common/widget/Custom_dropdown_button2.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
+import 'package:themby/src/features/emby/application/emby_media_service.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 
-final List<String> items = [
-  'Item1',
-  'Item2',
-  'Item3',
-  'Item4',
-];
+
 
 class EmbyDetailMediaSelection extends ConsumerWidget{
 
@@ -20,126 +18,65 @@ class EmbyDetailMediaSelection extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context,WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Text('视频:', style: StyleString.subtitleStyle),
-            const SizedBox(width: 10),
-            DropdownButtonHideUnderline(
-              child: DropdownButton2<String>(
-                isExpanded: true,
-                hint: const Row(
-                  children: [
-                    Icon(
-                      Icons.list,
-                      size: 16,
-                      color: Colors.yellow,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Select Item',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.yellow,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                items: items
-                    .map((String item) => DropdownItem<String>(
-                  value: item,
-                  height: 40,
-                  child: Text(
-                    item,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ))
-                    .toList(),
-                // valueListenable: valueListenable,
-                onChanged: (value) {
-                  // valueListenable.value = value;
+
+    final List<Select> sources = getMediaStreams(item.mediaSources![0].mediaStreams!, 'Video');
+    final List<Select> audios = getMediaStreams(item.mediaSources![0].mediaStreams!, 'Audio');
+    final List<Select> subtitles = getMediaStreams(item.mediaSources![0].mediaStreams!, 'Subtitle');
+
+    final valueListenable = ValueNotifier<String?>(null);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text('视频:', style: StyleString.subtitleStyle),
+              const SizedBox(width: 10),
+              CustomDropdownButton2(
+                hint: '选择视频',
+                valueListenable: valueListenable,
+                dropdownItems: sources,
+                onChanged: (String? value) {
+                  ref.read(embyMediaServiceProvider.notifier).setMediaSourcesIndex(int.parse(value!));
                 },
-                buttonStyleData: ButtonStyleData(
-                  height: 50,
-                  width: 160,
-                  padding: const EdgeInsets.only(left: 14, right: 14),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: Colors.black26,
-                    ),
-                    color: Colors.redAccent,
-                  ),
-                  elevation: 2,
-                ),
-                iconStyleData: const IconStyleData(
-                  icon: Icon(
-                    Icons.arrow_forward_ios_outlined,
-                  ),
-                  iconSize: 14,
-                  iconEnabledColor: Colors.yellow,
-                  iconDisabledColor: Colors.grey,
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  maxHeight: 200,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: Colors.redAccent,
-                  ),
-                  offset: const Offset(-20, 0),
-                  scrollbarTheme: ScrollbarThemeData(
-                    radius: const Radius.circular(40),
-                    thickness: MaterialStateProperty.all(6),
-                    thumbVisibility: MaterialStateProperty.all(true),
-                  ),
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  padding: EdgeInsets.only(left: 14, right: 14),
-                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        Row(
-          children: [
-            const Text('音频:', style: StyleString.subtitleStyle),
-            const SizedBox(width: 10),
-            // DropdownMenuCustom(
-            //   data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Audio'),
-            //   initialSelection: 0,
-            //   onSelected: (value) => SmartDialog.showToast(value.toString()),
-            // )
-          ],
-        ),
-        const SizedBox(height: 5),
-        Row(
-          children: [
-            const Text('字幕:', style: StyleString.subtitleStyle),
-            const SizedBox(width: 10),
-            // DropdownMenuCustom(
-            //   data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Subtitle'),
-            //   initialSelection: 0,
-            //   onSelected: (value) => SmartDialog.showToast(value.toString()),
-            // )
-          ],
-        ),
-      ],
+            ],
+          ),
+          const SizedBox(height: 5),
+          Row(
+            children: [
+              const Text('音频:', style: StyleString.subtitleStyle),
+              const SizedBox(width: 10),
+              CustomDropdownButton2(
+                hint: '选择音频',
+                valueListenable: valueListenable,
+                dropdownItems: audios,
+                onChanged: (String? value) {
+                  ref.read(embyMediaServiceProvider.notifier).setAudioIndex(int.parse(value!));
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Row(
+            children: [
+              const Text('字幕:', style: StyleString.subtitleStyle),
+              const SizedBox(width: 10),
+              CustomDropdownButton2(
+                hint: '选择字幕',
+                valueListenable: valueListenable,
+                dropdownItems: subtitles,
+                onChanged: (String? value) {
+                  ref.read(embyMediaServiceProvider.notifier).setSubtitleIndex(int.parse(value!));
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

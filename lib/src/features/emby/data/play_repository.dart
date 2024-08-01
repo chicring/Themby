@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
-import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/domain/playback_data.dart';
 import 'package:themby/src/features/emby/domain/playback_info.dart';
 import 'package:themby/src/helper/dio_provider.dart';

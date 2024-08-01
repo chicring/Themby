@@ -27,15 +27,15 @@ class MediasService extends _$MediasService{
     // state = state.copyWith(episodes: episodes, playingIndex: index);
   }
 
-  Future<void> showEpisodeSheet() async{
-    SmartDialog.show(
-        alignment: Alignment.centerRight,
-        maskColor: Colors.transparent,
-        builder: (_){
-          return episodeSheet(state);
-        }
-    );
-  }
+  // Future<void> showEpisodeSheet() async{
+  //   SmartDialog.show(
+  //       alignment: Alignment.centerRight,
+  //       maskColor: Colors.transparent,
+  //       builder: (_){
+  //         return episodeSheet(state);
+  //       }
+  //   );
+  // }
 
   Future<void> removeEpisode() async{
     episodes = [];

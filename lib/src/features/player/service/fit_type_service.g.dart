@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'controls_service.dart';
+part of 'fit_type_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$controlsServiceHash() => r'0c02fe4db37668af3bafd138729db52f1284f756';
+String _$fitTypeServiceHash() => r'8aae4965ed966ae967368a9f03310a645a650678';
 
-/// See also [ControlsService].
-@ProviderFor(ControlsService)
-final controlsServiceProvider =
-    AutoDisposeNotifierProvider<ControlsService, ControlsState>.internal(
-  ControlsService.new,
-  name: r'controlsServiceProvider',
+/// See also [FitTypeService].
+@ProviderFor(FitTypeService)
+final fitTypeServiceProvider =
+    AutoDisposeNotifierProvider<FitTypeService, int>.internal(
+  FitTypeService.new,
+  name: r'fitTypeServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$controlsServiceHash,
+      : _$fitTypeServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ControlsService = AutoDisposeNotifier<ControlsState>;
+typedef _$FitTypeService = AutoDisposeNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

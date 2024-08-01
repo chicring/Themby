@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'controls_service.dart';
+part of 'emby_media_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$controlsServiceHash() => r'0c02fe4db37668af3bafd138729db52f1284f756';
+String _$embyMediaServiceHash() => r'2bbde895241c712de8944150ed5ce0a7a1eb41fb';
 
-/// See also [ControlsService].
-@ProviderFor(ControlsService)
-final controlsServiceProvider =
-    AutoDisposeNotifierProvider<ControlsService, ControlsState>.internal(
-  ControlsService.new,
-  name: r'controlsServiceProvider',
+/// See also [EmbyMediaService].
+@ProviderFor(EmbyMediaService)
+final embyMediaServiceProvider =
+    AutoDisposeNotifierProvider<EmbyMediaService, SelectedMedia>.internal(
+  EmbyMediaService.new,
+  name: r'embyMediaServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$controlsServiceHash,
+      : _$embyMediaServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ControlsService = AutoDisposeNotifier<ControlsState>;
+typedef _$EmbyMediaService = AutoDisposeNotifier<SelectedMedia>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,8 +1,10 @@
 import 'dart:math';
 
 
+import 'package:themby/src/common/domiani/Select.dart';
 import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
+import 'package:themby/src/features/emby/domain/emby/media_stream.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
 
 
@@ -75,4 +77,15 @@ String formatFileSize(int size) {
 
   int digitGroups = (log(size) / log(1024)).floor();
   return '${(size / pow(1024, digitGroups)).toStringAsFixed(2)} ${units[digitGroups]}';
+}
+
+
+List<Select> getMediaStreams(List<MediaStream> mediaStreams, String type){
+  return mediaStreams
+      .where((element) => element.type == type)
+      .toList()
+      .asMap()
+      .entries
+      .map((e) => Select(title: e.value.displayTitle!, subtitle: e.value.title, value: e.key.toString()))
+      .toList();
 }

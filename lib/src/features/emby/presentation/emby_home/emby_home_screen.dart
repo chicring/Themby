@@ -81,6 +81,7 @@ AppBar _buildAppBar(Site site,BuildContext context) {
     actions: [
         IconButton(
           icon: const Icon(Icons.search_rounded, size: 30,),
+          color: Colors.white,
           onPressed: () {
             GoRouter.of(context).push('/emby/search');
           },

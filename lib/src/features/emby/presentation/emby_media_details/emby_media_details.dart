@@ -28,6 +28,7 @@ import 'emby_media_details_shimmer.dart';
 
 
 import 'emby_media_similar.dart';
+import 'widgets/play_button.dart';
 
 class EmbyMediaDetails extends ConsumerStatefulWidget {
   final String id;
@@ -66,31 +67,7 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
     return data.when(
       data: (mediaDetail) {
         return Scaffold(
-            floatingActionButton: GestureDetector(
-              onTap: () async{
-                GoRouter.of(context).push('/player', extra: getPlayInfo(mediaDetail));
-              },
-              onLongPress: (){
-                SmartDialog.showToast('别长按我，等待播放');
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
-                decoration: BoxDecoration(
-                  borderRadius: StyleString.lgRadius,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                width: MediaQuery.sizeOf(context).width,
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.play_arrow_rounded , color: Theme.of(context).colorScheme.onPrimary),
-                    const SizedBox(width: 10),
-                    Text('播放', style: StyleString.titleStyle.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
-                  ],
-                ),
-              ),
-            ),
+            floatingActionButton: PlayButton(item: mediaDetail),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             body: CustomScrollView(
               controller: _controller,
@@ -152,119 +129,119 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
 
 
-class _DetailContent extends StatelessWidget {
-  final Site site;
-  final MediaDetail mediaDetail;
-  const _DetailContent({required this.mediaDetail, required this.site});
-
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.star, color: Colors.yellow, size: 20),
-                  Text(
-                    mediaDetail.communityRating,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 10),
-              Text(
-                mediaDetail.productionYear.toString(),
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              const SizedBox(width: 10),
-
-              if(mediaDetail.mediaType == 'Video') ...{
-                Text(
-                  tickToTime(mediaDetail.runTimeTicks),
-                  style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal
-                  ),
-                ),
-                const SizedBox(width: 10),
-              },
-
-              Text(
-                mediaDetail.officialRating,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              const SizedBox(width: 10),
-
-              if(mediaDetail.type == 'Series')
-                Text(
-                  '共 ${mediaDetail.childCount} 季',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-            ],
-          ),
-
-          if(mediaDetail.mediaType == 'Video') ...{
-            const SizedBox(height: 5),
-            Row(
-              children: [
-                const Text('视频:', style: StyleString.subtitleStyle),
-                const SizedBox(width: 10),
-                DropdownMenuCustom(
-                  data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Video'),
-                  initialSelection: 0,
-                  onSelected: (value) => SmartDialog.showToast(value.toString()),
-                )
-              ],
-            ),
-            const SizedBox(height: 5),
-            Row(
-              children: [
-                const Text('音频:', style: StyleString.subtitleStyle),
-                const SizedBox(width: 10),
-                DropdownMenuCustom(
-                  data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Audio'),
-                  initialSelection: 0,
-                  onSelected: (value) => SmartDialog.showToast(value.toString()),
-                )
-              ],
-            ),
-            const SizedBox(height: 5),
-            Row(
-              children: [
-                const Text('字幕:', style: StyleString.subtitleStyle),
-                const SizedBox(width: 10),
-                DropdownMenuCustom(
-                  data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Subtitle'),
-                  initialSelection: 0,
-                  onSelected: (value) => SmartDialog.showToast(value.toString()),
-                )
-              ],
-            ),
-          }
-        ],
-      ),
-    );
-  }
-}
+// class _DetailContent extends StatelessWidget {
+//   final Site site;
+//   final MediaDetail mediaDetail;
+//   const _DetailContent({required this.mediaDetail, required this.site});
+//
+//
+//   @override
+//   Widget build(BuildContext context) {
+//
+//     return Container(
+//       margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
+//       child: Column(
+//         children: [
+//           Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             mainAxisAlignment: MainAxisAlignment.start,
+//             children: [
+//               Row(
+//                 children: [
+//                   const Icon(Icons.star, color: Colors.yellow, size: 20),
+//                   Text(
+//                     mediaDetail.communityRating,
+//                     style: const TextStyle(
+//                       fontSize: 14,
+//                       fontWeight: FontWeight.bold,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               const SizedBox(width: 10),
+//               Text(
+//                 mediaDetail.productionYear.toString(),
+//                 style: const TextStyle(
+//                   fontSize: 14,
+//                   fontWeight: FontWeight.normal,
+//                 ),
+//               ),
+//               const SizedBox(width: 10),
+//
+//               if(mediaDetail.mediaType == 'Video') ...{
+//                 Text(
+//                   tickToTime(mediaDetail.runTimeTicks),
+//                   style: const TextStyle(
+//                       fontSize: 14,
+//                       fontWeight: FontWeight.normal
+//                   ),
+//                 ),
+//                 const SizedBox(width: 10),
+//               },
+//
+//               Text(
+//                 mediaDetail.officialRating,
+//                 style: const TextStyle(
+//                   fontSize: 14,
+//                   fontWeight: FontWeight.normal,
+//                 ),
+//               ),
+//               const SizedBox(width: 10),
+//
+//               if(mediaDetail.type == 'Series')
+//                 Text(
+//                   '共 ${mediaDetail.childCount} 季',
+//                   style: const TextStyle(
+//                     fontSize: 14,
+//                     fontWeight: FontWeight.normal,
+//                   ),
+//                 ),
+//             ],
+//           ),
+//
+//           if(mediaDetail.mediaType == 'Video') ...{
+//             const SizedBox(height: 5),
+//             Row(
+//               children: [
+//                 const Text('视频:', style: StyleString.subtitleStyle),
+//                 const SizedBox(width: 10),
+//                 DropdownMenuCustom(
+//                   data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Video'),
+//                   initialSelection: 0,
+//                   onSelected: (value) => SmartDialog.showToast(value.toString()),
+//                 )
+//               ],
+//             ),
+//             const SizedBox(height: 5),
+//             Row(
+//               children: [
+//                 const Text('音频:', style: StyleString.subtitleStyle),
+//                 const SizedBox(width: 10),
+//                 DropdownMenuCustom(
+//                   data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Audio'),
+//                   initialSelection: 0,
+//                   onSelected: (value) => SmartDialog.showToast(value.toString()),
+//                 )
+//               ],
+//             ),
+//             const SizedBox(height: 5),
+//             Row(
+//               children: [
+//                 const Text('字幕:', style: StyleString.subtitleStyle),
+//                 const SizedBox(width: 10),
+//                 DropdownMenuCustom(
+//                   data: getMediaStreams(mediaDetail.mediaSources[0].mediaStreams, 'Subtitle'),
+//                   initialSelection: 0,
+//                   onSelected: (value) => SmartDialog.showToast(value.toString()),
+//                 )
+//               ],
+//             ),
+//           }
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 
 

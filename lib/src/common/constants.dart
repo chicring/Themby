@@ -23,4 +23,13 @@ class StyleString {
     fontWeight: FontWeight.bold,
   );
 
+  static const TextStyle subTitleStyle = TextStyle(
+      height: 1.5,
+      fontSize: 50.0,
+      letterSpacing: 0.0,
+      wordSpacing: 0.0,
+      color: Color(0xffffffff),
+      fontWeight: FontWeight.normal,
+      backgroundColor: Colors.transparent,
+  );
 }

@@ -1,6 +1,5 @@
-import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -48,7 +47,6 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
     double height = MediaQuery.sizeOf(context).width * 100 / 166;
 
 
-
     return medias.when(
       loading: () => const SizedBox(),
       error: (error, stack) => const SizedBox(),
@@ -77,14 +75,14 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
                   blendMode: BlendMode.dstIn,
                   child: Column(
                     children: [
-                      Container(
-                        height: 90,
-                        color: dominantColor,
-                      ),
+                      // Container(
+                      //   height: 90,
+                      //   color: dominantColor,
+                      // ),
                       NetworkImgLayer(
                         imageUrl: media.imagesCustom?.backdrop ?? "",
                         width: width,
-                        height: height,
+                        height: height + 90,
                       )
                     ],
                   ),
