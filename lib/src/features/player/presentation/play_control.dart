@@ -14,7 +14,9 @@ import 'package:themby/src/features/player/widgets/buttons/toggle_fit_button.dar
 import 'package:themby/src/features/player/widgets/buttons/toggle_rate_button.dart';
 import 'package:themby/src/features/player/widgets/buttons/toggle_subtitle_buttton.dart';
 import 'package:themby/src/features/player/widgets/gestures/horizontal_screen_gestures.dart';
+import 'package:themby/src/features/player/widgets/internet_speed_chip.dart';
 import 'package:themby/src/features/player/widgets/progress/media_progress_bar.dart';
+import 'package:themby/src/features/player/widgets/selections/selection_button.dart';
 import 'package:themby/src/features/player/widgets/title_logo.dart';
 
 class PlayControl extends ConsumerStatefulWidget{
@@ -33,12 +35,10 @@ class _PlayControl extends ConsumerState<PlayControl>{
   @override
   void initState() {
     super.initState();
-    ref.read(controlsServiceProvider.notifier).startPlay(widget.media);
   }
 
   @override
   void deactivate(){
-    ref.read(videoControllerProvider).player.stop();
     super.deactivate();
   }
 
@@ -83,7 +83,6 @@ class _PlayControl extends ConsumerState<PlayControl>{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -91,9 +90,14 @@ class _PlayControl extends ConsumerState<PlayControl>{
                         PlayNextButton(),
                       ],
                     ),
-
-
-                    ToggleRateButton(),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SelectionButton(),
+                        SizedBox(width: 6),
+                        ToggleRateButton(),
+                      ],
+                    ),
                   ],
                 )
               ],
@@ -115,6 +119,7 @@ class _PlayControl extends ConsumerState<PlayControl>{
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+
           ToggleFitButton(),
 
           SizedBox(width: 5),

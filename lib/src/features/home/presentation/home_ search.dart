@@ -32,7 +32,7 @@ class _HomeSearchState extends ConsumerState<HomeSearch> {
         controller: _controller,
         maxLines: 1,
         decoration: InputDecoration(
-          hintText: '搜索'.hardcoded,
+          hintText: '搜索站点'.hardcoded,
           prefixIcon: const Icon(Icons.search),
           filled: true, // Set filled to true
           fillColor: Theme.of(context).colorScheme.surfaceContainer,

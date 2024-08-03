@@ -1035,14 +1035,14 @@ class _GetSimilarProviderElement
   String get id => (origin as GetSimilarProvider).id;
 }
 
-String _$getNextUpHash() => r'e115b1bf69e681796b43d52ddb11cbfa976c05b5';
+String _$getNextUpHash() => r'a27173d38523f182e26593992363c67afec94a56';
 
 /// See also [getNextUp].
 @ProviderFor(getNextUp)
 const getNextUpProvider = GetNextUpFamily();
 
 /// See also [getNextUp].
-class GetNextUpFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
+class GetNextUpFamily extends Family<AsyncValue<List<Item>>> {
   /// See also [getNextUp].
   const GetNextUpFamily();
 
@@ -1080,7 +1080,7 @@ class GetNextUpFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
 }
 
 /// See also [getNextUp].
-class GetNextUpProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
+class GetNextUpProvider extends AutoDisposeFutureProvider<List<Item>> {
   /// See also [getNextUp].
   GetNextUpProvider(
     String seriesId,
@@ -1114,7 +1114,7 @@ class GetNextUpProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
 
   @override
   Override overrideWith(
-    FutureOr<EmbyResponse<Item>> Function(GetNextUpRef provider) create,
+    FutureOr<List<Item>> Function(GetNextUpRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1131,7 +1131,7 @@ class GetNextUpProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<EmbyResponse<Item>> createElement() {
+  AutoDisposeFutureProviderElement<List<Item>> createElement() {
     return _GetNextUpProviderElement(this);
   }
 
@@ -1149,14 +1149,13 @@ class GetNextUpProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   }
 }
 
-mixin GetNextUpRef on AutoDisposeFutureProviderRef<EmbyResponse<Item>> {
+mixin GetNextUpRef on AutoDisposeFutureProviderRef<List<Item>> {
   /// The parameter `seriesId` of this provider.
   String get seriesId;
 }
 
 class _GetNextUpProviderElement
-    extends AutoDisposeFutureProviderElement<EmbyResponse<Item>>
-    with GetNextUpRef {
+    extends AutoDisposeFutureProviderElement<List<Item>> with GetNextUpRef {
   _GetNextUpProviderElement(super.provider);
 
   @override

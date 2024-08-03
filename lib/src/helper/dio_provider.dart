@@ -8,7 +8,7 @@ import 'package:themby/src/helper/logger_interceptor.dart';
 
 part 'dio_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Dio dio(DioRef ref) {
   final dio = Dio(
     BaseOptions(

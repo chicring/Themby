@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/features/player/service/fit_type_service.dart';
 
 class ToggleFitButton extends ConsumerWidget{
-  const ToggleFitButton({super.key, this.size = 30, this.color = Colors.white});
+  const ToggleFitButton({super.key, this.size = 28, this.color = Colors.white});
 
   final double size;
   final Color color;

@@ -43,7 +43,6 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final Site? site = ref.watch(embyStateServiceProvider.select((value) => value.site));
     final episodes = ref.watch(getEpisodesProvider(widget.id,widget.id));
 
     final item = ref.watch(GetMediaProvider(widget.id)).valueOrNull;

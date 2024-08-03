@@ -345,7 +345,7 @@ class ViewRepository{
   }
 
 
-  Future<EmbyResponse<Item>> getNextUp({required String seriesId, CancelToken? cancelToken}) async {
+  Future<List<Item>> getNextUp({required String seriesId, CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -375,7 +375,7 @@ class ViewRepository{
       return item;
     });
 
-    return resp;
+    return resp.items;
   }
 
 }
@@ -489,7 +489,7 @@ Future<EmbyResponse<Item>> getSimilar(GetSimilarRef ref, String id) {
 }
 
 @riverpod
-Future<EmbyResponse<Item>> getNextUp(GetNextUpRef ref, String seriesId) {
+Future<List<Item>> getNextUp(GetNextUpRef ref, String seriesId) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getNextUp(seriesId: seriesId, cancelToken: cancelToken);
 }

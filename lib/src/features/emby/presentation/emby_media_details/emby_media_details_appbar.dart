@@ -99,15 +99,27 @@ class DetailBackground extends StatelessWidget {
           bottom: 0,
           left: 12,
           child: Container(
+            alignment: Alignment.bottomLeft,
             constraints: BoxConstraints(
-              maxWidth: width * 0.5,
-              maxHeight: height * 0.5,
-              // maxHeight: height * 0.4,
-              // minHeight: height * 0.2,
+              minHeight: height * 0.1,
+              maxHeight: height * 0.33,
+              maxWidth: width * 0.7,
             ),
             child: CachedNetworkImage(
+              height: height * 0.5,
               imageUrl: item.imagesCustom!.logo,
-              errorWidget: (_,__,___) => Text(item.name!,maxLines: 1,  style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+              errorWidget: (_,__,___) => Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  item.name!,
+                  maxLines: 2,
+                  style: const TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ),
           ),
         ),

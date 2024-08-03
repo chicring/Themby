@@ -1,45 +1,44 @@
 
 
 
-import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:themby/src/features/emby/domain/episode.dart';
-import 'package:themby/src/features/player/domain/medias_state.dart';
-import 'package:themby/src/features/player/widget/sheet_control.dart';
+import 'package:themby/src/features/emby/domain/emby/item.dart';
+import 'package:themby/src/features/player/service/controls_service.dart';
+
 
 part 'medias_service.g.dart';
 
 @riverpod
 class MediasService extends _$MediasService{
 
-  static List<Episode> episodes = [];
+  static List<Item> items = [];
 
   @override
-  List<Episode> build(){
-    return episodes;
+  List<Item> build(){
+    return items;
   }
 
 
-  void setEpisode(List<Episode> eps) {
-    episodes = eps;
-    state = episodes;
-    // state = state.copyWith(episodes: episodes, playingIndex: index);
+  void setItem(List<Item> its) {
+    final controlsState = ref.watch(controlsServiceProvider);
+    //
+    // late
+    //
+    // if(controlsState.playType == 'Series' ) {
+    //   requestId = controlsState.mediaId!;
+    //   items = ref.watch(getNextUpProvider(requestId));
+    // }else if(controlsState.playType == 'Episode'){
+    //   requestId = controlsState.parentId!;
+    //   items = ref.watch(getEpisodesProvider(requestId,requestId));
+    // }else {
+    //   items = const AsyncValue.data([]);
+    // }
   }
 
-  // Future<void> showEpisodeSheet() async{
-  //   SmartDialog.show(
-  //       alignment: Alignment.centerRight,
-  //       maskColor: Colors.transparent,
-  //       builder: (_){
-  //         return episodeSheet(state);
-  //       }
-  //   );
-  // }
 
-  Future<void> removeEpisode() async{
-    episodes = [];
-    state = episodes;
+  Future<void> removeAll() async{
+    items = [];
+    state = items;
   }
 
 }

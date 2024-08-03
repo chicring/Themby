@@ -76,16 +76,28 @@ dependencies:
 
   #骨架屏
   shimmer: ^3.0.0
+
+  #dio缓存
   dio_cache_interceptor: ^3.5.0
 
   #视频播放
   media_kit: ^1.1.10+1
   media_kit_video: ^1.2.4
   media_kit_libs_video: ^1.0.4
+
+  #打开外部链接
   url_launcher: ^6.3.0
+
+  #进度条
   audio_video_progress_bar: ^2.0.3
+
+  #刷新率
   flutter_displaymode: ^0.6.0
+
+  #节流防抖
   easy_debounce: ^2.0.3
+
+  #震动效果
   haptic_feedback: ^0.5.1+1
 
   #josn
@@ -96,7 +108,9 @@ dependencies:
 
   #下拉菜单
   dropdown_button2: ^3.0.0-beta.16
+
   palette_generator: ^0.3.3+4
+  internet_speed_meter: ^1.0.3
 
 dev_dependencies:
   flutter_test:

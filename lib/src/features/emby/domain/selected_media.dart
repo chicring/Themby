@@ -3,6 +3,8 @@
 class SelectedMedia{
   /// item id
   String? id;
+  /// 父项目 id
+  String? parentId;
   /// item type : movie, series, episode
   String? type;
   /// item position
@@ -18,6 +20,7 @@ class SelectedMedia{
 
   SelectedMedia({
     this.id,
+    this.parentId,
     this.type,
     this.position,
     this.playIndex,
@@ -28,6 +31,7 @@ class SelectedMedia{
 
   SelectedMedia copyWith({
     String? id,
+    String? parentId,
     String? type,
     Duration? position,
     int? playIndex,
@@ -37,6 +41,7 @@ class SelectedMedia{
   }){
     return SelectedMedia(
       id: id ?? this.id,
+      parentId: parentId ?? this.parentId,
       type: type ?? this.type,
       position: position ?? this.position,
       playIndex: playIndex ?? this.playIndex,

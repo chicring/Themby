@@ -42,7 +42,7 @@ class ControlsService extends _$ControlsService{
     }else if(media.type == "Series"){
       await ref.read(getNextUpProvider(media.id!).future)
           .then((value) {
-        currentId = value.items[0].id!;
+        currentId = value[0].id!;
       });
 
       PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(currentId).future);
@@ -64,15 +64,17 @@ class ControlsService extends _$ControlsService{
       seekTo(media.position!);
     }
 
-    state = state.copyWith(mediaId: media.id, currentMediaId: currentId, mediaSourceId: mediaSourceId, playSessionId: playSessionId);
+    state = state.copyWith(mediaId: media.id, parentId: media.parentId, currentMediaId: currentId, mediaSourceId: mediaSourceId, playSessionId: playSessionId, playType: media.type);
   }
 
   ///跳转到指定位置
-  Future<void> seekTo(Duration position) async{
+  Future<void> seekTo(Duration position,{String type = "slide"}) async{
     if (position < Duration.zero) {
       position = Duration.zero;
     }
-    await ref.read(videoControllerProvider).player.stream.buffer.first;
+    if(type != "slide"){
+      await ref.read(videoControllerProvider).player.stream.buffer.first;
+    }
 
     await ref.read(videoControllerProvider).player.seek(position);
 

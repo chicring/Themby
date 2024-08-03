@@ -17,10 +17,10 @@ class EmbyDetailsNextUp extends ConsumerWidget{
 
     return respAsync.when(
       data: (data) {
-        return data.items.isNotEmpty
+        return data.isNotEmpty
         ? ListCardsHh(
           name: '继续观看',
-          items: data.items,
+          items: data,
           onSelect: () {
           },
         )

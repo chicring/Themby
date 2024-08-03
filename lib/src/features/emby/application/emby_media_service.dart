@@ -16,6 +16,7 @@ class EmbyMediaService extends _$EmbyMediaService{
 
     return SelectedMedia(
       id: item.id,
+      parentId: item.seasonId,
       type: item.type,
       position: Duration(milliseconds: duration ~/ 10000),
       playIndex: item.indexNumber ?? 0,

@@ -52,7 +52,7 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
 
   Future<void> onDoublePressRight() async {
     final position = ref.read(videoControllerProvider).player.state.position;
-    ref.read(videoControllerProvider).player.seek(position - const Duration(seconds: 10));
+    ref.read(videoControllerProvider).player.seek(position + const Duration(seconds: 10));
 
       SmartDialog.showToast(
         '',
@@ -60,7 +60,7 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         displayTime: const Duration(milliseconds: 800),
         displayType: SmartToastType.last,
         builder: (context) {
-          return textToast('快退10秒');
+          return textToast('快进10秒');
         }
       );
   }
@@ -105,45 +105,45 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         controllerState.player.setRate(rate / 2);
         SmartDialog.dismiss(tag: "show_long_press");
       },
-      /// 横向滑动开始
-      onHorizontalDragStart: (details) async{
-        /// 打开进度条提示
-
-        final position = controllerState.player.state.position;
-        ref.read(dragingTimeProvider.notifier).update(position);
-        print('duration1: ${position.inSeconds}');
-
-        await SmartDialog.show(
-            tag: "progress_toast",
-            alignment: Alignment.topCenter,
-            maskColor: Colors.transparent,
-            builder: (_) => const ProgressToast()
-        );
-      },
-      /// 横向滑动更新
-      onHorizontalDragUpdate: (details) async{
-
-        final current = ref.read(dragingTimeProvider);
-
-        final double scale = 90000 / width;
-        final pos = Duration(
-            milliseconds: current.inMilliseconds + (details.delta.dx * scale).round()
-        );
-
-        final Duration result = pos.clamp(Duration.zero, controllerState.player.state.duration);
-
-        ref.read(dragingTimeProvider.notifier).update(result);
-      },
-      /// 横向滑动结束
-      onHorizontalDragEnd: (details) async{
-        final pos = ref.read(dragingTimeProvider);
-        controllerState.player.seek(pos);
-        ///关闭toast 并 进行跳转
-        await SmartDialog.dismiss(tag: "progress_toast");
-      },
-      onHorizontalDragCancel: () async{
-        await SmartDialog.dismiss(tag: "progress_toast");
-      },
+      // /// 横向滑动开始
+      // onHorizontalDragStart: (details) async{
+      //   /// 打开进度条提示
+      //
+      //   final position = controllerState.player.state.position;
+      //   ref.read(dragingTimeProvider.notifier).update(position);
+      //   print('duration1: ${position.inSeconds}');
+      //
+      //   await SmartDialog.show(
+      //       tag: "progress_toast",
+      //       alignment: Alignment.topCenter,
+      //       maskColor: Colors.transparent,
+      //       builder: (_) => const ProgressToast()
+      //   );
+      // },
+      // /// 横向滑动更新
+      // onHorizontalDragUpdate: (details) async{
+      //
+      //   final current = ref.read(dragingTimeProvider);
+      //
+      //   final double scale = 90000 / width;
+      //   final pos = Duration(
+      //       milliseconds: current.inMilliseconds + (details.delta.dx * scale).round()
+      //   );
+      //
+      //   final Duration result = pos.clamp(Duration.zero, controllerState.player.state.duration);
+      //
+      //   ref.read(dragingTimeProvider.notifier).update(result);
+      // },
+      // /// 横向滑动结束
+      // onHorizontalDragEnd: (details) async{
+      //   final pos = ref.read(dragingTimeProvider);
+      //   controllerState.player.seek(pos);
+      //   ///关闭toast 并 进行跳转
+      //   await SmartDialog.dismiss(tag: "progress_toast");
+      // },
+      // onHorizontalDragCancel: () async{
+      //   await SmartDialog.dismiss(tag: "progress_toast");
+      // },
     );
   }
 }

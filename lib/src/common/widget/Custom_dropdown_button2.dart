@@ -65,7 +65,7 @@ class CustomDropdownButton2 extends StatelessWidget {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         //To avoid long text overflowing.
-        isExpanded: true,
+        isExpanded: false,
         // hint: Container(
         //   alignment: hintAlignment,
         //   child: Text(
@@ -85,13 +85,27 @@ class CustomDropdownButton2 extends StatelessWidget {
           height: itemHeight ?? 40,
           child: Container(
             alignment: valueAlignment,
-            child: Text(
-              item.title,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: const TextStyle(
-                fontSize: 14,
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  item.title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  item.subtitle ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
           ),
         ))
@@ -99,8 +113,8 @@ class CustomDropdownButton2 extends StatelessWidget {
         onChanged: onChanged,
         selectedItemBuilder: selectedItemBuilder,
         buttonStyleData: ButtonStyleData(
-          height: buttonHeight ?? 40,
-          width: buttonWidth ?? 140,
+          height: buttonHeight,
+          width: buttonWidth,
           padding: buttonPadding ?? const EdgeInsets.only(left: 14, right: 14),
           decoration: buttonDecoration ??
               BoxDecoration(
@@ -112,7 +126,7 @@ class CustomDropdownButton2 extends StatelessWidget {
           elevation: buttonElevation,
         ),
         iconStyleData: IconStyleData(
-          icon: icon ?? const Icon(Icons.arrow_forward_ios_outlined),
+          icon: icon ?? const Icon(Icons.keyboard_arrow_down_rounded),
           iconSize: iconSize ?? 12,
           iconEnabledColor: iconEnabledColor,
           iconDisabledColor: iconDisabledColor,
@@ -132,10 +146,10 @@ class CustomDropdownButton2 extends StatelessWidget {
           scrollbarTheme: ScrollbarThemeData(
             radius: scrollbarRadius ?? const Radius.circular(40),
             thickness: scrollbarThickness != null
-                ? MaterialStateProperty.all<double>(scrollbarThickness!)
+                ? WidgetStateProperty.all<double>(scrollbarThickness!)
                 : null,
             thumbVisibility: scrollbarAlwaysShow != null
-                ? MaterialStateProperty.all<bool>(scrollbarAlwaysShow!)
+                ? WidgetStateProperty.all<bool>(scrollbarAlwaysShow!)
                 : null,
           ),
         ),
