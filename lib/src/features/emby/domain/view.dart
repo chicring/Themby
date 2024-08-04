@@ -115,7 +115,7 @@ class ViewDetail {
       imageTags: ImageTags.fromJson(json["ImageTags"]),
       isFolder: json["IsFolder"] ?? false,
       lockData: json["LockData"] ?? false,
-      lockedFields: List<String>.from(json["LockedFields"].map((x) => x)) ?? [],
+      lockedFields: List<String>.from(json["LockedFields"].map((x) => x)),
       name: json["Name"]  ?? "",
       parentId: json["ParentId"] ?? "",
       path: json["Path"] ?? "",

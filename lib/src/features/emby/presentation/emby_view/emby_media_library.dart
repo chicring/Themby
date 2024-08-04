@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:themby/src/common/widget/shimmer.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/presentation/widgets/list_card_h.dart';
 
@@ -14,8 +13,6 @@ class EmbyMediaLibrary extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final view = ref.watch(getViewsProvider);
 
-    // ShimmerList(height: MediaQuery.sizeOf(context).height * 0.18, width: MediaQuery.sizeOf(context).height * 0.117)
-    
     return Container(
       child: view.when(
         loading: () => const SizedBox(),
@@ -25,14 +22,14 @@ class EmbyMediaLibrary extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ...data.items.map((item){
-                  final media = ref.watch(getLastMediaProvider(item.id));
+                  final media = ref.watch(getLastMediaProvider(item.id!));
                   return media.when(
                       loading: () => const SizedBox(),
                       error: (error, stack) => const SizedBox(),
-                      data: (value) => value.isEmpty || item.collectionType == 'music' || item.collectionType == 'livetv' ? const SizedBox() :
+                      data: (value) => value.isEmpty ? const SizedBox() :
                         ListCardsH(
-                          name: item.name,
-                          parentId: item.id,
+                          name: item.name!,
+                          parentId: item.id!,
                           items: value,
                         )
                   );

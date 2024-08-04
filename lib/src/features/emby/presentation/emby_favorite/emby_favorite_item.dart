@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
-import 'package:themby/src/features/emby/presentation/widget/list_cards_h.dart';
+import 'package:themby/src/features/emby/presentation/widgets/list_card_h.dart';
+
+
 
 class EmbyFavoriteItem extends ConsumerWidget {
 
@@ -38,7 +40,7 @@ class EmbyFavoriteItem extends ConsumerWidget {
               : ListCardsH(
             name: type == 'movie' ? '喜欢的电影' : '喜欢的剧集',
             parentId: '',
-            medias: data.items,
+            items: data.items,
             onSelect: () {
 
             },

@@ -81,6 +81,7 @@ class _EmbySearchScreenState extends ConsumerState<EmbySearchScreen>  {
 
       body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
             const SizedBox(height: StyleString.safeSpace),
             if (query.isNotEmpty)

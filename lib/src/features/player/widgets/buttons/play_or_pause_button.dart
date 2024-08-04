@@ -22,13 +22,13 @@ class _PlayOrPauseButtonState extends ConsumerState<PlayOrPauseButton>{
   @override
   void initState() {
     super.initState();
-
     subscription = ref.read(videoControllerProvider).player.stream.playing.listen((event) {
-      isPlaying = event;
       setState(() {
+        isPlaying = event;
       });
     });
   }
+
 
   @override
   void dispose() {

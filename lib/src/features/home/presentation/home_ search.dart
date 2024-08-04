@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/features/home/presentation/home_search_query_notifier.dart';
 import 'package:themby/src/localization/string_hardcoded.dart';
 
-import 'home_server_notifier.dart';
 
 class HomeSearch extends ConsumerStatefulWidget {
   const HomeSearch({super.key});

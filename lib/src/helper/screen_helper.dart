@@ -57,8 +57,6 @@ class ScreenHelper {
         basePortion * 12,
       ];
     }
-
-    print('screenWidth: $screenWidth');
   }
 
 

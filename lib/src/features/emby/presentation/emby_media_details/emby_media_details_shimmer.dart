@@ -10,7 +10,6 @@ class EmbyMediaDetailsShimmer extends StatelessWidget{
   Widget build(BuildContext context) {
 
     final double height = MediaQuery.sizeOf(context).height;
-    final double width = MediaQuery.sizeOf(context).width;
 
     final cardHeight = height * 0.18;
     final cardWidth = height * 0.117;

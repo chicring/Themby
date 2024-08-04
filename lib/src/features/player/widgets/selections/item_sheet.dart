@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:themby/src/common/constants.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
-import 'package:themby/src/features/emby/presentation/widgets/episode_card.dart';
+import 'package:themby/src/features/player/constants.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 
 import 'Item_card.dart';
@@ -28,7 +28,7 @@ class _ItemSheet extends ConsumerState<ItemSheet>{
 
     final double width = MediaQuery.of(context).size.width;
 
-    final double cardWidth = width / 6;
+    final double cardWidth = width / 7;
 
     final state = ref.watch(controlsServiceProvider);
 
@@ -54,6 +54,10 @@ class _ItemSheet extends ConsumerState<ItemSheet>{
               item: data[index],
               width: cardWidth,
               height: cardWidth * 9 / 16,
+              press: () {
+                ref.read(controlsServiceProvider.notifier).togglePlayMedia(data[index].id!, data[index].indexNumber!);
+                SmartDialog.dismiss(tag: TagsString.episodeSheetDialog);
+              },
             );
           },
         ),

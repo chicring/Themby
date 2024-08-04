@@ -9,10 +9,6 @@ import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/domain/emby/custom/images_custom.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/domain/emby_response.dart';
-import 'package:themby/src/features/emby/domain/media.dart';
-import 'package:themby/src/features/emby/domain/media_detail.dart';
-import 'package:themby/src/features/emby/domain/query/item_options.dart';
-import 'package:themby/src/features/emby/domain/view.dart';
 import 'package:themby/src/helper/cancel_token_ref.dart';
 import 'package:themby/src/helper/dio_provider.dart';
 
@@ -37,7 +33,7 @@ class ViewRepository{
   final String embyToken;
 
 
-  Future<View> getViews({CancelToken? cancelToken}) async {
+  Future<EmbyResponse<Item>> getViews({CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -53,7 +49,19 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return View.fromJson(response.data);
+    /// 过滤掉非电影的视图
+    final resp = EmbyResponse<Item>.fromJson(response.data, (json) {
+      final item = Item.fromJson(json);
+      item.imagesCustom = ImagesCustom.builder(item, site);
+      return item;
+    });
+
+    return EmbyResponse<Item>(
+      items: resp.items.where((element) {
+        return element.collectionType == 'movies' || element.collectionType == 'tvshows';
+      }).toList(),
+      totalRecordCount: resp.totalRecordCount,
+    );
   }
 
   Future<Item> getMedia(String id, {CancelToken? cancelToken }) async{
@@ -189,9 +197,7 @@ class ViewRepository{
           'EnableImageTypes': 'Logo,Backdrop,Primary',
           'Recursive': 'true',
           'IncludeItemTypes': 'Movie,Series',
-          'SortBy': 'DateCreated,SortName,ProductionYear,Overview',
-          'Fields': 'ProductionYear',
-          'SortOrder': 'Descending',
+          'SortBy': 'Random,IsFavoriteOrLiked',
           'EnableUserData': 'false',
           'EnableTotalRecordCount': 'false',
         }
@@ -277,7 +283,7 @@ class ViewRepository{
     return list;
   }
 
-  Future<EmbyResponse<Media>> getItem({required ItemQuery itemQuery, CancelToken? cancelToken}) async {
+  Future<EmbyResponse<Item>> getItem({required ItemQuery itemQuery, CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
         scheme: site.scheme,
@@ -310,7 +316,13 @@ class ViewRepository{
       ),
       cancelToken: cancelToken,
     );
-    return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
+    final resp = EmbyResponse<Item>.fromJson(response.data, (json) {
+      final item = Item.fromJson(json);
+      item.imagesCustom = ImagesCustom.builder(item, site);
+      return item;
+    });
+
+    return resp;
   }
 
   Future<EmbyResponse<Item>> getSimilar({required String id, CancelToken? cancelToken}) async {
@@ -389,7 +401,7 @@ ViewRepository viewRepository(ViewRepositoryRef ref) => ViewRepository(
 
 
 @riverpod
-Future<View> getViews(GetViewsRef ref){
+Future<EmbyResponse<Item>> getViews(GetViewsRef ref){
 
   final viewRepo = ref.watch(viewRepositoryProvider);
 
@@ -455,7 +467,7 @@ Future<List<Item>> getEpisodes(GetEpisodesRef ref, String sid, String vid) {
 }
 
 @riverpod
-Future<EmbyResponse<Media>> getItem(GetItemRef ref,{required ItemQuery itemQuery}) {
+Future<EmbyResponse<Item>> getItem(GetItemRef ref,{required ItemQuery itemQuery}) {
   final viewRepo = ref.watch(viewRepositoryProvider);
 
   final cancelToken = ref.cancelToken();

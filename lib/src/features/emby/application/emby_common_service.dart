@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:themby/src/common/domiani/Select.dart';
 import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
+import 'package:themby/src/features/emby/domain/emby/media_source.dart';
 import 'package:themby/src/features/emby/domain/emby/media_stream.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
 
@@ -17,7 +18,7 @@ PlayInfo getPlayInfo(Item item) {
     id: item.id!,
     type: item.type!,
     index: item.indexNumber ?? 0,
-    duration:  Duration(milliseconds: duration ~/ 10000),
+    duration: Duration(milliseconds: duration ~/ 10000),
   );
 }
 
@@ -80,6 +81,14 @@ String formatFileSize(int size) {
 }
 
 
+List<Select> getMediaSource(List<MediaSource> sources){
+  return sources
+      .asMap()
+      .entries
+      .map((e) => Select(title: e.value.name!, value: e.key.toString()))
+      .toList();
+}
+
 List<Select> getMediaStreams(List<MediaStream> mediaStreams, String type){
   return mediaStreams
       .where((element) => element.type == type)
@@ -88,4 +97,12 @@ List<Select> getMediaStreams(List<MediaStream> mediaStreams, String type){
       .entries
       .map((e) => Select(title: e.value.displayTitle!, subtitle: e.value.title, value: e.key.toString()))
       .toList();
+}
+
+String truncateText(String text, int maxLength) {
+  if (text.length <= maxLength) {
+    return text;
+  } else {
+    return '${text.substring(0, maxLength)}...';
+  }
 }

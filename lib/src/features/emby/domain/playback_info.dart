@@ -165,7 +165,7 @@ class PlaybackInfo {
     return PlaybackInfo(
       mediaSources: (json['MediaSources'] as List)
           .map((item) => MediaSource.fromJson(item))
-          .toList() ?? [],
+          .toList(),
       playSessionId: json['PlaySessionId'],
     );
   }

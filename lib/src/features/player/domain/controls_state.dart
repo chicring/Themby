@@ -1,7 +1,4 @@
 
-import 'dart:async';
-
-import 'package:flutter/material.dart';
 
 class ControlsState {
 
@@ -17,13 +14,11 @@ class ControlsState {
 
   String? playType;
 
+  int? mediaIndex;
+
   double rate = 1.0;
 
-  //控制器锁
-  bool controlsLock = false;
-
-  //控制器显示
-  bool showControls = true;
+  Duration position;
 
 
   ControlsState({
@@ -33,9 +28,9 @@ class ControlsState {
     this.mediaSourceId,
     this.playSessionId,
     this.playType,
+    this.mediaIndex,
     this.rate = 1.0,
-    this.controlsLock = false,
-    this.showControls = true,
+    required this.position,
   });
 
   ControlsState copyWith({
@@ -45,9 +40,9 @@ class ControlsState {
     String? mediaSourceId,
     String? playSessionId,
     String? playType,
+    int? mediaIndex,
     double? rate,
-    bool? controlsLock,
-    bool? showControls,
+    Duration? position,
   }) {
     return ControlsState(
       mediaId: mediaId ?? this.mediaId,
@@ -56,9 +51,9 @@ class ControlsState {
       mediaSourceId: mediaSourceId ?? this.mediaSourceId,
       playSessionId: playSessionId ?? this.playSessionId,
       playType: playType ?? this.playType,
+      mediaIndex: mediaIndex ?? this.mediaIndex,
       rate: rate ?? this.rate,
-      controlsLock: controlsLock ?? this.controlsLock,
-      showControls: showControls ?? this.showControls,
+      position: position ?? this.position,
     );
   }
 }

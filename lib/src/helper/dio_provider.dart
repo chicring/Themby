@@ -15,6 +15,7 @@ Dio dio(DioRef ref) {
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {
+          "user-agent": "Themby/1.0.0",
           "content-type": "application/json",
         }
     )

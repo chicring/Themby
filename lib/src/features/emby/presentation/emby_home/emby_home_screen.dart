@@ -51,6 +51,9 @@ class EmbyHomeScreen extends ConsumerWidget {
               child: EmbyRecommendationsMedia(),
             ),
             SliverToBoxAdapter(
+              child: SizedBox(height: 18),
+            ),
+            SliverToBoxAdapter(
               child: EmbyResumeMedia(),
             ),
             SliverToBoxAdapter(

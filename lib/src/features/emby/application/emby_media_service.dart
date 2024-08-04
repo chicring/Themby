@@ -19,7 +19,7 @@ class EmbyMediaService extends _$EmbyMediaService{
       parentId: item.seasonId,
       type: item.type,
       position: Duration(milliseconds: duration ~/ 10000),
-      playIndex: item.indexNumber ?? 0,
+      playIndex: item.indexNumber ?? 1,
       mediaSourcesIndex: state.mediaSourcesIndex,
       subtitleIndex: state.subtitleIndex,
       audioIndex: state.audioIndex,

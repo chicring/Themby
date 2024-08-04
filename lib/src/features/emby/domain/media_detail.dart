@@ -99,7 +99,7 @@ class MediaDetail{
       parentIndexNumber: json['ParentIndexNumber'] ?? 0,
       people: (json['People'] as List)
           .map((item) => People.fromJson(item))
-          .toList() ?? [],
+          .toList(),
       parentId: json['ParentId'] ?? '',
       seriesId: json['SeriesId'] ?? '',
       seasonId: json['SeasonId'] ?? '',

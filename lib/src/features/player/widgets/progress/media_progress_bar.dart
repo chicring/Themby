@@ -6,7 +6,6 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
@@ -35,9 +34,13 @@ class _MediaProgressBar extends ConsumerState<MediaProgressBar>{
 
   bool isPlaying = false;
 
-  bool isBuffering = false;
+  bool isBuffering = true;
+
+  // bool isBuffering = false;
 
   List<StreamSubscription> subscriptions = [];
+
+  Timer? _timer;
 
   @override
   void initState() {
@@ -47,6 +50,17 @@ class _MediaProgressBar extends ConsumerState<MediaProgressBar>{
         [
           ref.read(videoControllerProvider).player.stream.duration.listen((event) {
             duration = event;
+
+            final media = ref.read(controlsServiceProvider);
+
+            if(media.position > Duration.zero){
+              position = media.position;
+              ref.read(videoControllerProvider).player.seek(media.position);
+              ref.read(controlsServiceProvider.notifier).clearPosition();
+            }
+
+            ref.read(controlsServiceProvider.notifier).startRecordPosition(position: position.inMicroseconds);
+
             setState(() {
             });
           }),
@@ -62,37 +76,42 @@ class _MediaProgressBar extends ConsumerState<MediaProgressBar>{
             }
           }),
           ref.read(videoControllerProvider).player.stream.buffer.listen((event) {
-            buffer = event;
-
-            if(buffer == Duration.zero){
-              SmartDialog.showLoading(
-                builder: (_) {
-                  return SvgPicture.asset(
-                    "assets/loading/loading-1.svg",
-                    width: 25,
-                  );
-                }
-              );
-            }else{
-              SmartDialog.dismiss();
-            }
-
+            setState(() {
+              buffer = event;
+            });
           }),
           ref.read(videoControllerProvider).player.stream.playing.listen((event) {
             isPlaying = event;
           }),
           ref.read(videoControllerProvider).player.stream.buffering.listen((event) {
             isBuffering = event;
-            //
-            // if(isBuffering && isPlaying) {
-            //
-            // }else{
-            //   SmartDialog.dismiss();
-            // }
-
+            if(isBuffering && isPlaying) {
+              SmartDialog.show(
+                  tag: "loading",
+                  clickMaskDismiss: false,
+                  builder: (_) {
+                    return Image.asset("assets/loading/loading-2.gif",height: 50);
+                  }
+              );
+            }else{
+              SmartDialog.dismiss(tag: "loading");
+            }
+          }),
+          ref.read(videoControllerProvider).player.stream.completed.listen((event) {
+            if(event){
+              ref.read(controlsServiceProvider.notifier).recordPosition(type: "stop");
+              ref.read(videoControllerProvider).player.pause();
+              ref.read(controlsServiceProvider.notifier).playNext();
+            }
           }),
         ]
     );
+
+    _timer = Timer.periodic(const Duration(seconds: 15), (timer) {
+      if(isPlaying && !isBuffering){
+        ref.read(controlsServiceProvider.notifier).recordPosition();
+      }
+    });
   }
 
   @override
@@ -100,6 +119,7 @@ class _MediaProgressBar extends ConsumerState<MediaProgressBar>{
     for (var element in subscriptions) {
       element.cancel();
     }
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -134,9 +154,6 @@ class _MediaProgressBar extends ConsumerState<MediaProgressBar>{
       },
       onSeek: (duration) {
         ref.read(controlsServiceProvider.notifier).seekTo(duration);
-      },
-      onDragEnd: () {
-        ///关闭toast
         SmartDialog.dismiss(tag: "progress_toast");
       },
     );

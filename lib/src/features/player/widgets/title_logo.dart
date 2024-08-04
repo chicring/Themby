@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 
@@ -28,7 +29,6 @@ class TitleLogo extends ConsumerWidget{
         data: (value) => Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -37,43 +37,70 @@ class TitleLogo extends ConsumerWidget{
               children: [
                 IconButton(
                   icon: const Icon(Icons.arrow_back,color: Colors.white),
+                  padding:  EdgeInsets.zero,
                   onPressed: (){
                     Navigator.pop(context);
                   },
                 ),
                 const SizedBox(width: 6),
-
-                CachedNetworkImage(
-                  imageUrl: value.imagesCustom!.logo,
-                  height: height * 0.13,
-                  errorWidget: (_,__,___) =>
-                      SizedBox(
-                        width: 400,
-                        child: Text(
-                            value.seriesName ?? value.name ?? '',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
-                        ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: value.imagesCustom!.logo,
+                      height: height * 0.13,
+                      imageBuilder: (context, imageProvider) => Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image(
+                            image: imageProvider,
+                            height: height * 0.13,
+                          ),
+                          const SizedBox(width: 5),
+                          if(value.type == "Episode")
+                            SizedBox(
+                              width: 300,
+                              child: Text(
+                                  'S${value.parentIndexNumber}E${value.indexNumber} - ${value.name}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(color: Colors.white,fontSize: 12)
+                              ),
+                            ),
+                        ],
                       ),
+                      errorWidget: (_,__,___) =>
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  truncateText(value.seriesName ?? value.name ?? '', 10),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
+                              ),
+                              const SizedBox(height: 5),
+                              if(value.type == "Episode")
+                                SizedBox(
+                                  width: 300,
+                                  child: Text(
+                                      'S${value.parentIndexNumber}E${value.indexNumber} - ${value.name}',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(color: Colors.white,fontSize: 12)
+                                  ),
+                                ),
+                            ],
+                          )
+                    ),
+
+                  ],
                 ),
-
-                const SizedBox(width: 8),
-                const InternetSpeedChip(),
-
               ],
             ),
             const SizedBox(height: 8),
-            if(value.type == "Episode")
-              SizedBox(
-                width: 300,
-                child: Text(
-                    'S${value.parentIndexNumber}E${value.indexNumber} - ${value.name}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white,fontSize: 12)
-                ),
-              ),
+            const InternetSpeedChip(),
           ],
         ),
         error: (_,__) => const SizedBox(),

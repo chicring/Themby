@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
-import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/home/data/site_repository.dart';
 import 'package:themby/src/features/home/domain/home_add_server_state.dart';
 
@@ -30,7 +29,7 @@ class HomeServerNotifier extends _$HomeServerNotifier{
   Future<void> removeSite(Site site) async {
     await ref.read(removeEmbySiteProvider(site: site).future);
 
-    await ref.refresh(getSitesProvider.future);
+    ref.refresh(finaAllByTextProvider(text: ''));
     SmartDialog.showToast('删除成功');
   }
 }

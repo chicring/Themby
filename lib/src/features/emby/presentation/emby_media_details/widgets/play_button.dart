@@ -41,7 +41,7 @@ class PlayButton extends ConsumerWidget{
           children: [
             Icon(Icons.play_arrow_rounded , color: Theme.of(context).colorScheme.onPrimary),
             const SizedBox(width: 10),
-            item.userData?.playbackPositionTicks != null ?
+            (item.userData?.playedPercentage != null && item.type != 'Series')  ?
             Text('继续播放 ${durationToTime(Duration(milliseconds: item.userData!.playbackPositionTicks!  ~/ 10000))}', style: StyleString.titleStyle.copyWith(color: Theme.of(context).colorScheme.onPrimary))
                 : Text('播放', style: StyleString.titleStyle.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
           ],

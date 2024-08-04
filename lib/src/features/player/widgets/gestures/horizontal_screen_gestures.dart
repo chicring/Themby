@@ -5,12 +5,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:media_kit_video/media_kit_video_controls/src/controls/extensions/duration.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
+import 'package:themby/src/features/player/service/lock_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/widget/control_toast.dart';
-import 'package:themby/src/features/player/widgets/progress/draging_time.dart';
-import 'package:themby/src/features/player/widgets/progress/progress_toast.dart';
+
 
 class HorizontalScreenGestures extends ConsumerStatefulWidget{
   const HorizontalScreenGestures({super.key});
@@ -71,13 +70,17 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
     final notifier = ref.read(controlsServiceProvider.notifier);
     final controllerState = ref.read(videoControllerProvider);
 
+    final lock = ref.watch(lockServiceProvider).controlsLock;
+
     final double width = MediaQuery.sizeOf(context).width;
 
     return GestureDetector(
       onTap: (){
-        notifier.showControls();
+        ref.read(lockServiceProvider.notifier).toggleShowControl();
       },
       onDoubleTapDown: (details){
+        if (lock) return;
+
         final double tapPosition = details.localPosition.dx;
         final double sectionWidth = width / 3;
         if (tapPosition < sectionWidth) {
@@ -89,6 +92,8 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         }
       },
       onLongPressStart: (details){
+        if (lock) return;
+
         final rate = controllerState.player.state.rate * 2;
         SmartDialog.show(
             tag: "show_long_press",
@@ -101,6 +106,7 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         controllerState.player.setRate( rate);
       },
       onLongPressEnd: (details){
+        if (lock) return;
         final rate = controllerState.player.state.rate;
         controllerState.player.setRate(rate / 2);
         SmartDialog.dismiss(tag: "show_long_press");

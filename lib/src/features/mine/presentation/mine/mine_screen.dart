@@ -15,7 +15,7 @@ class MineScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-              "我的".hardcoded,
+              "设置".hardcoded,
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -31,7 +31,7 @@ class MineScreen extends StatelessWidget {
                 title: "外观".hardcoded,
                 subtitle: "语言, 暗色模式，主题色".hardcoded,
                 onTap: () {
-                  // GoRouter.of(context).push('/app_setting');
+                  GoRouter.of(context).push('/app_setting');
                 },
               ),
               SettingItem(
@@ -66,14 +66,14 @@ class MineScreen extends StatelessWidget {
                   // GoRouter.of(context).push('/about');
                 },
               ),
-              SettingItem(
-                leading: const Icon(Icons.info_outline),
-                title: "赞助作者".hardcoded,
-                subtitle: "关于我们，版本".hardcoded,
-                onTap: () {
-                  // GoRouter.of(context).push('/about');
-                },
-              ),
+              // SettingItem(
+              //   leading: const Icon(Icons.info_outline),
+              //   title: "赞助".hardcoded,
+              //   subtitle: "请作者喝咖啡".hardcoded,
+              //   onTap: () {
+              //     // GoRouter.of(context).push('/about');
+              //   },
+              // ),
             ],
           ),
         )

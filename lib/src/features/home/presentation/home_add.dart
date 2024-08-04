@@ -147,9 +147,11 @@ class _HomeAddState extends ConsumerState<HomeAddSite> {
                       )).future);
 
                       await SmartDialog.showToast('添加成功');
-                      await ref.refresh(getSitesProvider.future);
-                      SmartDialog.dismiss();
-                      SmartDialog.dismiss();
+
+                      SmartDialog.dismiss().then((v) async {
+                        ref.refresh(finaAllByTextProvider(text: ''));
+                        SmartDialog.dismiss();
+                      });
 
                     }
                   },

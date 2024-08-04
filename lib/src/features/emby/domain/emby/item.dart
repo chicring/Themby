@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'album_artist.dart';
 import 'chapter.dart';
 import 'custom/images_custom.dart';
 import 'external_url.dart';

@@ -1,19 +1,13 @@
 
 
-import 'package:easy_debounce/easy_debounce.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
-import 'package:themby/src/features/emby/application/emby_common_service.dart';
-import 'package:themby/src/features/emby/application/emby_state_service.dart';
-import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:themby/src/features/emby/domain/image_props.dart';
 
 class EmbyRecommendationsMedia extends ConsumerStatefulWidget{
   const EmbyRecommendationsMedia({super.key});
@@ -44,7 +38,7 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
     final medias = ref.watch(getSuggestionsProvider);
 
     double width = MediaQuery.sizeOf(context).width;
-    double height = MediaQuery.sizeOf(context).width * 100 / 166;
+    double height = MediaQuery.sizeOf(context).height * 0.4;
 
 
     return medias.when(
@@ -79,33 +73,61 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
                       //   height: 90,
                       //   color: dominantColor,
                       // ),
-                      NetworkImgLayer(
-                        imageUrl: media.imagesCustom?.backdrop ?? "",
-                        width: width,
-                        height: height + 90,
-                      )
+                      GestureDetector(
+                        onTap: () async {
+                          GoRouter.of(context).push('/details/${media.id}');
+                        },
+                        child: NetworkImgLayer(
+                          imageUrl: media.imagesCustom?.backdrop ?? "",
+                          width: width,
+                          height: height + 90,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 Positioned(
-                    left: 18,
-                    bottom: 10,
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        // EasyDebounce.debounce(
-                        //     'my-debouncer',
-                        //     const Duration(milliseconds: 500),
-                        //         () => GoRouter.of(context).push('/player', extra: getPlayInfoByMedia(media)),
-                        // );
-                      },
-                      icon: const Icon(Icons.play_arrow_rounded, color: Colors.black, size: 28),
-                      label: const Text('播放', style: TextStyle(color: Colors.black)),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 0,
+                  bottom: 40,
+                  left: 12,
+                  child: CachedNetworkImage(
+                    height: height * 0.5,
+                    width: width * 0.7,
+                    alignment: Alignment.bottomLeft,
+                    imageUrl: media.imagesCustom!.logo,
+                    errorWidget: (_,__,___) => Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        media.name!,
+                        maxLines: 2,
+                        style: const TextStyle(
+                            fontSize: 28,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    )
-                )
+                    ),
+                  ),
+                ),
+                // Positioned(
+                //     left: 18,
+                //     bottom: 10,
+                //     child: ElevatedButton.icon(
+                //       onPressed: () async {
+                //         // EasyDebounce.debounce(
+                //         //     'my-debouncer',
+                //         //     const Duration(milliseconds: 500),
+                //         //         () => GoRouter.of(context).push('/player', extra: getPlayInfoByMedia(media)),
+                //         // );
+                //       },
+                //       icon: const Icon(Icons.play_arrow_rounded, color: Colors.black, size: 28),
+                //       label: const Text('播放', style: TextStyle(color: Colors.black)),
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: Colors.white,
+                //         elevation: 0,
+                //       ),
+                //     )
+                // )
               ],
             );
           }).toList(),

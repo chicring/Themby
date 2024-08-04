@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:themby/src/features/player/service/controls_service.dart';
 
 class PlayNextButton extends ConsumerWidget{
   const PlayNextButton({super.key, this.size = 30, this.color = Colors.white});
@@ -20,7 +21,7 @@ class PlayNextButton extends ConsumerWidget{
           color: color,
         ),
         onPressed: () async {
-
+          ref.read(controlsServiceProvider.notifier).playNext();
         }
     );
   }

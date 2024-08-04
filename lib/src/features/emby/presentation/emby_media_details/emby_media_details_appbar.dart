@@ -10,7 +10,6 @@ import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/presentation/widgets/like_button.dart';
 import 'package:themby/src/features/emby/presentation/widgets/played_button.dart';
-import 'package:themby/src/helper/screen_helper.dart';
 
 
 class DetailAppBar extends ConsumerWidget {
@@ -68,8 +67,6 @@ class DetailBackground extends StatelessWidget {
     final double height = MediaQuery.sizeOf(context).height * 0.4;
     final double width = MediaQuery.sizeOf(context).width;
 
-    double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3) * 1.3;
-
     final String imageUrl = (item.imagesCustom?.backdrop.isNotEmpty ?? false)
         ? item.imagesCustom?.backdrop ?? ''
         : item.imagesCustom?.primary ?? '';
@@ -98,27 +95,21 @@ class DetailBackground extends StatelessWidget {
         Positioned(
           bottom: 0,
           left: 12,
-          child: Container(
+          child: CachedNetworkImage(
+            height: height * 0.5,
+            width: width * 0.7,
             alignment: Alignment.bottomLeft,
-            constraints: BoxConstraints(
-              minHeight: height * 0.1,
-              maxHeight: height * 0.33,
-              maxWidth: width * 0.7,
-            ),
-            child: CachedNetworkImage(
-              height: height * 0.5,
-              imageUrl: item.imagesCustom!.logo,
-              errorWidget: (_,__,___) => Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  item.name!,
-                  maxLines: 2,
-                  style: const TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold
-                  ),
-                  overflow: TextOverflow.ellipsis,
+            imageUrl: item.imagesCustom!.logo,
+            errorWidget: (_,__,___) => Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                item.name!,
+                maxLines: 2,
+                style: const TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),

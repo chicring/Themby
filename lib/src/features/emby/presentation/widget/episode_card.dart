@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/domain/episode.dart';
 import 'package:themby/src/features/emby/domain/image_props.dart';
-import 'package:themby/src/features/emby/domain/media.dart';
+
 
 class EpisodeCard extends ConsumerWidget{
 

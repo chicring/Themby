@@ -26,3 +26,4 @@ class ToggleFitButton extends ConsumerWidget{
     );
   }
 }
+

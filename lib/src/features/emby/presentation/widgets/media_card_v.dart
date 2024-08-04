@@ -5,10 +5,8 @@ import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/badge.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
-import 'package:themby/src/features/emby/application/emby_state_service.dart';
-import 'package:themby/src/features/emby/data/image_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
-import 'package:themby/src/features/emby/domain/image_props.dart';
+
 
 class MediaCardV extends ConsumerWidget{
 

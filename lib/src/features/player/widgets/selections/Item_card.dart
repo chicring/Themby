@@ -31,7 +31,7 @@ class ItemCard extends StatelessWidget {
       margin: const EdgeInsets.all(6),
       child: InkWell(
         onTap: () {
-          // GoRouter.of(context).push('/details/${item.id}');
+          press?.call();
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,12 +66,12 @@ class ItemCard extends StatelessWidget {
                     '${item.indexNumber}. ${item.name}',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: StyleString.titleStyle.copyWith(color: Colors.white),
+                    style: StyleString.subtitleStyle.copyWith(color: Colors.white),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     tickToTimeWithSeconds(item.runTimeTicks ?? 0),
-                    style: StyleString.subtitleStyle.copyWith(color: Colors.white),
+                    style: StyleString.subtitleStyle.copyWith(color: Colors.grey),
                   )
                 ],
               ),

@@ -16,7 +16,7 @@ class MineAppSettingScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('通用'.hardcoded),
+        title: Text('外观'.hardcoded),
       ),
       body: ListView(
         children: [

@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/presentation/emby_library/emby_library_query_notifier.dart';
-import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
+import 'package:themby/src/features/emby/presentation/widgets/media_card_v.dart';
+import 'package:themby/src/helper/screen_helper.dart';
+
 
 class EmbyLibraryScreen extends ConsumerWidget {
   const EmbyLibraryScreen({super.key, required this.parentId, required this.title});
@@ -22,6 +24,9 @@ class EmbyLibraryScreen extends ConsumerWidget {
     ));
 
     final totalRecordCount = response.valueOrNull?.totalRecordCount;
+
+    double cardWidth = ScreenHelper.getPortionAuto()  * 1.2;
+    double cardHeight = cardWidth / 0.68;
 
     return Scaffold(
       appBar: AppBar(
@@ -63,12 +68,11 @@ class EmbyLibraryScreen extends ConsumerWidget {
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(StyleString.safeSpace, 0, StyleString.safeSpace, 0),
               sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: StyleString.cardSpace - 2,
-                  crossAxisSpacing: StyleString.cardSpace,
-                  crossAxisCount: 3,
-                  mainAxisExtent: MediaQuery.of(context).size.width / 3 / 0.65 +
-                      MediaQuery.textScalerOf(context).scale(40),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: cardWidth,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 0.50,
                 ),
                 delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
@@ -93,7 +97,9 @@ class EmbyLibraryScreen extends ConsumerWidget {
                           return null;
                         }
                         return MediaCardV(
-                          media: response.items[indexInPage],
+                          item: response.items[indexInPage],
+                          width: cardWidth,
+                          height: cardHeight,
                         );
                       },
                       loading: () => const Center(child: CircularProgressIndicator()),

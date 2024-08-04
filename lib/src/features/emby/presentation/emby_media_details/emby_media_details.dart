@@ -4,9 +4,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:themby/src/common/constants.dart';
+import 'package:themby/src/common/widget/keep_alive_wrapper.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
-import 'package:themby/src/features/emby/domain/media_detail.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/appbar/emby_detail_content.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_detail_season.dart';
 
@@ -98,7 +97,9 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
                       const SizedBox(height: 15),
                       EmbyDetailExternalLinks(externalUrls: mediaDetail.externalUrls!),
 
-                      SimilarMedias(id: mediaDetail.id!),
+                      KeepAliveWrapper(
+                        child: SimilarMedias(id: mediaDetail.id!)
+                      ),
 
                       const SizedBox(height: 10),
                       if (mediaDetail.mediaType == 'Video')
@@ -113,7 +114,7 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
         );
       },
       loading: () => const EmbyMediaDetailsShimmer(),
-      error: (error, stackTrace) => Center(child: Text('Error: $error$stackTrace')),
+      error: (error, stackTrace) => const Center(child: Text('Error:')),
     );
   }
 }

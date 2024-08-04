@@ -22,6 +22,7 @@ class ScaffoldWithNestedNavigationEmby extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.sizeOf(context);
+
     backButtonListener(Widget child) => BackButtonListener(
       onBackButtonPressed: () async {
         int currentIndex = navigationShell.currentIndex;
@@ -53,7 +54,7 @@ class ScaffoldWithNestedNavigationEmby extends ConsumerWidget {
       child: child,
     );
 
-    if (size.width < 450) {
+    if (size.width < 550) {
       return backButtonListener(
         ScaffoldWithNavigationBar(
           body: navigationShell,

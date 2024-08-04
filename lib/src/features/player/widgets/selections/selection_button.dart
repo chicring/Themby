@@ -25,7 +25,7 @@ class SelectionButton extends ConsumerWidget{
             tag: TagsString.episodeSheetDialog,
             alignment: Alignment.centerRight,
             maskColor: Colors.transparent,
-            builder: (context) {return const ItemSheet();}
+            builder: (context) => const ItemSheet()
         );
       },
       child: Text(

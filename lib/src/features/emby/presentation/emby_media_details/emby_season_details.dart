@@ -4,15 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
-import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
-import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/presentation/widgets/episode_card.dart';
 import 'package:themby/src/helper/screen_helper.dart';
 
-import 'emby_media_details_appbar.dart';
 
 class EmbySeasonDetails extends ConsumerStatefulWidget {
   const EmbySeasonDetails(this.id, {super.key});
@@ -45,7 +42,7 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
   Widget build(BuildContext context) {
     final episodes = ref.watch(getEpisodesProvider(widget.id,widget.id));
 
-    final item = ref.watch(GetMediaProvider(widget.id)).valueOrNull;
+    final item = ref.watch(GetMediaProvider(widget.id));
 
     double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3);
     double cardHeight = cardWidth * 9 / 16;
@@ -55,18 +52,22 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
         data: (data) => CustomScrollView(
           controller: _controller,
           slivers: [
-            SeasonAppBar(
-              item: item!,
-              titleStreamC: titleStreamC,
+            item.when(
+              data: (value) => SeasonAppBar(
+                item: value,
+                titleStreamC: titleStreamC,
+              ),
+              loading: () => const SizedBox(),
+              error: (error, stackTrace) => const SizedBox(),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {
-                  return EpisodeCard(
-                    item: data[index],
-                    width: cardWidth,
-                    height: cardHeight,
-                  );
-                },
+                return EpisodeCard(
+                  item: data[index],
+                  width: cardWidth,
+                  height: cardHeight,
+                );
+              },
                 childCount: data.length,
               ),
             ),

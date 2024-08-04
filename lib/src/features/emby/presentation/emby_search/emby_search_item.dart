@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/emby/data/search_repository.dart';
 import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';
 import 'package:themby/src/helper/screen_helper.dart';
@@ -23,7 +21,7 @@ class EmbySearchItem extends ConsumerWidget {
     double cardHeight = cardWidth / 0.65;
 
     return respAsync.when(
-      loading: () => Center(child: SvgPicture.asset("assets/loading/loading-1.svg",height: 30)),
+      loading: () => Center(child: Image.asset("assets/loading/loading-2.gif",height: 80)),
       error: (error, stack) => const SizedBox(),
       data: (data) {
         return Center(

@@ -19,7 +19,6 @@ class ProgressToast extends ConsumerWidget {
 
     Duration duration = ref.read(videoControllerProvider).player.state.duration;
 
-    print('duration2: ${position.inSeconds}');
     return Container(
       margin: const EdgeInsets.only(top: 12),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),

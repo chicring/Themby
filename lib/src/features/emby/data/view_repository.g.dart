@@ -21,11 +21,11 @@ final viewRepositoryProvider = AutoDisposeProvider<ViewRepository>.internal(
 );
 
 typedef ViewRepositoryRef = AutoDisposeProviderRef<ViewRepository>;
-String _$getViewsHash() => r'4c93ea39fd1ef9a19a92d67aebbe98bcd91af5de';
+String _$getViewsHash() => r'95bb8792e6da0cda98c9faf62545e7b1fb219a82';
 
 /// See also [getViews].
 @ProviderFor(getViews)
-final getViewsProvider = AutoDisposeFutureProvider<View>.internal(
+final getViewsProvider = AutoDisposeFutureProvider<EmbyResponse<Item>>.internal(
   getViews,
   name: r'getViewsProvider',
   debugGetCreateSourceHash:
@@ -34,7 +34,7 @@ final getViewsProvider = AutoDisposeFutureProvider<View>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GetViewsRef = AutoDisposeFutureProviderRef<View>;
+typedef GetViewsRef = AutoDisposeFutureProviderRef<EmbyResponse<Item>>;
 String _$getMediaHash() => r'0cba85fbb6dd4cf2348e7cb9a55d1e259c619900';
 
 /// Copied from Dart SDK
@@ -743,14 +743,14 @@ class _GetEpisodesProviderElement
   String get vid => (origin as GetEpisodesProvider).vid;
 }
 
-String _$getItemHash() => r'38c464b0c6317e90a8bf4a05e14bbf2d64f3a551';
+String _$getItemHash() => r'99d2997532d9513af6158043b0ad964e43f53ec8';
 
 /// See also [getItem].
 @ProviderFor(getItem)
 const getItemProvider = GetItemFamily();
 
 /// See also [getItem].
-class GetItemFamily extends Family<AsyncValue<EmbyResponse<Media>>> {
+class GetItemFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
   /// See also [getItem].
   const GetItemFamily();
 
@@ -795,7 +795,7 @@ class GetItemFamily extends Family<AsyncValue<EmbyResponse<Media>>> {
 }
 
 /// See also [getItem].
-class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
+class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   /// See also [getItem].
   GetItemProvider({
     required ({
@@ -843,7 +843,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
 
   @override
   Override overrideWith(
-    FutureOr<EmbyResponse<Media>> Function(GetItemRef provider) create,
+    FutureOr<EmbyResponse<Item>> Function(GetItemRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -860,7 +860,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<EmbyResponse<Media>> createElement() {
+  AutoDisposeFutureProviderElement<EmbyResponse<Item>> createElement() {
     return _GetItemProviderElement(this);
   }
 
@@ -878,7 +878,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
   }
 }
 
-mixin GetItemRef on AutoDisposeFutureProviderRef<EmbyResponse<Media>> {
+mixin GetItemRef on AutoDisposeFutureProviderRef<EmbyResponse<Item>> {
   /// The parameter `itemQuery` of this provider.
   ({
     String filters,
@@ -891,7 +891,7 @@ mixin GetItemRef on AutoDisposeFutureProviderRef<EmbyResponse<Media>> {
 }
 
 class _GetItemProviderElement
-    extends AutoDisposeFutureProviderElement<EmbyResponse<Media>>
+    extends AutoDisposeFutureProviderElement<EmbyResponse<Item>>
     with GetItemRef {
   _GetItemProviderElement(super.provider);
 

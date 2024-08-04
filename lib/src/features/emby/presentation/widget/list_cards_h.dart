@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
-import 'package:themby/src/common/widget/header_text.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/features/emby/presentation/widget/media_card_v.dart';

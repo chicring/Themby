@@ -1,7 +1,7 @@
 
 
 import 'package:themby/src/features/emby/domain/episode.dart';
-import 'package:themby/src/features/emby/domain/media_detail.dart';
+
 import 'package:themby/src/features/emby/domain/playback_info.dart';
 
 class MediasState {
