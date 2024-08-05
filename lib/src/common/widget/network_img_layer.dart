@@ -62,7 +62,7 @@ class NetworkImgLayer extends StatelessWidget {
       borderRadius: BorderRadius.circular(
         type == 'avatar'
             ? 50
-            : type == 'emote'
+            : type == 'bg'
             ? 0
             : StyleString.imgRadius.x,
       ),

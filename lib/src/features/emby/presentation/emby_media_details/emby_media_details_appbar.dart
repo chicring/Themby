@@ -90,6 +90,7 @@ class DetailBackground extends StatelessWidget {
             imageUrl: imageUrl,
             width: width,
             height: height,
+            type: 'bg',
           ),
         ),
         Positioned(

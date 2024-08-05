@@ -81,6 +81,7 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
                           imageUrl: media.imagesCustom?.backdrop ?? "",
                           width: width,
                           height: height + 90,
+                          type: 'bg',
                         ),
                       ),
                     ],

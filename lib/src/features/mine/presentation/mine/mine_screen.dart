@@ -10,10 +10,11 @@ class MineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var color = Theme.of(context).colorScheme.primary;
+    Color color = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
         appBar: AppBar(
+          titleSpacing: 0,
           title: Text(
               "设置".hardcoded,
               style: TextStyle(
@@ -27,41 +28,49 @@ class MineScreen extends StatelessWidget {
           child: Column(
             children: [
               SettingItem(
-                leading: const Icon(Icons.color_lens_outlined),
-                title: "外观".hardcoded,
-                subtitle: "语言, 暗色模式，主题色".hardcoded,
+                leading: const Icon(Icons.color_lens_rounded,size: 28),
+                title: Text("外观".hardcoded),
+                subtitle: Text("语言, 暗色模式，主题色".hardcoded),
                 onTap: () {
                   GoRouter.of(context).push('/app_setting');
                 },
               ),
               SettingItem(
-                leading: const Icon(Icons.play_circle_outline_rounded),
-                title: "播放".hardcoded,
-                subtitle: "语言, 暗色模式，主题色".hardcoded,
+                leading: const Icon(Icons.play_circle,size: 28),
+                title: Text("播放器".hardcoded),
+                subtitle: Text("播放器外观、手势、控件".hardcoded),
                 onTap: () {
                   // GoRouter.of(context).push('/app_setting');
                 },
               ),
               SettingItem(
-                leading: const Icon(Icons.video_library_outlined),
-                title: "媒体库".hardcoded,
-                subtitle: "语言, 暗色模式，主题色".hardcoded,
+                leading: const Icon(Icons.subtitles,size: 28),
+                title: Text("字幕外观".hardcoded),
+                subtitle: Text("播放选项".hardcoded),
                 onTap: () {
                   // GoRouter.of(context).push('/app_setting');
                 },
               ),
               SettingItem(
-                leading: const Icon(Icons.cloud_outlined),
-                title: "同步".hardcoded,
-                subtitle: "语言, 暗色模式，主题色".hardcoded,
+                leading: const Icon(Icons.video_library,size: 28),
+                title: Text("媒体库".hardcoded),
+                subtitle: Text("管理媒体库".hardcoded),
                 onTap: () {
                   // GoRouter.of(context).push('/app_setting');
                 },
               ),
               SettingItem(
-                leading: const Icon(Icons.info_outline),
-                title: "关于".hardcoded,
-                subtitle: "关于我们，版本".hardcoded,
+                leading: const Icon(Icons.cloud,size: 28),
+                title: Text("同步".hardcoded),
+                subtitle: Text("语言, 暗色模式，主题色".hardcoded),
+                onTap: () {
+                  // GoRouter.of(context).push('/app_setting');
+                },
+              ),
+              SettingItem(
+                leading: const Icon(Icons.info,size: 28),
+                title: Text("关于".hardcoded),
+                subtitle: Text("关于，鸣谢".hardcoded),
                 onTap: () {
                   // GoRouter.of(context).push('/about');
                 },
@@ -80,36 +89,4 @@ class MineScreen extends StatelessWidget {
     );
   }
 
-
 }
-
-// Card(
-//     clipBehavior: Clip.antiAlias,
-//     elevation: 0,
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.circular(20),
-//     ),
-//     child: ListView(
-//       shrinkWrap: true,
-//       children: [
-//         ListTile(
-//           enabled: false,
-//           visualDensity: const VisualDensity(vertical: -4.0),
-//           title: Text(
-//               "通用".hardcoded,
-//               style: TextStyle(
-//                   fontSize: 15,
-//                   fontWeight: FontWeight.bold,
-//                   color: color
-//               )
-//           ),
-//         ),
-//         ListTile(
-//           title: Text("通用设置".hardcoded),
-//           onTap: () {
-//             GoRouter.of(context).push('/app_setting');
-//           },
-//         ),
-//       ],
-//     )
-// ),
