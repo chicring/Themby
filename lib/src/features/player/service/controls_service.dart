@@ -170,10 +170,12 @@ class ControlsService extends _$ControlsService{
     if (items.isEmpty) {
       return '';
     }
-    return items.firstWhere(
-          (item) => item.indexNumber == indexNumber + 1,
-      orElse: () => items[0],
-    ).id!;
+    for(int i = 0; i < items.length; i++){
+      if(items[i].indexNumber == indexNumber){
+        return items[i].id!;
+      }
+    }
+    return  items[0].id!;
   }
 
   /// 开始记录播放位置

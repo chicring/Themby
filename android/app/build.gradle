@@ -6,7 +6,6 @@ plugins {
 }
 
 
-
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
@@ -54,8 +53,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def appName = "Themby" // 文件名
+            def createTime = new Date().format('yyyy_MM_dd') // 打包时间 2021_09_25_16_45_52
+            def cpu = output.getFilter(com.android.build.OutputFile.ABI)!=null
+                    ? output.getFilter(com.android.build.OutputFile.ABI)
+                    : "all" // 默认值;
+            outputFileName = "${appName}_${defaultConfig.versionName}_${createTime}_${variant.flavorName}_${variant.buildType.name}-${cpu}.apk"
+        }
+    }
+
 }
 
 flutter {
     source = "../.."
 }
+

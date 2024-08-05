@@ -43,7 +43,7 @@ class EmbyFavoriteItem extends ConsumerWidget {
               parentId: '',
               items: data.items,
               onSelect: () {
-                GoRouter.of(context).push(Uri(path: '/library', queryParameters: {'parentId': '','title': '喜欢','filter': 'IsFavorite'}).toString());
+                GoRouter.of(context).push(Uri(path: '/library', queryParameters: {'parentId': '','title': '我的收藏','filter': 'IsFavorite'}).toString());
               },
           );
         }

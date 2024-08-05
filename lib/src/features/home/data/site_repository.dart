@@ -79,7 +79,7 @@ class SiteRepository{
   }
 
   Future<void> removeEmbySite(Site site) async {
-    siteBox.removeAsync(site.id);
+     siteBox.remove(site.id);
   }
 
   Future<void> updateEmbySite(Site site) async {

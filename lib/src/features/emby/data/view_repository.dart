@@ -279,10 +279,7 @@ class ViewRepository{
         headers: {
           'X-Emby-Authorization': embyToken,
           'x-emby-token': site.accessToken,
-        },
-          extra: {
-            "bypassCache": true,
-          }
+        }
       ),
 
       cancelToken: cancelToken,

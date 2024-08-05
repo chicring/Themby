@@ -27,10 +27,10 @@ class HomeServerNotifier extends _$HomeServerNotifier{
 
 
   Future<void> removeSite(Site site) async {
-    await ref.read(removeEmbySiteProvider(site: site).future);
+    ref.read(removeEmbySiteProvider(site: site));
 
+    await SmartDialog.showToast('删除成功');
     ref.refresh(finaAllByTextProvider(text: ''));
-    SmartDialog.showToast('删除成功');
   }
 }
 
