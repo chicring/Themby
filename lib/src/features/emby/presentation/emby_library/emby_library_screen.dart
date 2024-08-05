@@ -3,14 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/presentation/emby_library/emby_library_query_notifier.dart';
+import 'package:themby/src/features/emby/presentation/emby_library/sort_button.dart';
+import 'package:themby/src/features/emby/presentation/emby_library/sort_order_button.dart';
 import 'package:themby/src/features/emby/presentation/widgets/media_card_v.dart';
 import 'package:themby/src/helper/screen_helper.dart';
 
 
 class EmbyLibraryScreen extends ConsumerWidget {
-  const EmbyLibraryScreen({super.key, required this.parentId, required this.title});
+  const EmbyLibraryScreen({super.key, required this.parentId,required this.filter, required this.title});
   final String title;
   final String parentId;
+  final String filter;
 
   static const pageSize = 30;
 
@@ -20,7 +23,14 @@ class EmbyLibraryScreen extends ConsumerWidget {
     final itemQuery = ref.watch(embyLibraryQueryNotifierProvider);
 
     final response = ref.watch(getItemProvider(
-      itemQuery: itemQuery,
+      itemQuery: (
+        page: 0,
+        parentId: parentId,
+        includeItemTypes: itemQuery.includeItemTypes,
+        sortBy: itemQuery.sortBy,
+        sortOrder: itemQuery.sortOrder,
+        filters: filter,
+      ),
     ));
 
     final totalRecordCount = response.valueOrNull?.totalRecordCount;
@@ -38,12 +48,14 @@ class EmbyLibraryScreen extends ConsumerWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(15),
           child: Container(
-            margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            margin: const EdgeInsets.only(left: 10, right: 10),
             child: const Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Icon(Icons.sort),
+                // Text("共  部", style: TextStyle(color: Colors.white, fontSize: 12)),
+                SortOrderButton(),
+                SortButton()
               ],
             ),
           ),
@@ -59,7 +71,7 @@ class EmbyLibraryScreen extends ConsumerWidget {
               includeItemTypes: itemQuery.includeItemTypes,
               sortBy: itemQuery.sortBy,
               sortOrder: itemQuery.sortOrder,
-              filters: '',
+              filters: filter,
             )
           ).future);
         },
@@ -87,7 +99,7 @@ class EmbyLibraryScreen extends ConsumerWidget {
                               includeItemTypes: itemQuery.includeItemTypes,
                               sortBy: itemQuery.sortBy,
                               sortOrder: itemQuery.sortOrder,
-                              filters: '',
+                              filters: filter,
                             )
                         )
                     );

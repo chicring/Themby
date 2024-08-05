@@ -39,7 +39,7 @@ class ListCardsH extends ConsumerWidget{
                   padding: const EdgeInsets.all(0),
                   onPressed: () async{
                     onSelect != null ? onSelect!() :
-                    GoRouter.of(context).push(Uri(path: '/library/$parentId', queryParameters: {'title': name}).toString());
+                    GoRouter.of(context).push(Uri(path: '/library', queryParameters: {'parentId': parentId,'title': name,'filter': ''}).toString());
                   },
                   icon: const Icon(Icons.arrow_forward_ios_rounded,size: 13),
                   // child: const Text('查看更多'),

@@ -38,6 +38,7 @@ class _HomeAddState extends ConsumerState<HomeAddSite> {
         title: const Text('添加连接',style: StyleString.headerStyle),
       ),
       body: Container(
+        alignment: Alignment.center,
         constraints: const BoxConstraints(
           maxWidth: 500,
         ),

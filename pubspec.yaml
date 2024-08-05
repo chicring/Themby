@@ -107,7 +107,11 @@ dependencies:
   expandable_text: ^2.3.0
 
   palette_generator: ^0.3.3+4
+
+  #网络速度
   internet_speed_meter: ^1.0.3
+
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:

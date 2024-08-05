@@ -439,5 +439,133 @@ class _RemoveEmbySiteProviderElement
   @override
   Site get site => (origin as RemoveEmbySiteProvider).site;
 }
+
+String _$updateEmbySiteHash() => r'bb98d37146370a63b471f6c55e36eaaa63ea75b1';
+
+/// See also [updateEmbySite].
+@ProviderFor(updateEmbySite)
+const updateEmbySiteProvider = UpdateEmbySiteFamily();
+
+/// See also [updateEmbySite].
+class UpdateEmbySiteFamily extends Family<AsyncValue<void>> {
+  /// See also [updateEmbySite].
+  const UpdateEmbySiteFamily();
+
+  /// See also [updateEmbySite].
+  UpdateEmbySiteProvider call({
+    required Site site,
+  }) {
+    return UpdateEmbySiteProvider(
+      site: site,
+    );
+  }
+
+  @override
+  UpdateEmbySiteProvider getProviderOverride(
+    covariant UpdateEmbySiteProvider provider,
+  ) {
+    return call(
+      site: provider.site,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateEmbySiteProvider';
+}
+
+/// See also [updateEmbySite].
+class UpdateEmbySiteProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [updateEmbySite].
+  UpdateEmbySiteProvider({
+    required Site site,
+  }) : this._internal(
+          (ref) => updateEmbySite(
+            ref as UpdateEmbySiteRef,
+            site: site,
+          ),
+          from: updateEmbySiteProvider,
+          name: r'updateEmbySiteProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updateEmbySiteHash,
+          dependencies: UpdateEmbySiteFamily._dependencies,
+          allTransitiveDependencies:
+              UpdateEmbySiteFamily._allTransitiveDependencies,
+          site: site,
+        );
+
+  UpdateEmbySiteProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.site,
+  }) : super.internal();
+
+  final Site site;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(UpdateEmbySiteRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateEmbySiteProvider._internal(
+        (ref) => create(ref as UpdateEmbySiteRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        site: site,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _UpdateEmbySiteProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateEmbySiteProvider && other.site == site;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, site.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UpdateEmbySiteRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `site` of this provider.
+  Site get site;
+}
+
+class _UpdateEmbySiteProviderElement
+    extends AutoDisposeFutureProviderElement<void> with UpdateEmbySiteRef {
+  _UpdateEmbySiteProviderElement(super.provider);
+
+  @override
+  Site get site => (origin as UpdateEmbySiteProvider).site;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

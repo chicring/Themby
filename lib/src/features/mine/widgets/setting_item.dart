@@ -30,6 +30,7 @@ class SettingItem extends StatelessWidget{
       leading: leading,
       title: title,
       subtitle: subtitle,
+      trailing: trailing,
       onTap: () {
         onTap?.call();
       },

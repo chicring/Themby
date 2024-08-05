@@ -6,7 +6,7 @@ part of 'emby_media_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$embyMediaServiceHash() => r'957af0346aaeaf0613da6a4ca7548ad24dbdf6b3';
+String _$embyMediaServiceHash() => r'd7ba52b84b00289a90bc5abfd5005d31ccd421f6';
 
 /// See also [EmbyMediaService].
 @ProviderFor(EmbyMediaService)

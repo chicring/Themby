@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -8,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/home/data/site_repository.dart';
+import 'package:themby/src/features/home/presentation/home_server_edit.dart';
 import 'package:themby/src/features/home/presentation/home_server_notifier.dart';
 import 'package:themby/src/localization/string_hardcoded.dart';
 
@@ -75,6 +75,8 @@ class ServerList extends ConsumerWidget {
 
     final sites = ref.watch(finaAllByTextProvider(text: query));
 
+    final Color surfaceColor = Theme.of(context).colorScheme.surface;
+
     return ListView.builder(
       key: ValueKey(query),
       itemCount: sites.valueOrNull?.length ?? 0,
@@ -95,35 +97,20 @@ class ServerList extends ConsumerWidget {
                   contentPadding: const EdgeInsets.only(right: 8, left: 16),
                   dense: true,
                   leading: SvgPicture.asset('assets/emby.svg', width: 36, height: 36),
-                  title: Text(data[index].serverName!, style: const TextStyle(fontWeight: FontWeight.w500)),
+                  title: Text(data[index].remake ?? data[index].serverName!, style: const TextStyle(fontWeight: FontWeight.w500)),
                   subtitle: Text(data[index].username!, style: const TextStyle(fontWeight: FontWeight.w300)),
-                  trailing: PopupMenuButton<int>(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    icon: const Icon(Icons.more_horiz),
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-                      PopupMenuItem<int>(
-                        value: 0,
-                        child: const ListTile(
-                          leading: Icon(Icons.edit),
-                          title: Text('编辑'),
-                        ),
-                        onTap: () {
-                          SmartDialog.showToast('点击了Emby');
-                        },
-                      ),
-                      PopupMenuItem<int>(
-                        value: 1,
-                        child: const ListTile(
-                          leading: Icon(Icons.delete),
-                          title: Text('删除'),
-                        ),
-                        onTap: () {
-                          ref.read(homeServerNotifierProvider.notifier).removeSite(data[index]);
-                        },
-                      ),
-                    ],
+                  trailing: _menuButton(
+                          () {
+                            SmartDialog.show(
+                                alignment: Alignment.centerRight,
+                                builder: (_) {
+                                  return HomeServerEdit(site: data[index]);
+                                }
+                            );
+                      }, () {
+                        ref.read(homeServerNotifierProvider.notifier).removeSite(data[index]);
+                      },
+                      surfaceColor
                   ),
                   onTap: () async {
                     ref.read(embyStateServiceProvider.notifier).updateSite(data[index]);
@@ -135,6 +122,39 @@ class ServerList extends ConsumerWidget {
             },
         );
       },
+    );
+  }
+
+  Widget _menuButton(VoidCallback onTapItem1,VoidCallback onTapItem2,Color surface) {
+    return PopupMenuButton<int>(
+      surfaceTintColor: surface,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      icon: const Icon(Icons.more_horiz),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+        PopupMenuItem<int>(
+          value: 0,
+          child: const ListTile(
+            leading: Icon(Icons.edit_calendar_rounded),
+            title: Text('编辑'),
+          ),
+          onTap: () {
+            onTapItem1.call();
+          },
+        ),
+        PopupMenuItem<int>(
+          value: 1,
+          child: const ListTile(
+            leading: Icon(Icons.delete_outline_rounded),
+            title: Text('删除'),
+          ),
+          onTap: () {
+            onTapItem2.call();
+          },
+        ),
+      ],
     );
   }
 }

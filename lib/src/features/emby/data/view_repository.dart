@@ -40,6 +40,10 @@ class ViewRepository{
         host: site.host,
         port: site.port,
         path: '/emby/Users/${site.userId}/Views',
+        queryParameters: {
+          "MediaTypes": "Video",
+          "Fields": "BasicSyncInfo,CanDelete,PrimaryImageAspectRatio,ProductionYear"
+        }
       ),
       options: Options(
         headers: {
@@ -95,7 +99,7 @@ class ViewRepository{
         path: '/emby/Users/${site.userId}/Items/Latest',
         queryParameters: {
           'Limit': '16',
-          'Fields': 'BasicSyncInfo,CanDelete,Container,PrimaryImageAspectRatio,ProductionYear,Status,EndDate,Overview,CriticRating,OfficialRating,CommunityRating',
+          'Fields': 'BasicSyncInfo,CanDelete,Container,PrimaryImageAspectRatio,ProductionYear,Status,EndDate,CriticRating,OfficialRating,CommunityRating',
           'ImageTypeLimit': '1',
           'EnableImageTypes': 'Primary,Backdrop,Thumb',
           'EnableUserData': 'true',
@@ -163,7 +167,13 @@ class ViewRepository{
         scheme: site.scheme,
         host: site.host,
         port: site.port,
-        path: '/emby/Users/${site.userId}/Suggestions',
+        path: '/emby/Users/${site.userId}/Recommendations',
+        queryParameters: {
+          "Fields": "BasicSyncInfo,CanDelete,PrimaryImageAspectRatio,ProductionYear",
+          "EnableImageTypes": "Primary,Backdrop,Thumb",
+          "categoryLimit": "1",
+          "ItemLimit": "8"
+        }
       ),
       options: Options(
         headers: {

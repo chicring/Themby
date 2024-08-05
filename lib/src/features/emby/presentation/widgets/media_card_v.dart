@@ -52,47 +52,42 @@ class MediaCardV extends ConsumerWidget{
         },
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(
-                StyleString.imgRadius,
-              ),
-              child: Stack(
-                children: [
-                  NetworkImgLayer(
-                    imageUrl: item.imagesCustom!.primary,
-                    width: width,
-                    height: height,
+            Stack(
+              children: [
+                NetworkImgLayer(
+                  imageUrl: item.imagesCustom!.primary,
+                  width: width,
+                  height: height,
+                ),
+                if(item.userData?.unplayedItemCount != null)
+                  PBadge(
+                    text: item.userData?.unplayedItemCount.toString(),
+                    top: 6,
+                    right: 6,
                   ),
-                  if(item.userData?.unplayedItemCount != null)
-                    PBadge(
-                      text: item.userData?.unplayedItemCount.toString(),
-                      top: 6,
-                      right: 6,
-                    ),
-                  if(item.communityRating != null)
-                    PBadge(
-                      text: item.communityRating?.toStringAsFixed(1),
-                      bottom: 6,
-                      left: 6,
-                      type: 'gray',
-                    ),
+                if(item.communityRating != null)
+                  PBadge(
+                    text: item.communityRating?.toStringAsFixed(1),
+                    bottom: 6,
+                    left: 6,
+                    type: 'gray',
+                  ),
 
-                  if(item.userData?.playedPercentage != null)
-                    Positioned(
-                      bottom: 0,
-                      child: Container(
-                        width: width,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 2,
-                        ),
-                        child: LinearProgressIndicator(
-                          value: (item.userData?.playedPercentage ?? 0) / 100,
-                          backgroundColor: Colors.grey.withOpacity(0.5),
-                        ),
+                if(item.userData?.playedPercentage != null)
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      width: width,
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 2,
+                      ),
+                      child: LinearProgressIndicator(
+                        value: (item.userData?.playedPercentage ?? 0) / 100,
+                        backgroundColor: Colors.grey.withOpacity(0.5),
                       ),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
             SizedBox(
               width: width,

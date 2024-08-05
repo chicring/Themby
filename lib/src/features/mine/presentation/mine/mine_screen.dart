@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
+import 'package:themby/src/features/mine/presentation/mine_app_setting/setting_player__screen.dart';
 import 'package:themby/src/features/mine/widgets/setting_item.dart';
 import 'package:themby/src/localization/string_hardcoded.dart';
 
@@ -28,7 +30,7 @@ class MineScreen extends StatelessWidget {
           child: Column(
             children: [
               SettingItem(
-                leading: const Icon(Icons.color_lens_rounded,size: 28),
+                leading: const Icon(Icons.color_lens_rounded,size: 24),
                 title: Text("外观".hardcoded),
                 subtitle: Text("语言, 暗色模式，主题色".hardcoded),
                 onTap: () {
@@ -36,15 +38,20 @@ class MineScreen extends StatelessWidget {
                 },
               ),
               SettingItem(
-                leading: const Icon(Icons.play_circle,size: 28),
+                leading: const Icon(Icons.play_circle,size: 24),
                 title: Text("播放器".hardcoded),
                 subtitle: Text("播放器外观、手势、控件".hardcoded),
                 onTap: () {
-                  // GoRouter.of(context).push('/app_setting');
+                  SmartDialog.show(
+                      alignment: Alignment.centerRight,
+                      builder: (_) {
+                        return const SettingPlayerScreen();
+                      }
+                  );
                 },
               ),
               SettingItem(
-                leading: const Icon(Icons.subtitles,size: 28),
+                leading: const Icon(Icons.subtitles,size: 24),
                 title: Text("字幕外观".hardcoded),
                 subtitle: Text("播放选项".hardcoded),
                 onTap: () {
@@ -52,15 +59,15 @@ class MineScreen extends StatelessWidget {
                 },
               ),
               SettingItem(
-                leading: const Icon(Icons.video_library,size: 28),
-                title: Text("媒体库".hardcoded),
-                subtitle: Text("管理媒体库".hardcoded),
+                leading: const Icon(Icons.video_library,size: 24),
+                title: Text("缓存".hardcoded),
+                subtitle: Text("图片缓存".hardcoded),
                 onTap: () {
                   // GoRouter.of(context).push('/app_setting');
                 },
               ),
               SettingItem(
-                leading: const Icon(Icons.cloud,size: 28),
+                leading: const Icon(Icons.cloud,size: 24),
                 title: Text("同步".hardcoded),
                 subtitle: Text("语言, 暗色模式，主题色".hardcoded),
                 onTap: () {
@@ -68,7 +75,7 @@ class MineScreen extends StatelessWidget {
                 },
               ),
               SettingItem(
-                leading: const Icon(Icons.info,size: 28),
+                leading: const Icon(Icons.info,size: 24),
                 title: Text("关于".hardcoded),
                 subtitle: Text("关于，鸣谢".hardcoded),
                 onTap: () {

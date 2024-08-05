@@ -50,23 +50,18 @@ class PeopleCard extends ConsumerWidget{
         },
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(
-                StyleString.imgRadius,
+            NetworkImgLayer(
+              imageUrl: getImageUrl(
+                  site!,
+                  person.id ?? '',
+                  ImageProps(
+                    tag: person.primaryImageTag ?? '',
+                    type: ImageType.primary,
+                  )
               ),
-              child: NetworkImgLayer(
-                imageUrl: getImageUrl(
-                    site!,
-                    person.id ?? '',
-                    ImageProps(
-                      tag: person.primaryImageTag ?? '',
-                      type: ImageType.primary,
-                    )
-                ),
-                type: "people",
-                width: width,
-                height: height,
-              ),
+              type: "people",
+              width: width,
+              height: height,
             ),
             SizedBox(
               width: width,

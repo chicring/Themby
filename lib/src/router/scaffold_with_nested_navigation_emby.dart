@@ -39,6 +39,9 @@ class ScaffoldWithNestedNavigationEmby extends ConsumerWidget {
         }
 
         if (currentIndex == 1) {
+          if(currentPath.startsWith('/library')) {
+            return false;
+          }
           _goBranch(0);
           return true;
         } else if (currentIndex == 0) {

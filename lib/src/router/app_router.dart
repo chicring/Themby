@@ -149,16 +149,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 ),
               ),
               GoRoute(
-                path: '/library/:parentId',
+                path: '/library',
                 name: AppRoute.library.name,
                 pageBuilder: (context, state) {
-                  final parentId = state.pathParameters['parentId']!;
 
+                  final parentId = state.uri.queryParameters['parentId']!;
                   final title = state.uri.queryParameters['title']!;
+                  final filter = state.uri.queryParameters['filter']!;
 
                   return NoTransitionPage(
                     key: state.pageKey,
-                    child: EmbyLibraryScreen(parentId: parentId, title: title),
+                    child: EmbyLibraryScreen(parentId: parentId, title: title,filter: filter),
                   );
                 },
               ),

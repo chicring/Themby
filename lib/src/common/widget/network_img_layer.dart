@@ -108,7 +108,7 @@ class NetworkImgLayer extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: StyleString.lgRadius,
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               height: width,
               width: height,
@@ -126,7 +126,7 @@ class NetworkImgLayer extends StatelessWidget {
         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
         borderRadius: BorderRadius.circular(type == 'avatar'
             ? 50
-            : type == 'emote'
+            : type == 'bg'
             ? 0
             : StyleString.imgRadius.x),
       ),
@@ -134,8 +134,8 @@ class NetworkImgLayer extends StatelessWidget {
           ? const SizedBox()
           : Container(
             decoration: BoxDecoration(
-              borderRadius: StyleString.lgRadius,
-              color: Colors.black38,
+              borderRadius: const BorderRadius.all(StyleString.imgRadius),
+              color: Theme.of(context).colorScheme.onInverseSurface.withOpacity(0.4),
             ),
             height: width,
             width: height,

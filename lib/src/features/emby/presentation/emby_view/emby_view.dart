@@ -56,7 +56,7 @@ Widget _viewItem(BuildContext context, WidgetRef ref,Item view, site){
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,
     onTap: (){
-      GoRouter.of(context).push(Uri(path: '/library/${view.id}', queryParameters: {'title': view.name}).toString());
+      GoRouter.of(context).push(Uri(path: '/library', queryParameters: {'parentId': view.id,'title': view.name,'filter': ''}).toString());
     },
     child: Column(
       children: [

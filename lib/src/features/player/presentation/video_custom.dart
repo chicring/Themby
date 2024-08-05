@@ -57,6 +57,7 @@ class _VideoCustom extends ConsumerState<VideoCustom>{
         padding: const EdgeInsets.all(0),
         margin: const EdgeInsets.all(0),
         child: Stack(
+          fit: StackFit.passthrough,
           children: [
             Video(
               key: ValueKey(fitType),

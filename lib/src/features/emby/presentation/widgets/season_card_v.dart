@@ -52,26 +52,21 @@ class SeasonCardV extends ConsumerWidget{
         },
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(
-                StyleString.imgRadius,
-              ),
-              child: Stack(
-                children: [
-                  NetworkImgLayer(
-                    imageUrl: item.imagesCustom!.primary,
-                    width: width,
-                    height: height,
+            Stack(
+              children: [
+                NetworkImgLayer(
+                  imageUrl: item.imagesCustom!.primary,
+                  width: width,
+                  height: height,
+                ),
+                if(item.userData?.unplayedItemCount != null)
+                  PBadge(
+                    text: item.userData?.unplayedItemCount.toString(),
+                    top: 6,
+                    right: 6,
                   ),
-                  if(item.userData?.unplayedItemCount != null)
-                    PBadge(
-                      text: item.userData?.unplayedItemCount.toString(),
-                      top: 6,
-                      right: 6,
-                    ),
 
-                ],
-              ),
+              ],
             ),
             SizedBox(
               width: width,

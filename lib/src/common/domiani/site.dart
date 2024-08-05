@@ -10,6 +10,7 @@ enum SiteType {
 @Entity()
 class Site{
   Site({
+    this.id = 0,
     this.remake,
     this.type,
     this.serverId,
@@ -25,7 +26,8 @@ class Site{
     this.accessToken
   });
 
-  int id = 0;
+  @Id()
+  int id;
   final String? remake;
   final String? type;
 
@@ -44,6 +46,7 @@ class Site{
   final String? accessToken;
 
   Site copyWith({
+    int? id,
     String? remake,
     String? type,
     String? serverId,
@@ -59,6 +62,7 @@ class Site{
     String? accessToken
   }) {
     return Site(
+      id: id ?? this.id,
       remake: remake ?? this.remake,
       type: type ?? this.type,
       serverId: serverId ?? this.serverId,

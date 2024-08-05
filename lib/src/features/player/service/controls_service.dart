@@ -141,17 +141,30 @@ class ControlsService extends _$ControlsService{
           return Image.asset("assets/loading/loading-2.gif",height: 50);
         }
     );
-    await ref.watch(getEpisodesProvider(state.parentId!,state.parentId!).future)
-    .then((items) async{
-      if(state.mediaIndex! >= items.length){
-        SmartDialog.showToast('没有下一集了');
-        SmartDialog.dismiss(tag: TagsString.nextLoading);
-        return;
-      }
-      await togglePlayMedia(items[state.mediaIndex!].id!, state.mediaIndex! + 1);
-    });
+    if(state.playType == "Episode"){
+      await ref.watch(getEpisodesProvider(state.parentId!,state.parentId!).future)
+          .then((items) async{
+        if(state.mediaIndex! >= items.length){
+          SmartDialog.showToast('没有下一集了');
+          SmartDialog.dismiss(tag: TagsString.nextLoading);
+          return;
+        }
+        await togglePlayMedia(items[state.mediaIndex!].id!, state.mediaIndex! + 1);
+      });
+    }else if(state.playType == 'Series'){
+      await ref.watch(getNextUpProvider(state.mediaId!).future)
+          .then((items) async{
+        if(state.mediaIndex! >= items.length){
+          SmartDialog.showToast('没有下一集了');
+          SmartDialog.dismiss(tag: TagsString.nextLoading);
+          return;
+        }
+        await togglePlayMedia(items[state.mediaIndex!].id!, state.mediaIndex! + 1);
+      });
+    }
     SmartDialog.dismiss(tag: TagsString.nextLoading);
   }
+
 
   /// 开始记录播放位置
   Future<void> startRecordPosition({int? position}) async {

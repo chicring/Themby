@@ -49,47 +49,39 @@ class MediaCardH extends ConsumerWidget{
         },
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: StyleString.imgRadius,
-                topRight: StyleString.imgRadius,
-                bottomLeft: StyleString.imgRadius,
-                bottomRight: StyleString.imgRadius,
-              ),
-              child: Stack(
-                children: [
-                  NetworkImgLayer(
-                    imageUrl: imageUrl,
-                    width: width,
-                    height: height,
+            Stack(
+              children: [
+                NetworkImgLayer(
+                  imageUrl: imageUrl,
+                  width: width,
+                  height: height,
+                ),
+
+                if(item.userData?.playedPercentage != null)
+                  Positioned(
+                    left: 8,
+                    right: 8,
+                    bottom: 6,
+                    child: SizedBox(
+                      width: width,
+                      child: LinearProgressIndicator(
+                        value: (item.userData?.playedPercentage ?? 0) / 100,
+                        backgroundColor: Colors.grey.withOpacity(0.5),
+                        borderRadius: StyleString.lgRadius,
+                      ),
+                    ),
                   ),
 
-                  if(item.userData?.playedPercentage != null)
-                    Positioned(
-                      left: 8,
-                      right: 8,
-                      bottom: 6,
-                      child: SizedBox(
-                        width: width,
-                        child: LinearProgressIndicator(
-                          value: (item.userData?.playedPercentage ?? 0) / 100,
-                          backgroundColor: Colors.grey.withOpacity(0.5),
-                          borderRadius: StyleString.lgRadius,
-                        ),
-                      ),
+                if(item.userData?.played ?? false)
+                  Positioned(
+                    top: 3,
+                    right: 3,
+                    child: Icon(
+                      Icons.check_circle,
+                      color: Theme.of(context).colorScheme.primaryContainer,
                     ),
-
-                  if(item.userData?.played ?? false)
-                    Positioned(
-                      top: 3,
-                      right: 3,
-                      child: Icon(
-                        Icons.check_circle,
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                    ),
-                ],
-              ),
+                  ),
+              ],
             ),
             SizedBox(
               width: width,

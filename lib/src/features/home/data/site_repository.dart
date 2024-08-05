@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:objectbox/objectbox.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/objectbox.g.dart';
 import 'package:themby/src/common/domiani/site.dart';
@@ -82,6 +81,65 @@ class SiteRepository{
   Future<void> removeEmbySite(Site site) async {
     siteBox.removeAsync(site.id);
   }
+
+  Future<void> updateEmbySite(Site site) async {
+
+    final Site? oldSite = siteBox.get(site.id);
+
+    if(oldSite != null && oldSite.password == site.password
+        && oldSite.username == site.username
+        && oldSite.scheme == site.scheme
+        && oldSite.host == site.host
+        && oldSite.port == site.port) {
+
+      await siteBox.putAsync(site,mode: PutMode.update);
+      return;
+    }
+    
+    final response = await client.postUri(
+        Uri(
+          scheme: site.scheme,
+          host: site.host,
+          port: site.port,
+          path: '/emby/Users/AuthenticateByName',
+        ),
+        data: {
+          'Username': site.username,
+          'Pw': site.password,
+        },
+        options: Options(
+            headers: {
+              'X-Emby-Authorization': embyToken,
+            }
+        )
+    );
+
+    Site firstSite = site.copyWith(
+      accessToken: response.data['AccessToken'],
+      userId: response.data['User']['Id'],
+      username: response.data['User']['Name'],
+      imageTag: response.data['User']['PrimaryImageTag'],
+    );
+
+    final response2 = await  client.getUri(
+        Uri(
+          scheme: site.scheme,
+          host: site.host,
+          port: site.port,
+          path: '/emby/System/Info/Public',
+        ),
+        options: Options(
+            headers: {
+              'X-Emby-Authorization': embyToken,
+            }
+        )
+    );
+
+    await siteBox.putAsync(firstSite.copyWith(
+      serverName: response2.data['ServerName'],
+      version: response2.data['Version'],
+    ),mode: PutMode.update);
+  }
 }
 
 
@@ -110,4 +168,9 @@ Future<void> addEmbySite(AddEmbySiteRef ref,{required Site site}) async {
 @riverpod
 Future<void> removeEmbySite(RemoveEmbySiteRef ref,{required Site site}) async {
   return ref.watch(siteRepositoryProvider).removeEmbySite(site);
+}
+
+@riverpod
+Future<void> updateEmbySite(UpdateEmbySiteRef ref,{required Site site}) async {
+  return ref.watch(siteRepositoryProvider).updateEmbySite(site);
 }

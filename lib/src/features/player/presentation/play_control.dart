@@ -51,8 +51,9 @@ class _PlayControl extends ConsumerState<PlayControl>{
     return SafeArea(
       minimum: const EdgeInsets.all(StyleString.safeSpace),
       child: Stack(
+        fit: StackFit.passthrough,
         clipBehavior: Clip.none,
-        alignment: Alignment.center,
+
         children: [
            const Positioned.fill(
              left: 12,
