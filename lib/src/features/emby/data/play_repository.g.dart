@@ -171,7 +171,7 @@ class _GetPlaybackInfoProviderElement
   String get itemId => (origin as GetPlaybackInfoProvider).itemId;
 }
 
-String _$getPlayerUrlHash() => r'78e0b81017636ab59d6d59e461a00d28ba1d213e';
+String _$getPlayerUrlHash() => r'a400c0adfa8ac07965489a4693fb4d8175cb18d1';
 
 /// See also [getPlayerUrl].
 @ProviderFor(getPlayerUrl)
@@ -184,10 +184,12 @@ class GetPlayerUrlFamily extends Family<AsyncValue<String>> {
 
   /// See also [getPlayerUrl].
   GetPlayerUrlProvider call(
-    String itemId,
-  ) {
+    String itemId, {
+    int? index,
+  }) {
     return GetPlayerUrlProvider(
       itemId,
+      index: index,
     );
   }
 
@@ -197,6 +199,7 @@ class GetPlayerUrlFamily extends Family<AsyncValue<String>> {
   ) {
     return call(
       provider.itemId,
+      index: provider.index,
     );
   }
 
@@ -219,11 +222,13 @@ class GetPlayerUrlFamily extends Family<AsyncValue<String>> {
 class GetPlayerUrlProvider extends AutoDisposeFutureProvider<String> {
   /// See also [getPlayerUrl].
   GetPlayerUrlProvider(
-    String itemId,
-  ) : this._internal(
+    String itemId, {
+    int? index,
+  }) : this._internal(
           (ref) => getPlayerUrl(
             ref as GetPlayerUrlRef,
             itemId,
+            index: index,
           ),
           from: getPlayerUrlProvider,
           name: r'getPlayerUrlProvider',
@@ -235,6 +240,7 @@ class GetPlayerUrlProvider extends AutoDisposeFutureProvider<String> {
           allTransitiveDependencies:
               GetPlayerUrlFamily._allTransitiveDependencies,
           itemId: itemId,
+          index: index,
         );
 
   GetPlayerUrlProvider._internal(
@@ -245,9 +251,11 @@ class GetPlayerUrlProvider extends AutoDisposeFutureProvider<String> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.itemId,
+    required this.index,
   }) : super.internal();
 
   final String itemId;
+  final int? index;
 
   @override
   Override overrideWith(
@@ -263,6 +271,7 @@ class GetPlayerUrlProvider extends AutoDisposeFutureProvider<String> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         itemId: itemId,
+        index: index,
       ),
     );
   }
@@ -274,13 +283,16 @@ class GetPlayerUrlProvider extends AutoDisposeFutureProvider<String> {
 
   @override
   bool operator ==(Object other) {
-    return other is GetPlayerUrlProvider && other.itemId == itemId;
+    return other is GetPlayerUrlProvider &&
+        other.itemId == itemId &&
+        other.index == index;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, itemId.hashCode);
+    hash = _SystemHash.combine(hash, index.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -289,6 +301,9 @@ class GetPlayerUrlProvider extends AutoDisposeFutureProvider<String> {
 mixin GetPlayerUrlRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `itemId` of this provider.
   String get itemId;
+
+  /// The parameter `index` of this provider.
+  int? get index;
 }
 
 class _GetPlayerUrlProviderElement
@@ -297,6 +312,8 @@ class _GetPlayerUrlProviderElement
 
   @override
   String get itemId => (origin as GetPlayerUrlProvider).itemId;
+  @override
+  int? get index => (origin as GetPlayerUrlProvider).index;
 }
 
 String _$positionStartHash() => r'3f8fabedd6f184c712e7d4a3e503bebf30dcc6d2';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
-import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/emby/domain/selected_media.dart';
 import 'package:themby/src/features/emby/presentation/emby_favorite/emby_favorite_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_home/emby_home_screen.dart';
@@ -13,9 +12,7 @@ import 'package:themby/src/features/emby/presentation/emby_search/emby_search_sc
 import 'package:themby/src/features/home/presentation/home_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
-import 'package:themby/src/features/player/presentation/horizontal_player.dart';
 import 'package:themby/src/features/player/presentation/player_screen.dart';
-import 'package:themby/src/router/scaffold_with_nested_navigation.dart';
 import 'package:themby/src/router/scaffold_with_nested_navigation_emby.dart';
 
 enum AppRoute {

@@ -107,8 +107,9 @@ class ServerList extends ConsumerWidget {
                                   return HomeServerEdit(site: data[index]);
                                 }
                             );
-                      }, () {
-                        ref.read(homeServerNotifierProvider.notifier).removeSite(data[index]);
+                      }, () async {
+                        await ref.read(homeServerNotifierProvider.notifier).removeSite(data[index]);
+                        ref.refresh(finaAllByTextProvider(text: query));
                       },
                       surfaceColor
                   ),

@@ -39,6 +39,13 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    titleStreamC.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final episodes = ref.watch(getEpisodesProvider(widget.id,widget.id));
 
@@ -57,8 +64,8 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
                 item: value,
                 titleStreamC: titleStreamC,
               ),
-              loading: () => const SizedBox(),
-              error: (error, stackTrace) => const SizedBox(),
+              loading: () => const SliverToBoxAdapter(child: SizedBox()),
+              error: (error, stackTrace) => const SliverToBoxAdapter(child: SizedBox()),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {

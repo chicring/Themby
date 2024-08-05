@@ -40,16 +40,25 @@ class _SortButtonState extends ConsumerState<SortButton>{
     );
   }
 
-  List<PopupMenuEntry<int>> buildSortItems(BuildContext context){
+  List<PopupMenuEntry<int>> buildSortItems(BuildContext context) {
     return <PopupMenuEntry<int>>[
-      for(int i = 0; i < sortType.length; i++)...[
-        CheckedPopupMenuItem<int>(
+      for (int i = 0; i < sortType.length; i++) ...[
+        PopupMenuItem<int>(
           value: i,
-          checked: i == sortIndex,
-          padding: const EdgeInsets.only(left: 10,right: 0),
-          child: Text(sortType[i]["title"]!, style: const TextStyle(fontSize: 14)),
+          padding: const EdgeInsets.symmetric(horizontal: 10), // 调整间距
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                i == sortIndex ? Icons.check_box : Icons.check_box_outline_blank,
+                size: 16,
+              ),
+              const SizedBox(width: 8), // 调整图标和文本之间的间距
+              Text(sortType[i]["title"]!, style: const TextStyle(fontSize: 14)),
+            ],
+          ),
         ),
-        const PopupMenuDivider(height: 1,),
+        const PopupMenuDivider(height: 1),
       ]
     ];
   }

@@ -26,81 +26,53 @@ class TitleLogo extends ConsumerWidget{
     final double height = MediaQuery.sizeOf(context).height;
 
     return item.when(
-        data: (value) => Column(
+        data: (value) => Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
+            IconButton(
+              icon: const Icon(Icons.arrow_back,color: Colors.white),
+              padding:  EdgeInsets.zero,
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(width: 6),
+            Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back,color: Colors.white),
-                  padding:  EdgeInsets.zero,
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
-                ),
-                const SizedBox(width: 6),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: value.imagesCustom!.logo,
-                      height: height * 0.13,
-                      imageBuilder: (context, imageProvider) => Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image(
-                            image: imageProvider,
-                            height: height * 0.13,
-                          ),
-                          const SizedBox(width: 5),
-                          if(value.type == "Episode")
-                            SizedBox(
-                              width: 300,
-                              child: Text(
-                                  'S${value.parentIndexNumber}E${value.indexNumber} - ${value.name}',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(color: Colors.white,fontSize: 12)
-                              ),
-                            ),
-                        ],
+                CachedNetworkImage(
+                  imageUrl: value.imagesCustom!.logo,
+                  height: height * 0.13,
+                  imageBuilder: (context, imageProvider) => Image(
+                    alignment: Alignment.centerLeft,
+                    image: imageProvider,
+                    height: height * 0.15,
+                    width: height * 0.2,
+                  ),
+                  errorWidget: (_,__,___) =>
+                      Text(
+                          truncateText(value.seriesName ?? value.name ?? '', 10),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
                       ),
-                      errorWidget: (_,__,___) =>
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  truncateText(value.seriesName ?? value.name ?? '', 10),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
-                              ),
-                              const SizedBox(height: 5),
-                              if(value.type == "Episode")
-                                SizedBox(
-                                  width: 300,
-                                  child: Text(
-                                      'S${value.parentIndexNumber}E${value.indexNumber} - ${value.name}',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(color: Colors.white,fontSize: 12)
-                                  ),
-                                ),
-                            ],
-                          )
-                    ),
-
-                  ],
                 ),
+                const SizedBox(height: 6),
+                if(value.type == "Episode")
+                  SizedBox(
+                    width: 300,
+                    child: Text(
+                        'S${value.parentIndexNumber}E${value.indexNumber} - ${value.name}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(color: Colors.white,fontSize: 12)
+                    ),
+                  ),
               ],
             ),
-            const SizedBox(height: 8),
-            const InternetSpeedChip(),
           ],
         ),
         error: (_,__) => const SizedBox(),

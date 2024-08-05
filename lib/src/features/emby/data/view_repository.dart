@@ -279,8 +279,12 @@ class ViewRepository{
         headers: {
           'X-Emby-Authorization': embyToken,
           'x-emby-token': site.accessToken,
-        }
+        },
+          extra: {
+            "bypassCache": true,
+          }
       ),
+
       cancelToken: cancelToken,
     );
     final list = List<Item>.from(

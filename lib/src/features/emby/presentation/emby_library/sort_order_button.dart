@@ -12,11 +12,26 @@ class SortOrderButton extends ConsumerWidget{
 
     final state = ref.watch(embyLibraryQueryNotifierProvider);
 
-    return IconButton(
-      icon: state.sortOrder == "Descending" ? const Icon(Icons.arrow_downward_rounded) : const Icon(Icons.arrow_upward_rounded),
-      onPressed: (){
+    // return IconButton(
+    //   icon: state.sortOrder == "Descending" ? const Icon(Icons.arrow_downward_rounded) : const Icon(Icons.arrow_upward_rounded),
+    //   onPressed: (){
+    //     ref.read(embyLibraryQueryNotifierProvider.notifier).toggleSortOrder();
+    //   },
+    // );
+
+    return TextButton(
+      onPressed: () {
         ref.read(embyLibraryQueryNotifierProvider.notifier).toggleSortOrder();
       },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text("排序", style: TextStyle(fontSize: 14)),
+          state.sortOrder == "Descending" ?
+          const Icon(Icons.keyboard_arrow_down, size: 14,) :
+          const Icon(Icons.keyboard_arrow_up, size: 14,),
+        ],
+      ),
     );
   }
 

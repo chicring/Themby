@@ -14,6 +14,7 @@ import 'package:themby/src/features/player/widgets/buttons/toggle_fit_button.dar
 import 'package:themby/src/features/player/widgets/buttons/toggle_rate_button.dart';
 import 'package:themby/src/features/player/widgets/buttons/toggle_subtitle_buttton.dart';
 import 'package:themby/src/features/player/widgets/gestures/horizontal_screen_gestures.dart';
+import 'package:themby/src/features/player/widgets/internet_speed_chip.dart';
 import 'package:themby/src/features/player/widgets/progress/media_progress_bar.dart';
 import 'package:themby/src/features/player/widgets/selections/selection_button.dart';
 import 'package:themby/src/features/player/widgets/title_logo.dart';
@@ -52,6 +53,7 @@ class _PlayControl extends ConsumerState<PlayControl>{
       minimum: const EdgeInsets.all(StyleString.safeSpace),
       child: Stack(
         fit: StackFit.passthrough,
+        alignment: Alignment.center,
         clipBehavior: Clip.none,
 
         children: [
@@ -113,26 +115,33 @@ class _PlayControl extends ConsumerState<PlayControl>{
   }
 
   Widget _buildTapSheet(){
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: const Color(0xAA333333),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: const Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const InternetSpeedChip(),
+        const SizedBox(width: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+            color: const Color(0xAA333333),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: const Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
 
-          ToggleFitButton(),
+              ToggleFitButton(),
 
-          SizedBox(width: 5),
-          ToggleAudioButtoon(),
+              SizedBox(width: 5),
+              ToggleAudioButtoon(),
 
-          SizedBox(width: 5),
-          ToggleSubtitleButton()
-        ],
-      ),
+              SizedBox(width: 5),
+              ToggleSubtitleButton()
+            ],
+          ),
+        )
+      ],
     );
   }
 

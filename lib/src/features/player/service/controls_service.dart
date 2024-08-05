@@ -8,6 +8,7 @@ import 'package:media_kit/media_kit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/features/emby/data/play_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
+import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/domain/playback_info.dart';
 import 'package:themby/src/features/emby/domain/selected_media.dart';
 import 'package:themby/src/features/player/constants.dart';
@@ -33,25 +34,24 @@ class ControlsService extends _$ControlsService{
 
     if(media.type == 'Movie'){
       PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(media.id!).future);
-      mediaSourceId = playInfo.mediaSources[0].id;
+      mediaSourceId = playInfo.mediaSources[media.mediaSourcesIndex ?? 0].id;
       playSessionId = playInfo.playSessionId;
-      url = await ref.read(getPlayerUrlProvider(media.id!).future);
+      url = await ref.read(getPlayerUrlProvider(media.id!,index: media.mediaSourcesIndex).future);
       currentId = media.id!;
     }else if(media.type == "Series"){
       await ref.read(getNextUpProvider(media.id!).future)
           .then((value) {
         currentId = value[0].id!;
       });
-
       PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(currentId).future);
-      mediaSourceId = playInfo.mediaSources[0].id;
+      mediaSourceId = playInfo.mediaSources[media.mediaSourcesIndex ?? 0].id;
       playSessionId = playInfo.playSessionId;
-      url = await ref.read(getPlayerUrlProvider(currentId).future);
+      url = await ref.read(getPlayerUrlProvider(currentId,index: media.mediaSourcesIndex).future);
     }else if(media.type == "Episode"){
       PlaybackInfo playInfo = await ref.read(getPlaybackInfoProvider(media.id!).future);
-      mediaSourceId = playInfo.mediaSources[0].id;
+      mediaSourceId = playInfo.mediaSources[media.mediaSourcesIndex ?? 0].id;
       playSessionId = playInfo.playSessionId;
-      url = await ref.read(getPlayerUrlProvider(media.id!).future);
+      url = await ref.read(getPlayerUrlProvider(media.id!,index: media.mediaSourcesIndex).future);
       currentId = media.id!;
     }
 
@@ -130,7 +130,7 @@ class ControlsService extends _$ControlsService{
 
   /// 播放下一集
   Future<void> playNext() async {
-    if(state.mediaIndex == null){
+    if(state.playType == "Movie"){
       SmartDialog.showToast('没有下一集了');
       return;
     }
@@ -142,29 +142,39 @@ class ControlsService extends _$ControlsService{
         }
     );
     if(state.playType == "Episode"){
+
       await ref.watch(getEpisodesProvider(state.parentId!,state.parentId!).future)
           .then((items) async{
-        if(state.mediaIndex! >= items.length){
+        if(state.mediaIndex! > items.length){
           SmartDialog.showToast('没有下一集了');
           SmartDialog.dismiss(tag: TagsString.nextLoading);
           return;
         }
-        await togglePlayMedia(items[state.mediaIndex!].id!, state.mediaIndex! + 1);
+        await togglePlayMedia(_getMediaId(items,state.mediaIndex!), state.mediaIndex! + 1);
       });
     }else if(state.playType == 'Series'){
       await ref.watch(getNextUpProvider(state.mediaId!).future)
           .then((items) async{
-        if(state.mediaIndex! >= items.length){
+        if(state.mediaIndex! > items.length){
           SmartDialog.showToast('没有下一集了');
           SmartDialog.dismiss(tag: TagsString.nextLoading);
           return;
         }
-        await togglePlayMedia(items[state.mediaIndex!].id!, state.mediaIndex! + 1);
+        await togglePlayMedia(_getMediaId(items,state.mediaIndex!), state.mediaIndex! + 1);
       });
     }
     SmartDialog.dismiss(tag: TagsString.nextLoading);
   }
 
+  String _getMediaId(List<Item> items, int indexNumber) {
+    if (items.isEmpty) {
+      return '';
+    }
+    return items.firstWhere(
+          (item) => item.indexNumber == indexNumber + 1,
+      orElse: () => items[0],
+    ).id!;
+  }
 
   /// 开始记录播放位置
   Future<void> startRecordPosition({int? position}) async {

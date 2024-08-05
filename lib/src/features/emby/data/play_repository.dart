@@ -179,9 +179,9 @@ PlayRepository playRepository(PlayRepositoryRef ref) => PlayRepository(
 Future<PlaybackInfo> getPlaybackInfo(GetPlaybackInfoRef ref, String itemId) => ref.read(playRepositoryProvider).getPlaybackInfo(itemId);
 
 @riverpod
-Future<String> getPlayerUrl(GetPlayerUrlRef ref,String itemId) async {
+Future<String> getPlayerUrl(GetPlayerUrlRef ref,String itemId,{int? index}) async {
   final playbackInfo = await ref.read(getPlaybackInfoProvider(itemId).future);
-  return markPlayUrl(playbackInfo.mediaSources, ref.read(embyStateServiceProvider.select((value) => value.site!)));
+  return markPlayUrl(playbackInfo.mediaSources, ref.read(embyStateServiceProvider.select((value) => value.site!)),index: index);
 }
 
 @riverpod
@@ -193,7 +193,7 @@ Future<void> positionBack(PositionBackRef ref, String iId, int position, String 
 @riverpod
 Future<void> positionStop(PositionStopRef ref, String iId, int position, String pId, String mId) => ref.read(playRepositoryProvider).positionStop(iId, position, pId, mId);
 
-Future<String> markPlayUrl(List<MediaSource> sources, Site site) async {
+Future<String> markPlayUrl(List<MediaSource> sources, Site site,{int? index}) async {
 
   final List<String> urls = sources.map((source) {
     if (source.container == 'strm') {
@@ -204,7 +204,7 @@ Future<String> markPlayUrl(List<MediaSource> sources, Site site) async {
   }).toList();
 
   if (urls.isNotEmpty) {
-    return '${site.scheme}://${site.host}:${site.port}/emby${urls.first}';
+    return '${site.scheme}://${site.host}:${site.port}/emby${urls[index ?? 0]}';
   } else {
     return '';
   }

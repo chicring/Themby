@@ -222,6 +222,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final remakeParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 6);
           final typeParam = const fb.StringReader(asciiOptimization: true)
@@ -250,6 +252,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 30);
           final object = Site(
+              id: idParam,
               remake: remakeParam,
               type: typeParam,
               serverId: serverIdParam,
@@ -262,8 +265,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
               username: usernameParam,
               password: passwordParam,
               imageTag: imageTagParam,
-              accessToken: accessTokenParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+              accessToken: accessTokenParam);
 
           return object;
         })
