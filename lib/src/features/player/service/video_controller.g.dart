@@ -6,7 +6,7 @@ part of 'video_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$videoControllerHash() => r'9fe3f74d08e73b31b4d4b11b66fc2a6e078024b2';
+String _$videoControllerHash() => r'022cf9409fa3a3661c683e433e74418d27644624';
 
 /// See also [videoController].
 @ProviderFor(videoController)

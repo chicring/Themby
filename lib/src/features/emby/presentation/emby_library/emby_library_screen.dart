@@ -40,6 +40,7 @@ class EmbyLibraryScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+          scrolledUnderElevation: 0.0,
         centerTitle: true,
         title: Text(
             title,
@@ -48,7 +49,8 @@ class EmbyLibraryScreen extends ConsumerWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(28),
           child: Container(
-            margin: const EdgeInsets.only(left: 10, right: 10),
+            margin: EdgeInsets.zero,
+            padding: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
             child: const Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,

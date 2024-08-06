@@ -15,6 +15,17 @@ class EmbyDetailContent extends StatelessWidget{
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if(item.type == "Episode")
+          Padding(
+            padding: const EdgeInsets.only(left: 12,bottom: 10),
+            child: Text(
+                'S${item.parentIndexNumber}E${item.indexNumber} - ${item.name}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold)
+            ),
+          ),
+
         _labelContent(item),
 
         const SizedBox(height: 10),

@@ -20,9 +20,9 @@ part 'app.g.dart';
 @Riverpod(keepAlive: true)
 Future<void> appStartup(AppStartupRef ref) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await ref.read(sharedPreferencesInitProvider.future);
+
   await ref.read(deviceNameProvider.notifier).initDeviceName();
-  await ref.read(storeInitProvider.future);
+
   if (Platform.isAndroid){
     await FlutterDisplayMode.setHighRefreshRate();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -42,34 +42,32 @@ class App extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
 
     final startup = ref.watch(appStartupProvider);
-    return switch (startup) {
-      AsyncData() => MaterialApp.router(
-        routerConfig: ref.watch(goRouterProvider),
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
-              brightness: Brightness.light
-          ),
-          useMaterial3: true,
+
+    return MaterialApp.router(
+      routerConfig: ref.watch(goRouterProvider),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
+            brightness: Brightness.light
         ),
-        darkTheme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
-              brightness: Brightness.dark
-          ),
-          useMaterial3: true,
-        ),
-        themeMode: [
-          ThemeMode.light,
-          ThemeMode.dark,
-          ThemeMode.system,
-        ][ref.watch(appSettingRepositoryProvider).themeMode],
-        builder: FlutterSmartDialog.init(
-          toastBuilder: (String message) => CustomToastWidget(message: message),
-        ),
+        useMaterial3: true,
       ),
-      _ => const SizedBox()
-    };
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
+            brightness: Brightness.dark
+        ),
+        useMaterial3: true,
+      ),
+      themeMode: [
+        ThemeMode.light,
+        ThemeMode.dark,
+        ThemeMode.system,
+      ][ref.watch(appSettingRepositoryProvider).themeMode],
+      builder: FlutterSmartDialog.init(
+        toastBuilder: (String message) => CustomToastWidget(message: message),
+      ),
+    );
   }
 }

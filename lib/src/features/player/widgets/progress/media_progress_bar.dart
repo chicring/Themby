@@ -59,7 +59,7 @@ class _MediaProgressBar extends ConsumerState<MediaProgressBar>{
               ref.read(controlsServiceProvider.notifier).clearPosition();
             }
 
-            ref.read(controlsServiceProvider.notifier).startRecordPosition(position: position.inMicroseconds);
+            // ref.read(controlsServiceProvider.notifier).startRecordPosition(position: position.inMicroseconds);
 
             setState(() {
             });

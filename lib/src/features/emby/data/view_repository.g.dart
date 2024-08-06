@@ -21,7 +21,7 @@ final viewRepositoryProvider = AutoDisposeProvider<ViewRepository>.internal(
 );
 
 typedef ViewRepositoryRef = AutoDisposeProviderRef<ViewRepository>;
-String _$getViewsHash() => r'95bb8792e6da0cda98c9faf62545e7b1fb219a82';
+String _$getViewsHash() => r'fd13560976cb8a55b02a093d80364aecaa05eab3';
 
 /// See also [getViews].
 @ProviderFor(getViews)
@@ -35,7 +35,7 @@ final getViewsProvider = AutoDisposeFutureProvider<EmbyResponse<Item>>.internal(
 );
 
 typedef GetViewsRef = AutoDisposeFutureProviderRef<EmbyResponse<Item>>;
-String _$getMediaHash() => r'0cba85fbb6dd4cf2348e7cb9a55d1e259c619900';
+String _$getMediaHash() => r'c206477930949a1edf94377cf352764540e3373d';
 
 /// Copied from Dart SDK
 class _SystemHash {

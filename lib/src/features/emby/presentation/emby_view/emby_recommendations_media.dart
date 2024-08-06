@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -23,14 +22,6 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
   @override
   void initState() {
     super.initState();
-  }
-
-  Future<void> getDominantColor(String imageUrl) async {
-    final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(
-      NetworkImage(imageUrl),
-    );
-    dominantColor = paletteGenerator.dominantColor?.color ?? Colors.white;
-    setState(() {});
   }
 
   @override

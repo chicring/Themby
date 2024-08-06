@@ -14,6 +14,7 @@ VideoController videoController(VideoControllerRef  ref){
     player,
     configuration: const VideoControllerConfiguration(
       enableHardwareAcceleration: true,
+      androidAttachSurfaceAfterVideoParameters: false,
     ),
   );
 }

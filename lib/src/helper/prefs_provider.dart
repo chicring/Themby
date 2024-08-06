@@ -3,12 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 part 'prefs_provider.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 SharedPreferences sharedPreferences(SharedPreferencesRef ref) {
-  return ref.watch(sharedPreferencesInitProvider).requireValue;
-}
-
-@Riverpod(keepAlive: true)
-Future<SharedPreferences> sharedPreferencesInit(SharedPreferencesInitRef ref) async {
-  return await SharedPreferences.getInstance();
+  return throw UnimplementedError();
 }

@@ -201,13 +201,13 @@ class ViewRepository{
         port: site.port,
         path: '/emby/Users/${site.userId}/Items',
         queryParameters: {
-          'Limit': '10',
+          'Limit': '6',
           'ImageTypeLimit': '1',
           'ImageTypes': 'Backdrop',
           'EnableImageTypes': 'Logo,Backdrop,Primary',
           'Recursive': 'true',
           'IncludeItemTypes': 'Movie,Series',
-          'SortBy': 'Random,IsFavoriteOrLiked',
+          'SortBy': 'IsFavoriteOrLiked,Random',
           'EnableUserData': 'false',
           'EnableTotalRecordCount': 'false',
         }
@@ -420,12 +420,21 @@ Future<EmbyResponse<Item>> getViews(GetViewsRef ref){
 
   final link = ref.keepAlive();
 
+  Timer? timer;
+
   ref.onDispose(() {
     cancelToken.cancel();
+    timer?.cancel();
   });
 
   ref.onCancel(() {
-    link.close();
+    timer = Timer(const Duration(seconds: 30), () {
+      link.close();
+    });
+  });
+
+  ref.onResume(() {
+    timer?.cancel();
   });
 
   return viewRepo.getViews(cancelToken: cancelToken);
@@ -433,9 +442,33 @@ Future<EmbyResponse<Item>> getViews(GetViewsRef ref){
 
 @riverpod
 Future<Item> getMedia(GetMediaRef ref, String id){
+
   final viewRepo = ref.read(viewRepositoryProvider);
 
   final cancelToken = ref.cancelToken();
+
+  final link = ref.keepAlive();
+
+  Timer? timer;
+
+  ref.onDispose(() {
+    cancelToken.cancel();
+    timer?.cancel();
+  });
+
+  ref.onCancel(() {
+    timer = Timer(const Duration(seconds: 30), () {
+      link.close();
+    });
+  });
+
+  ref.onResume(() {
+    timer?.cancel();
+  });
+
+  ref.onRemoveListener((){
+
+  });
 
   return viewRepo.getMedia(id, cancelToken: cancelToken);
 }

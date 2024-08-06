@@ -17,7 +17,6 @@ class DeviceName extends _$DeviceName{
   String build(){
     return 'null';
   }
-
   /*
   * 初始化设备名称，避免异步获取设备名称时出现空值
    */

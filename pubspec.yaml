@@ -39,9 +39,6 @@ dependencies:
   #路由
   go_router: ^14.1.4
 
-  #动态取色
-  dynamic_color: ^1.7.0
-
   #状态管理
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
@@ -105,8 +102,6 @@ dependencies:
 
   #文本展开
   expandable_text: ^2.3.0
-
-  palette_generator: ^0.3.3+4
 
   #网络速度
   internet_speed_meter: ^1.0.3

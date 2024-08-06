@@ -27,7 +27,7 @@ class EmbyMediaService extends _$EmbyMediaService{
   }
 
   void setMediaSourcesIndex(int index){
-    state = state.copyWith(mediaSourcesIndex: index);
+    state = state.copyWith(mediaSourcesIndex: index, subtitleIndex: null, audioIndex: null);
   }
 
   void setSubtitleIndex(int index){

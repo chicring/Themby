@@ -46,12 +46,8 @@ class TitleLogo extends ConsumerWidget{
                 CachedNetworkImage(
                   imageUrl: value.imagesCustom!.logo,
                   height: height * 0.13,
-                  imageBuilder: (context, imageProvider) => Image(
-                    alignment: Alignment.centerLeft,
-                    image: imageProvider,
-                    height: height * 0.15,
-                    width: height * 0.2,
-                  ),
+                  width: height * 0.2,
+                  alignment: Alignment.bottomLeft,
                   errorWidget: (_,__,___) =>
                       Text(
                           truncateText(value.seriesName ?? value.name ?? '', 10),
@@ -60,7 +56,7 @@ class TitleLogo extends ConsumerWidget{
                           style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
                       ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 5),
                 if(value.type == "Episode")
                   SizedBox(
                     width: 300,

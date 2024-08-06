@@ -54,10 +54,6 @@ class ControlsService extends _$ControlsService{
       url = await ref.read(getPlayerUrlProvider(media.id!,index: media.mediaSourcesIndex).future);
       currentId = media.id!;
     }
-
-    await ref.read(videoControllerProvider).player.open(Media(url));
-    await ref.read(videoControllerProvider).player.play();
-
     state = state.copyWith(
         mediaId: media.id,
         parentId: media.parentId,
@@ -68,6 +64,17 @@ class ControlsService extends _$ControlsService{
         mediaIndex: media.playIndex,
         position: media.position
     );
+
+    await ref.read(videoControllerProvider).player.open(Media(url));
+    await ref.read(videoControllerProvider).player.play().then((v){
+      startRecordPosition(position: media.position?.inMicroseconds);
+      if(media.audioIndex != null){
+        toggleAudio(media.audioIndex!);
+      }
+      if(media.subtitleIndex != null){
+        toggleSubtitle(media.subtitleIndex!);
+      }
+    });
   }
 
   ///跳转到指定位置
@@ -102,11 +109,10 @@ class ControlsService extends _$ControlsService{
     String url = await ref.read(getPlayerUrlProvider(id).future);
 
     ref.read(videoControllerProvider).player.open(Media(url));
-    ref.read(videoControllerProvider).player.play();
-
+    ref.read(videoControllerProvider).player.play().then((v) {
+      startRecordPosition();
+    });
     state = state.copyWith(currentMediaId: id, mediaSourceId: mediaSourceId, playSessionId: playSessionId, mediaIndex: index);
-
-    startRecordPosition();
   }
 
   /// 切换音轨

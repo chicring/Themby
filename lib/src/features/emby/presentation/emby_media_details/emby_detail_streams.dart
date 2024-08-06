@@ -57,7 +57,8 @@ class EmbyDetailStreams extends StatelessWidget{
             ),
           ),
           const SizedBox(height: 5),
-          mediaStreamListCard(mediaSource.mediaStreams),
+          if(mediaSource.mediaStreams != null && mediaSource.mediaStreams!.isNotEmpty)
+            mediaStreamListCard(mediaSource.mediaStreams),
           const SizedBox(height: 6),
         ]
       ],
