@@ -20,6 +20,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
+
     final String query = ref.watch(homeSearchQueryNotifierProvider);
 
     return Scaffold(

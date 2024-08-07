@@ -11,6 +11,7 @@ import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/fit_type_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
 import 'package:themby/src/features/player/utils/fullscreen.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class VideoCustom extends ConsumerStatefulWidget{
   const VideoCustom({super.key, required this.media});
@@ -28,7 +29,9 @@ class _VideoCustom extends ConsumerState<VideoCustom>{
     super.initState();
     enterFullScreen();
     landScape();
-    Future.microtask(() => ref.read(controlsServiceProvider.notifier).startPlay(widget.media));
+    // WakelockPlus.toggle(enable: true);
+    ref.read(controlsServiceProvider.notifier).startPlay(widget.media);
+    // Future.microtask(() => );
   }
 
 
