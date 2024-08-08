@@ -37,6 +37,7 @@ class MediaCardV extends ConsumerWidget{
 
     return Card(
       elevation: 0,
+      semanticContainer: false,
       clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.zero,
       color: Colors.transparent,
@@ -93,7 +94,6 @@ class MediaCardV extends ConsumerWidget{
               width: width,
               child: MediaContent(item: item),
             ),
-
           ],
         ),
       ),
@@ -119,6 +119,7 @@ class MediaContent extends StatelessWidget{
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: const TextStyle(
+              height: 1,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.3,
@@ -129,6 +130,7 @@ class MediaContent extends StatelessWidget{
             item.productionYear.toString(),
             maxLines: 1,
             style: TextStyle(
+              height: 1,
               fontSize: 12,
               color: Theme.of(context).colorScheme.outline,
             ),

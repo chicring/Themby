@@ -124,6 +124,7 @@ class EmbyLibraryScreen extends ConsumerWidget {
                 ),
               ),
             ),
+            // SliverGrid.builder(gridDelegate: gridDelegate, itemBuilder: itemBuilder)
           ],
         ),
       ),

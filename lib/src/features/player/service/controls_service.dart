@@ -178,7 +178,7 @@ class ControlsService extends _$ControlsService{
     }
     for(int i = 0; i < items.length; i++){
       if(items[i].indexNumber == indexNumber){
-        return items[i].id!;
+        return items[i+1].id!;
       }
     }
     return  items[0].id!;
