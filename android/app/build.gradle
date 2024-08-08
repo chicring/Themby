@@ -53,16 +53,35 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    splits {
+        abi {
 
+            // Enables building multiple APKs per ABI.
+            enable = true
 
-    applicationVariants.all { variant ->
+            // By default all ABIs are included, so use reset() and include to specify that you only
+            // want APKs for x86 and x86_64.
+
+            // Resets the list of ABIs for Gradle to create APKs for to none.
+            reset()
+
+            // Specifies a list of ABIs for Gradle to create APKs for.
+            include "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
+
+            // Specifies that you don't want to also generate a universal APK that includes all ABIs.
+            universalApk false
+        }
+    }
+
+    applicationVariants.all {
+        variant ->
         variant.outputs.all { output ->
-            def appName = "Themby" // 文件名
-            def createTime = new Date().format('yyyy_MM_dd') // 打包时间 2021_09_25_16_45_52
+            def appName = "Themby"
             def cpu = output.getFilter(com.android.build.OutputFile.ABI)!=null
                     ? output.getFilter(com.android.build.OutputFile.ABI)
                     : "all" // 默认值;
-            outputFileName = "${appName}_${defaultConfig.versionName}_${createTime}_${variant.flavorName}_${variant.buildType.name}-${cpu}.apk"
+            output.outputFileName = "${appName}_${defaultConfig.versionName}_${variant.flavorName}_${variant.buildType.name}-${cpu}.apk"
+            false
         }
     }
 

@@ -45,9 +45,9 @@ class TitleLogo extends ConsumerWidget{
               children: [
                 CachedNetworkImage(
                   imageUrl: value.imagesCustom!.logo,
-                  height: height * 0.13,
+                  height: height * 0.12,
                   width: height * 0.2,
-                  alignment: Alignment.bottomLeft,
+                  alignment: Alignment.centerLeft,
                   errorWidget: (_,__,___) =>
                       Text(
                           truncateText(value.seriesName ?? value.name ?? '', 10),

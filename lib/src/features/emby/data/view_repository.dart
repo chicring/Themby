@@ -62,7 +62,7 @@ class ViewRepository{
 
     return EmbyResponse<Item>(
       items: resp.items.where((element) {
-        return element.collectionType == 'movies' || element.collectionType == 'tvshows';
+        return element.collectionType == 'movies' || element.collectionType == 'tvshows' || element.collectionType == null;
       }).toList(),
       totalRecordCount: resp.totalRecordCount,
     );
