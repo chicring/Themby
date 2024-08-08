@@ -24,6 +24,8 @@ class TitleLogo extends ConsumerWidget{
     final item = ref.watch(GetMediaProvider(id));
 
     final double height = MediaQuery.sizeOf(context).height;
+    final double width = MediaQuery.sizeOf(context).width;
+
 
     return item.when(
         data: (value) => Row(
@@ -46,7 +48,7 @@ class TitleLogo extends ConsumerWidget{
                 CachedNetworkImage(
                   imageUrl: value.imagesCustom!.logo,
                   height: height * 0.12,
-                  width: height * 0.2,
+                  width: width * 0.45,
                   alignment: Alignment.centerLeft,
                   errorWidget: (_,__,___) =>
                       Text(

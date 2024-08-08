@@ -9,7 +9,7 @@ import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 
 
-class MediaCardV extends ConsumerWidget{
+class MediaCardV extends StatelessWidget{
 
   const MediaCardV({
     super.key,
@@ -34,7 +34,7 @@ class MediaCardV extends ConsumerWidget{
   final Function()? longPressEnd;
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context) {
 
     return Card(
       elevation: 0,
@@ -114,7 +114,7 @@ class MediaContent extends StatelessWidget{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AutoSizeText(
+          Text(
             item.name!,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -126,8 +126,8 @@ class MediaContent extends StatelessWidget{
               letterSpacing: 0.3,
             ),
           ),
-          const SizedBox(height: 1),
-          AutoSizeText(
+          const SizedBox(height: 2),
+          Text(
             item.productionYear.toString(),
             maxLines: 1,
             style: TextStyle(

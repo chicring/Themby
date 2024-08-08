@@ -106,3 +106,4 @@ String truncateText(String text, int maxLength) {
     return '${text.substring(0, maxLength)}...';
   }
 }
+

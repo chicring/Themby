@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/presentation/widgets/list_card_h.dart';
+import 'package:themby/src/features/emby/presentation/widgets/skeleton/list_card_h_skeleton.dart';
 
 
 class EmbyMediaLibrary extends ConsumerWidget {
   const EmbyMediaLibrary({super.key});
 
-  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final view = ref.watch(getViewsProvider);
@@ -24,7 +24,7 @@ class EmbyMediaLibrary extends ConsumerWidget {
                 ...data.items.map((item){
                   final media = ref.watch(getLastMediaProvider(item.id!));
                   return media.when(
-                      loading: () => const SizedBox(),
+                      loading: () => const ListCardsHSkeleton(),
                       error: (error, stack) => const SizedBox(),
                       data: (value) => value.isEmpty ? const SizedBox() :
                         ListCardsH(

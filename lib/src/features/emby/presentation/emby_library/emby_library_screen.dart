@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
+import 'package:themby/src/extensions/constrains.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/presentation/emby_library/emby_library_query_notifier.dart';
 import 'package:themby/src/features/emby/presentation/emby_library/sort_button.dart';
@@ -35,8 +36,7 @@ class EmbyLibraryScreen extends ConsumerWidget {
 
     final totalRecordCount = response.valueOrNull?.totalRecordCount;
 
-    double cardWidth = ScreenHelper.getPortionAuto()  * 1.2;
-    double cardHeight = cardWidth / 0.68;
+    final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -51,13 +51,17 @@ class EmbyLibraryScreen extends ConsumerWidget {
           child: Container(
             margin: EdgeInsets.zero,
             padding: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
-            child: const Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Text("共  部", style: TextStyle(color: Colors.white, fontSize: 12)),
-                SortOrderButton(),
-                SortButton()
+                Text("共 ${totalRecordCount ?? 0} 部", style: const TextStyle(fontSize: 12)),
+                const Row(
+                  children: [
+                    SortOrderButton(),
+                    SortButton()
+                  ],
+                )
               ],
             ),
           ),
@@ -83,10 +87,10 @@ class EmbyLibraryScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(StyleString.safeSpace, 0, StyleString.safeSpace, 0),
               sliver: SliverGrid(
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: cardWidth,
+                  maxCrossAxisExtent: mediaQuery.smAndDown ? 172 : 258,
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
-                  childAspectRatio: 13 / 22,
+                  childAspectRatio: mediaQuery.smAndDown ? 13 / 25 : 13 / 24,
                 ),
                 delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
@@ -112,8 +116,8 @@ class EmbyLibraryScreen extends ConsumerWidget {
                         }
                         return MediaCardV(
                           item: response.items[indexInPage],
-                          width: cardWidth,
-                          height: cardHeight,
+                          width: mediaQuery.smAndDown ? 172 : 258,
+                          height: mediaQuery.smAndDown ? 254 : 391,
                         );
                       },
                       loading: () => const Center(child: CircularProgressIndicator()),

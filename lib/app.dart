@@ -43,20 +43,28 @@ class App extends ConsumerWidget{
 
     final startup = ref.watch(appStartupProvider);
 
+    if(startup.isLoading){
+      print("Loading");
+    }
+
     return MaterialApp.router(
       routerConfig: ref.watch(goRouterProvider),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
-            brightness: Brightness.light
+            brightness: Brightness.light,
+            inverseSurface: Colors.grey.shade200,
+            onInverseSurface: Colors.grey.shade100,
         ),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: colorType[ref.watch(appSettingRepositoryProvider).customColor],
-            brightness: Brightness.dark
+            brightness: Brightness.dark,
+            inverseSurface: Colors.black87,
+            onInverseSurface: Colors.black26,
         ),
         useMaterial3: true,
       ),

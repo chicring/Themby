@@ -1371,7 +1371,7 @@ packages:
     source: hosted
     version: "2.0.7"
   wakelock_plus:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: wakelock_plus
       sha256: f268ca2116db22e57577fb99d52515a24bdc1d570f12ac18bb762361d43b043d
