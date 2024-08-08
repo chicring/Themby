@@ -110,6 +110,7 @@ dependencies:
 
   wakelock_plus: ^1.1.4
   wakelock_plus_platform_interface: 1.1.0
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:

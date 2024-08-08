@@ -86,7 +86,7 @@ class EmbyLibraryScreen extends ConsumerWidget {
                   maxCrossAxisExtent: cardWidth,
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
-                  childAspectRatio: 0.50,
+                  childAspectRatio: 13 / 22,
                 ),
                 delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
