@@ -10,17 +10,23 @@ class EmbyLibraryItemsScreen extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
 
 
-    return Container(
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index){
-          return Container(
-            height: 100,
-            color: Colors.red,
-            margin: const EdgeInsets.all(8),
-          );
-        },
-      ),
+    return CustomScrollView(
+      slivers: [
+        // SliverPersistentHeader(
+        //   delegate: ,
+        //   pinned: true,
+        // ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return ListTile(
+                title: Text('Item $index'),
+              );
+            },
+            childCount: 100,
+          ),
+        ),
+      ],
     );
   }
 
