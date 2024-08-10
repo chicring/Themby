@@ -1161,5 +1161,133 @@ class _GetNextUpProviderElement
   @override
   String get seriesId => (origin as GetNextUpProvider).seriesId;
 }
+
+String _$getGenresHash() => r'78dc2eabbe925a082f3783722847403fc2f7a652';
+
+/// See also [getGenres].
+@ProviderFor(getGenres)
+const getGenresProvider = GetGenresFamily();
+
+/// See also [getGenres].
+class GetGenresFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
+  /// See also [getGenres].
+  const GetGenresFamily();
+
+  /// See also [getGenres].
+  GetGenresProvider call(
+    String id,
+  ) {
+    return GetGenresProvider(
+      id,
+    );
+  }
+
+  @override
+  GetGenresProvider getProviderOverride(
+    covariant GetGenresProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getGenresProvider';
+}
+
+/// See also [getGenres].
+class GetGenresProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
+  /// See also [getGenres].
+  GetGenresProvider(
+    String id,
+  ) : this._internal(
+          (ref) => getGenres(
+            ref as GetGenresRef,
+            id,
+          ),
+          from: getGenresProvider,
+          name: r'getGenresProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getGenresHash,
+          dependencies: GetGenresFamily._dependencies,
+          allTransitiveDependencies: GetGenresFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  GetGenresProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final String id;
+
+  @override
+  Override overrideWith(
+    FutureOr<EmbyResponse<Item>> Function(GetGenresRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetGenresProvider._internal(
+        (ref) => create(ref as GetGenresRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<EmbyResponse<Item>> createElement() {
+    return _GetGenresProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetGenresProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetGenresRef on AutoDisposeFutureProviderRef<EmbyResponse<Item>> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _GetGenresProviderElement
+    extends AutoDisposeFutureProviderElement<EmbyResponse<Item>>
+    with GetGenresRef {
+  _GetGenresProviderElement(super.provider);
+
+  @override
+  String get id => (origin as GetGenresProvider).id;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -88,64 +88,45 @@ class NetworkImgLayer extends StatelessWidget {
   }
 
   Widget placeholder(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onInverseSurface.withOpacity(0.4),
-        borderRadius: BorderRadius.circular(type == 'avatar'
-            ? 50
-            : type == 'emote'
-            ? 0
-            : StyleString.imgRadius.x),
-      ),
-      child: type == 'bg'
-          ? const SizedBox()
-          : Shimmer.fromColors(
-            baseColor: Colors.black26,
-            highlightColor: Colors.black12,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: StyleString.lgRadius,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-              height: width,
-              width: height,
-            ),
+    Color inverseSurface = Theme.of(context).colorScheme.inverseSurface;
+    Color onInverseSurface = Theme.of(context).colorScheme.onInverseSurface;
+
+    return Shimmer.fromColors(
+      baseColor: inverseSurface,
+      highlightColor: onInverseSurface,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(type == 'avatar'
+              ? 50
+              : type == 'emote'
+              ? 0
+              : StyleString.imgRadius.x),
+          color: inverseSurface,
         ),
+        height: height,
+        width: width,
+      ),
     );
   }
 
   Widget errorWidget(BuildContext context) {
     return Container(
-      width: width,
-      height: height,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
-        borderRadius: BorderRadius.circular(type == 'avatar'
-            ? 50
-            : type == 'bg'
-            ? 0
-            : StyleString.imgRadius.x),
-      ),
-      child: type == 'bg'
-          ? const SizedBox()
-          : Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(StyleString.imgRadius),
-              color: Theme.of(context).colorScheme.onInverseSurface.withOpacity(0.4),
-            ),
-            height: width,
-            width: height,
-            child: Center(
-              child: Icon(
-                type == 'people' ? Icons.person_outline_outlined : Icons.movie_creation_outlined,
-                size: 50,
-              ),
-            )
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(type == 'avatar'
+              ? 50
+              : type == 'bg'
+              ? 0
+              : StyleString.imgRadius.x),
+          color: Theme.of(context).colorScheme.surfaceContainer.withOpacity(0.9),
+        ),
+        height: height,
+        width: width,
+        child: Center(
+          child: Icon(
+            type == 'people' ? Icons.person_outline_outlined : Icons.movie_creation_outlined,
+            size: 50,
           ),
+        )
     );
   }
 }

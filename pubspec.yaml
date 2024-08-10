@@ -109,7 +109,6 @@ dependencies:
   google_fonts: ^6.2.1
 
   wakelock_plus_platform_interface: 1.1.0
-  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:

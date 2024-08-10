@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/query/sort_type.dart';
+import 'package:themby/src/helper/prefs_provider.dart';
 
 part 'emby_library_query_notifier.g.dart';
 
@@ -9,15 +10,19 @@ part 'emby_library_query_notifier.g.dart';
 
 @riverpod
 class EmbyLibraryQueryNotifier extends _$EmbyLibraryQueryNotifier{
+  static const sortTypeKey = 'sortType';
+  static const sortOrderKey = 'sortOrder';
 
   @override
   ItemQuery build(){
+    final prefs = ref.watch(sharedPreferencesProvider);
+
     return (
       page: 0,
       parentId: '',
       includeItemTypes: 'Series,Movie',
-      sortBy: sortType[0]['value']!,
-      sortOrder: 'Descending',
+      sortBy: sortType[prefs.getInt(sortTypeKey) ?? 11]['value']!,
+      sortOrder: prefs.getString(sortOrderKey) ?? 'Descending',
       filters: '',
     );
   }
@@ -27,6 +32,10 @@ class EmbyLibraryQueryNotifier extends _$EmbyLibraryQueryNotifier{
   }
 
   void setSortBy(int index){
+    if (sortType[index]['value'] == state.sortBy){
+      toggleSortOrder();
+      return;
+    }
     state = (
       page: 0,
       parentId: state.parentId,
@@ -35,6 +44,8 @@ class EmbyLibraryQueryNotifier extends _$EmbyLibraryQueryNotifier{
       sortOrder: state.sortOrder,
       filters: state.filters,
     );
+    final prefs = ref.watch(sharedPreferencesProvider);
+    prefs.setInt(sortTypeKey, index);
   }
 
   void toggleSortOrder(){
@@ -57,6 +68,8 @@ class EmbyLibraryQueryNotifier extends _$EmbyLibraryQueryNotifier{
       filters: state.filters,
       );
     }
+    final prefs = ref.watch(sharedPreferencesProvider);
+    prefs.setString(sortOrderKey, state.sortOrder);
   }
 
 }

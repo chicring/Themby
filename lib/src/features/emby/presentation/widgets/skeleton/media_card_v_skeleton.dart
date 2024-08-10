@@ -35,7 +35,7 @@ class MediaCardVSkeleton extends StatelessWidget {
               color: inverseSurface,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 5),
           Container(
             width: width * 0.8,
             height: 14,
@@ -44,7 +44,7 @@ class MediaCardVSkeleton extends StatelessWidget {
               color: inverseSurface,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 5),
           Container(
             width: width * 0.4,
             height: 10,

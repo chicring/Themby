@@ -138,8 +138,6 @@ class ViewRepository{
           'ImageTypeLimit': '1',
           'EnableImageTypes': 'Primary,Backdrop,Thumb',
           'MediaTypes': 'Video',
-          'Recursive': 'true',
-          'StartIndex': '0',
           'ParentId': parentId,
         }
       ),
@@ -401,6 +399,43 @@ class ViewRepository{
     return resp.items;
   }
 
+
+  Future<EmbyResponse<Item>> getGenres({required String id, CancelToken? cancelToken}) async {
+    final response = await client.getUri(
+      Uri(
+          scheme: site.scheme,
+          host: site.host,
+          port: site.port,
+          path: '/emby/Genres',
+          queryParameters: {
+            'EnableImageTypes': 'Primary,Backdrop,Thumb',
+            'Fields': 'BasicSyncInfo,CanDelete,PrimaryImageAspectRatio',
+            'ImageTypeLimit': '1',
+            'UserId': site.userId,
+            'Limit': '50',
+            'Recursive': 'true',
+            'StartIndex': '0',
+            'SortBy': 'SortName',
+            'SortOrder': 'Ascending',
+            'ParentId': id
+          }
+      ),
+      options: Options(
+          headers: {
+            'X-Emby-Authorization': embyToken,
+            'x-emby-token': site.accessToken,
+          }
+      ),
+      cancelToken: cancelToken,
+    );
+    final resp = EmbyResponse<Item>.fromJson(response.data, (json) {
+      final item = Item.fromJson(json);
+      item.imagesCustom = ImagesCustom.builder(item, site);
+      return item;
+    });
+
+    return resp;
+  }
 }
 
 @riverpod
@@ -548,4 +583,10 @@ Future<EmbyResponse<Item>> getSimilar(GetSimilarRef ref, String id) {
 Future<List<Item>> getNextUp(GetNextUpRef ref, String seriesId) {
   final cancelToken = ref.cancelToken();
   return ref.read(viewRepositoryProvider).getNextUp(seriesId: seriesId, cancelToken: cancelToken);
+}
+
+@riverpod
+Future<EmbyResponse<Item>> getGenres(GetGenresRef ref, String id) {
+  final cancelToken = ref.cancelToken();
+  return ref.read(viewRepositoryProvider).getGenres(id: id, cancelToken: cancelToken);
 }

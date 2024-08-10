@@ -1,9 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
-import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/badge.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
@@ -110,7 +107,7 @@ class MediaContent extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 3, 0, 3),
+      padding: const EdgeInsets.fromLTRB(4, 5, 0, 3),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -126,13 +123,13 @@ class MediaContent extends StatelessWidget{
               letterSpacing: 0.3,
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 5),
           Text(
             item.productionYear.toString(),
             maxLines: 1,
             style: TextStyle(
               height: 1,
-              fontSize: 12,
+              fontSize: 11,
               color: Theme.of(context).colorScheme.outline,
             ),
           ),
