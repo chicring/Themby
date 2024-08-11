@@ -107,3 +107,14 @@ String truncateText(String text, int maxLength) {
   }
 }
 
+String formatImageUrl({required String url, int? width, int? height}) {
+
+  if(width != null){
+    url = '$url&maxWidth=${(width * 2).toInt()}';
+  }
+  if(height != null){
+    url = '$url&maxHeight=${(height * 2).toInt()}';
+  }
+
+  return url;
+}

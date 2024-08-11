@@ -20,6 +20,7 @@ class EmbyLibraryQueryNotifier extends _$EmbyLibraryQueryNotifier{
     return (
       page: 0,
       parentId: '',
+      genreIds: '',
       includeItemTypes: 'Series,Movie',
       sortBy: sortType[prefs.getInt(sortTypeKey) ?? 11]['value']!,
       sortOrder: prefs.getString(sortOrderKey) ?? 'Descending',
@@ -39,6 +40,7 @@ class EmbyLibraryQueryNotifier extends _$EmbyLibraryQueryNotifier{
     state = (
       page: 0,
       parentId: state.parentId,
+      genreIds: state.genreIds,
       includeItemTypes: state.includeItemTypes,
       sortBy: sortType[index]['value']!,
       sortOrder: state.sortOrder,
@@ -53,6 +55,7 @@ class EmbyLibraryQueryNotifier extends _$EmbyLibraryQueryNotifier{
       state = (
         page: 0,
         parentId: state.parentId,
+        genreIds: state.genreIds,
         includeItemTypes: state.includeItemTypes,
         sortBy: state.sortBy,
         sortOrder: "Ascending",
@@ -62,6 +65,7 @@ class EmbyLibraryQueryNotifier extends _$EmbyLibraryQueryNotifier{
       state = (
       page: 0,
       parentId: state.parentId,
+      genreIds: state.genreIds,
       includeItemTypes: state.includeItemTypes,
       sortBy: state.sortBy,
       sortOrder: "Descending",

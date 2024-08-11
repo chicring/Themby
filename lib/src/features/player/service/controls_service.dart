@@ -66,8 +66,11 @@ class ControlsService extends _$ControlsService{
     );
 
     await ref.read(videoControllerProvider).player.open(Media(url));
-    await ref.read(videoControllerProvider).player.play().then((v){
-      startRecordPosition(position: media.position?.inMicroseconds);
+    await ref.read(videoControllerProvider).player.play().then((v)async{
+
+      // await seekTo(media.position ?? Duration.zero);
+      // startRecordPosition(position: media.position?.inMicroseconds);
+      //
       if(media.audioIndex != null){
         toggleAudio(media.audioIndex!);
       }
@@ -136,6 +139,7 @@ class ControlsService extends _$ControlsService{
 
   /// 播放下一集
   Future<void> playNext() async {
+    ref.read(controlsServiceProvider.notifier).clearPosition();
     if(state.playType == "Movie"){
       SmartDialog.showToast('没有下一集了');
       return;
@@ -151,22 +155,24 @@ class ControlsService extends _$ControlsService{
 
       await ref.watch(getEpisodesProvider(state.parentId!,state.parentId!).future)
           .then((items) async{
-        if(state.mediaIndex! > items.length){
+        final String nextId = _getMediaId(items,state.mediaIndex!);
+        if(nextId.isEmpty){
           SmartDialog.showToast('没有下一集了');
           SmartDialog.dismiss(tag: TagsString.nextLoading);
           return;
         }
-        await togglePlayMedia(_getMediaId(items,state.mediaIndex!), state.mediaIndex! + 1);
+        await togglePlayMedia(nextId, state.mediaIndex! + 1);
       });
     }else if(state.playType == 'Series'){
       await ref.watch(getNextUpProvider(state.mediaId!).future)
           .then((items) async{
-        if(state.mediaIndex! > items.length){
+        final String nextId = _getMediaId(items,state.mediaIndex!);
+        if(nextId.isEmpty){
           SmartDialog.showToast('没有下一集了');
           SmartDialog.dismiss(tag: TagsString.nextLoading);
           return;
         }
-        await togglePlayMedia(_getMediaId(items,state.mediaIndex!), state.mediaIndex! + 1);
+        await togglePlayMedia(nextId, state.mediaIndex! + 1);
       });
     }
     SmartDialog.dismiss(tag: TagsString.nextLoading);
@@ -178,7 +184,7 @@ class ControlsService extends _$ControlsService{
     }
     for(int i = 0; i < items.length; i++){
       if(items[i].indexNumber == indexNumber){
-        return items[i+1].id!;
+        return items[i+1].id ?? '';
       }
     }
     return  items[0].id!;

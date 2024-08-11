@@ -31,7 +31,7 @@ class EmbyDetailMediaSelection extends ConsumerWidget{
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
 
-          if(sources.length > 1) ...[
+          if(sources.isNotEmpty) ...[
             CustomDropdown(
               hint: '版本:',
               dropdownItems: sources,

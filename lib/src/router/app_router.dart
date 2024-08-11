@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:themby/src/features/emby/domain/selected_media.dart';
 import 'package:themby/src/features/emby/presentation/emby_favorite/emby_favorite_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_home/emby_home_screen.dart';
+import 'package:themby/src/features/emby/presentation/emby_library/emby_library_items_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_library/emby_library_screen.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_media_details.dart';
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_season_details.dart';
@@ -22,6 +23,7 @@ enum AppRoute {
   emby,
   favorite,
   library,
+  libraryItems,
   details,
   season,
   player,
@@ -30,7 +32,7 @@ enum AppRoute {
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
-final _mineNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'mine');
+final _libraryItemsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'libraryItems');
 final _embyNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'emby');
 final _favoriteNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'favorite');
 
@@ -157,6 +159,20 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   return NoTransitionPage(
                     key: state.pageKey,
                     child: EmbyLibraryScreen(parentId: parentId, title: title,filter: filter),
+                  );
+                },
+              ),
+              GoRoute(
+                path: '/libraryItems',
+                name: AppRoute.libraryItems.name,
+                pageBuilder: (context, state) {
+                  final parentId = state.uri.queryParameters['parentId']!;
+                  final genreIds = state.uri.queryParameters['genreIds'];
+                  final title = state.uri.queryParameters['title']!;
+                  final filter = state.uri.queryParameters['filter']!;
+                  return NoTransitionPage(
+                    key: state.pageKey,
+                    child: EmbyLibraryItemsScreen(parentId: parentId, title: title,filter: filter,genreIds: genreIds),
                   );
                 },
               ),

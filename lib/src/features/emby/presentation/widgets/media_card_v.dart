@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:themby/src/common/widget/badge.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 
 
@@ -54,7 +55,7 @@ class MediaCardV extends StatelessWidget{
             Stack(
               children: [
                 NetworkImgLayer(
-                  imageUrl: item.imagesCustom!.primary,
+                  imageUrl: formatImageUrl(url: item.imagesCustom!.primary,width: width.toInt(),height: height.toInt()),
                   width: width,
                   height: height,
                 ),

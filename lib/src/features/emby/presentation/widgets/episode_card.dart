@@ -45,7 +45,7 @@ class EpisodeCard extends StatelessWidget {
                 Stack(
                   children: [
                     NetworkImgLayer(
-                      imageUrl: item.imagesCustom?.primary,
+                      imageUrl: formatImageUrl(url: item.imagesCustom!.primary,width: width.toInt(),height: height.toInt()),
                       width: width,
                       height: height,
                     ),

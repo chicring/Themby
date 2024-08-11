@@ -57,6 +57,7 @@ class PeopleCard extends ConsumerWidget{
                   ImageProps(
                     tag: person.primaryImageTag ?? '',
                     type: ImageType.primary,
+                    maxWidth: 400,
                   )
               ),
               type: "people",

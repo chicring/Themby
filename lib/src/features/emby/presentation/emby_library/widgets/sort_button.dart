@@ -41,7 +41,6 @@ class _SortButtonState extends ConsumerState<SortButton>{
       onSelected: (int index) {
         setState(() {
           sortIndex = index;
-          print("sortIndex: $sortIndex");
         });
         ref.read(embyLibraryQueryNotifierProvider.notifier).setSortBy(index);
       },
@@ -74,9 +73,9 @@ class _SortButtonState extends ConsumerState<SortButton>{
             width: 120,
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                i == sortIndex ? const Icon(Icons.check,size: 16) : const SizedBox(width: 4),
+                i == sortIndex ? const Icon(Icons.check,size: 16) : const SizedBox(width: 16),
 
                 const SizedBox(width: 8), // 调整图标和文本之间的间距
                 Text(sortType[i]["title"]!, style: const TextStyle(fontSize: 14)),

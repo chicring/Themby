@@ -67,16 +67,19 @@ class NetworkImgLayer extends StatelessWidget {
             : StyleString.imgRadius.x,
       ),
       child: CachedNetworkImage(
+        httpHeaders: const {
+          'user-agent': "Themby/1.0.3",
+        },
         imageUrl: imageUrl!,
         width: width,
         height: height,
-        memCacheWidth: memCacheWidth,
-        memCacheHeight: memCacheHeight,
+        // memCacheWidth: memCacheWidth,
+        // memCacheHeight: memCacheHeight,
         fit: BoxFit.cover,
         fadeOutDuration:
-        fadeOutDuration ?? const Duration(milliseconds: 120),
+        fadeOutDuration ?? const Duration(milliseconds: 100),
         fadeInDuration:
-        fadeInDuration ?? const Duration(milliseconds: 120),
+        fadeInDuration ?? const Duration(milliseconds: 100),
         filterQuality: FilterQuality.medium,
         errorWidget: (BuildContext context, String url, Object error) =>
             errorWidget(context),

@@ -14,12 +14,11 @@ class EmbyFavoriteScreen extends StatelessWidget {
       ),
       body: const SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             EmbyFavoriteItem(type: 'movie'),
 
             EmbyFavoriteItem(type: 'series')
-
           ],
         ),
       ),

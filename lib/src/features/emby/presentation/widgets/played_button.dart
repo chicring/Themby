@@ -45,6 +45,7 @@ class _LikeButton extends ConsumerState<PlayedButton>{
               itemQuery: (
               page: 0,
               parentId: '',
+              genreIds: '',
               includeItemTypes: 'Movie',
               sortBy: 'SortName',
               sortOrder: 'Ascending',
@@ -57,6 +58,7 @@ class _LikeButton extends ConsumerState<PlayedButton>{
               itemQuery: (
               page: 0,
               parentId: '',
+              genreIds: '',
               includeItemTypes: 'Series',
               sortBy: 'SortName',
               sortOrder: 'Ascending',

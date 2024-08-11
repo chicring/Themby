@@ -8,17 +8,20 @@ import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
+import 'package:themby/src/features/emby/presentation/widgets/skeleton/list_card_h_h_skeleton.dart';
 import 'package:themby/src/helper/screen_helper.dart';
 
 class EmbyView extends ConsumerWidget {
   const EmbyView({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
     final view = ref.watch(getViewsProvider);
 
+    double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3) * 1.1;
+    double cardHeight = cardWidth * 9 / 16;
+
     return view.when(
-      loading: () => const SizedBox(),
+      loading: () => ListCardHHSkeleton(width: cardWidth, height: cardHeight),
       error: (error, stack) => const SizedBox(),
       data: (data) {
         return Column(
@@ -33,7 +36,7 @@ class EmbyView extends ConsumerWidget {
                   children: [
                     const SizedBox(width: StyleString.safeSpace),
                     for(int i = 0; i < data.items.length; i++ ) ...[
-                      _viewItem(context, ref, data.items[i], site),
+                      _viewItem(context, data.items[i]),
                       const SizedBox(width: 12),
                     ]
                   ],
@@ -47,7 +50,7 @@ class EmbyView extends ConsumerWidget {
 }
 
 
-Widget _viewItem(BuildContext context, WidgetRef ref,Item view, site){
+Widget _viewItem(BuildContext context,Item view){
 
   double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3) * 1.1;
   double cardHeight = cardWidth * 9 / 16;

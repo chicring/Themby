@@ -21,7 +21,8 @@ class EmbySeasonDetails extends ConsumerStatefulWidget {
 
 class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
 
-  late final ScrollController _controller = ScrollController();
+  final ScrollController _scrollController = ScrollController();
+
   late StreamController<bool> titleStreamC;
 
   @override
@@ -29,10 +30,10 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
     super.initState();
     titleStreamC = StreamController<bool>();
 
-    _controller.addListener(() {
-      if (_controller.offset > 150) {
+    _scrollController.addListener(() {
+      if (_scrollController.offset > 150) {
         titleStreamC.add(true);
-      } else if (_controller.offset <= 150) {
+      } else if (_scrollController.offset <= 150) {
         titleStreamC.add(false);
       }
     });
@@ -40,7 +41,7 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _scrollController.dispose();
     titleStreamC.close();
     super.dispose();
   }
@@ -55,33 +56,39 @@ class _EmbySeasonDetails extends ConsumerState<EmbySeasonDetails> {
     double cardHeight = cardWidth * 9 / 16;
 
     return Scaffold(
-      body: episodes.when(
-        data: (data) => CustomScrollView(
-          controller: _controller,
-          slivers: [
-            item.when(
-              data: (value) => SeasonAppBar(
-                item: value,
-                titleStreamC: titleStreamC,
+      body: Scrollbar(
+        controller: _scrollController,
+        radius: const Radius.circular(12),
+        thumbVisibility: true,
+        thickness: 7,
+        child: episodes.when(
+          data: (data) => CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              item.when(
+                data: (value) => SeasonAppBar(
+                  item: value,
+                  titleStreamC: titleStreamC,
+                ),
+                loading: () => const SliverToBoxAdapter(child: SizedBox()),
+                error: (error, stackTrace) => const SliverToBoxAdapter(child: SizedBox()),
               ),
-              loading: () => const SliverToBoxAdapter(child: SizedBox()),
-              error: (error, stackTrace) => const SliverToBoxAdapter(child: SizedBox()),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return EpisodeCard(
-                  item: data[index],
-                  width: cardWidth,
-                  height: cardHeight,
-                );
-              },
-                childCount: data.length,
+              SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return EpisodeCard(
+                    item: data[index],
+                    width: cardWidth,
+                    height: cardHeight,
+                  );
+                },
+                  childCount: data.length,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          loading: () => _buildLoading(),
+          error: (error, stackTrace) => const SizedBox(),
         ),
-        loading: () => _buildLoading(),
-        error: (error, stackTrace) => const SizedBox(),
       ),
     );
   }

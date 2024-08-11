@@ -16,6 +16,7 @@ part 'view_repository.g.dart';
 
 typedef ItemQuery = ({
   String parentId,
+  String genreIds,
   int page,
   String includeItemTypes,
   String sortBy,
@@ -307,6 +308,7 @@ class ViewRepository{
           'IncludeItemTypes': itemQuery.includeItemTypes,
           'StartIndex': (itemQuery.page * 30 ) .toString(),
           'ParentId': itemQuery.parentId,
+          'GenreIds': itemQuery.genreIds,
           'SortBy': itemQuery.sortBy,
           'Fields': 'BasicSyncInfo,CanDelete,CanDownload,Container,PrimaryImageAspectRatio,ProductionYear,CommunityRating,OfficialRating,Status,CriticRating,EndDate,Path',
           'SortOrder': itemQuery.sortOrder,

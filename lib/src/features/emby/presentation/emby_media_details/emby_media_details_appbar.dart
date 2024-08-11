@@ -101,6 +101,9 @@ class DetailBackground extends StatelessWidget {
             width: width * 0.7,
             alignment: Alignment.bottomLeft,
             imageUrl: item.imagesCustom!.logo,
+            httpHeaders: const {
+              'user-agent': "Themby/1.0.3",
+            },
             errorWidget: (_,__,___) => Align(
               alignment: Alignment.bottomLeft,
               child: Text(

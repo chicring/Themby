@@ -79,7 +79,7 @@ class _EmbyLibraryScreen extends ConsumerState<EmbyLibraryScreen>  with Automati
             LibraryCollectionView(parentId: widget.parentId, filter: widget.filter),
             LibraryGenreView(parentId: widget.parentId, filter: widget.filter),
             LibraryTagView(parentId: widget.parentId, filter: widget.filter),
-            LibraryFavoriteView(parentId: widget.parentId, filter: widget.filter),
+            LibraryAllView(parentId: widget.parentId, filter: "IsFavorite"),
           ],
         ),
       ),

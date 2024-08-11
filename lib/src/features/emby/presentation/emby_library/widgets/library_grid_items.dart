@@ -10,9 +10,10 @@ import 'package:themby/src/features/emby/presentation/widgets/media_card_v.dart'
 import 'package:themby/src/features/emby/presentation/widgets/skeleton/media_card_v_skeleton.dart';
 
 class LibraryGridItems extends ConsumerWidget {
-  const LibraryGridItems({super.key,required this.parentId,required this.filter});
+  const LibraryGridItems({super.key,required this.parentId,required this.filter,this.genreIds});
 
   final String parentId;
+  final String? genreIds;
   final String filter;
 
   static const pageSize = 30;
@@ -26,6 +27,7 @@ class LibraryGridItems extends ConsumerWidget {
       itemQuery: (
       page: 0,
       parentId: parentId,
+      genreIds: genreIds ?? '',
       includeItemTypes: itemQuery.includeItemTypes,
       sortBy: itemQuery.sortBy,
       sortOrder: itemQuery.sortOrder,
@@ -51,6 +53,7 @@ class LibraryGridItems extends ConsumerWidget {
                   itemQuery: (
                   page: page,
                   parentId: parentId,
+                  genreIds: genreIds ?? '',
                   includeItemTypes: itemQuery.includeItemTypes,
                   sortBy: itemQuery.sortBy,
                   sortOrder: itemQuery.sortOrder,

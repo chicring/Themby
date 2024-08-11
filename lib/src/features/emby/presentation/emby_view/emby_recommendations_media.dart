@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
+import 'package:themby/src/extensions/constrains.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -28,12 +30,14 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
   Widget build(BuildContext context) {
     final medias = ref.watch(getSuggestionsProvider);
 
+    final mediaQuery = MediaQuery.of(context);
+
     double width = MediaQuery.sizeOf(context).width;
-    double height = MediaQuery.sizeOf(context).height * 0.4;
+    double height = mediaQuery.smAndUp ? MediaQuery.sizeOf(context).height * 0.55 : MediaQuery.sizeOf(context).height * 0.4;
 
 
     return medias.when(
-      loading: () => const SizedBox(),
+      loading: () => SizedBox(height: height + 90),
       error: (error, stack) => const SizedBox(),
       data: (data) {
         return CarouselSlider(
@@ -69,7 +73,11 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
                           GoRouter.of(context).push('/details/${media.id}');
                         },
                         child: NetworkImgLayer(
-                          imageUrl: media.imagesCustom?.backdrop ?? "",
+                          imageUrl: formatImageUrl(
+                              url: media.imagesCustom!.backdrop,
+                              width: width.toInt(),
+                              height: ( height + 90 ).toInt()
+                          ),
                           width: width,
                           height: height + 90,
                           type: 'bg',
@@ -86,6 +94,9 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
                     width: width * 0.7,
                     alignment: Alignment.bottomLeft,
                     imageUrl: media.imagesCustom!.logo,
+                    httpHeaders: const {
+                      'user-agent': "Themby/1.0.3",
+                    },
                     errorWidget: (_,__,___) => Align(
                       alignment: Alignment.bottomLeft,
                       child: Text(

@@ -3,11 +3,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:themby/src/common/widget/dynamic_height_grid_view.dart';
+import 'package:themby/src/common/widget/empty_data.dart';
 import 'package:themby/src/common/widget/header_text.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/extensions/constrains.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
+import 'package:themby/src/features/emby/application/emby_media_service.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 
@@ -24,75 +29,68 @@ class LibraryRecentView extends ConsumerWidget{
     final mediaQuery = MediaQuery.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(left: 12, right: 12,bottom: 12),
-      child: DynamicHeightGridView(
-        crossAxisCount: mediaQuery.smAndDown ? 1 : 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        itemCount: resumes.valueOrNull?.length ?? 3,
-        builder: (BuildContext context, int index) {
-          return  resumes.when(
-            data: (response) {
+      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+      child: resumes.when(
+        data: (response) {
+          if (response.isEmpty) {
+            return const EmptyData();
+          }
+          return DynamicHeightGridView(
+            crossAxisCount: mediaQuery.smAndDown ? 1 : 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            itemCount: response.length,
+            builder: (BuildContext context, int index) {
               final data = response[index];
-              return LayoutBuilder(builder: (context, boxConstraints){
-                final height = boxConstraints.maxWidth * 9 / 16;
-                return RecentCard(
-                  data: data,
-                  width: boxConstraints.maxWidth,
-                  height: height,
-                );
-              },
+              return LayoutBuilder(
+                builder: (context, boxConstraints) {
+                  final height = boxConstraints.maxWidth * 9 / 16;
+                  return RecentCard(
+                    data: data,
+                    width: boxConstraints.maxWidth,
+                    height: height,
+                    onTap: () {
+                      final selectedMedia = ref.read(embyMediaServiceProvider.notifier).getSelectedMedia(data);
+                      GoRouter.of(context).push('/player', extra: selectedMedia);
+                    },
+                  );
+                },
               );
             },
-            loading: () => LayoutBuilder(builder: (context, boxConstraints){
-              return SkeletonRecentCard(
-                width: boxConstraints.maxWidth,
-                height: boxConstraints.maxWidth * 9 / 16,
-              );
-            }),
-            error: (Object error, StackTrace stackTrace) => const SizedBox(),
           );
         },
-      ),
-    );
-
-
-  }
-
-  Widget _recentList(List data, MediaQueryData mediaQuery) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 12, right: 12,bottom: 12),
-      child: DynamicHeightGridView(
-        crossAxisCount: mediaQuery.smAndDown ? 1 : 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        itemCount: data.length,
-        builder: (BuildContext context, int index) {
-          return LayoutBuilder(builder: (context, boxConstraints){
-            final height = boxConstraints.maxWidth * 9 / 16;
-            return RecentCard(
-              data: data[index],
-              width: boxConstraints.maxWidth,
-              height: height,
+        loading: () => DynamicHeightGridView(
+          crossAxisCount: mediaQuery.smAndDown ? 1 : 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          itemCount: 3,
+          builder: (BuildContext context, int index) {
+            return LayoutBuilder(
+              builder: (context, boxConstraints) {
+                return SkeletonRecentCard(
+                  width: boxConstraints.maxWidth,
+                  height: boxConstraints.maxWidth * 9 / 16,
+                );
+              },
             );
           },
-          );
-        },
+        ),
+        error: (Object error, StackTrace stackTrace) => const SizedBox(),
       ),
     );
   }
-
-
 }
 
 class RecentCard extends StatelessWidget {
-  const RecentCard({super.key, required this.data, required this.width, required this.height});
+  const RecentCard({super.key, required this.data, required this.width, required this.height, required this.onTap});
 
   final Item data;
 
   final double width;
 
   final double height;
+
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +118,7 @@ class RecentCard extends StatelessWidget {
             width: width,
             height: height,
             child: NetworkImgLayer(
-              imageUrl: imageUrl,
+              imageUrl: formatImageUrl(url: imageUrl,width: width.toInt(),height: height.toInt()),
               width: width,
               height: height,
             ),
@@ -137,10 +135,10 @@ class RecentCard extends StatelessWidget {
             icon: const Icon(
               Icons.play_circle_fill,
               color: Colors.white,
-              size: 48,
+              size: 60,
             ),
             onPressed: () {
-              // GoRouter.of(context).push('/details/${data.id}');
+              onTap.call();
             },
           ),
           Positioned(
@@ -162,7 +160,7 @@ class RecentCard extends StatelessWidget {
                   height: height * 0.5,
                   width: width * 0.5,
                   alignment: Alignment.bottomLeft,
-                  imageUrl: data.imagesCustom!.logo,
+                  imageUrl: formatImageUrl(url: data.imagesCustom!.logo,width: width.toInt(),height: height.toInt()),
                   errorWidget: (_,__,___) => Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(

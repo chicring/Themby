@@ -758,6 +758,7 @@ class GetItemFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
   GetItemProvider call({
     required ({
       String filters,
+      String genreIds,
       String includeItemTypes,
       int page,
       String parentId,
@@ -800,6 +801,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   GetItemProvider({
     required ({
       String filters,
+      String genreIds,
       String includeItemTypes,
       int page,
       String parentId,
@@ -834,6 +836,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
 
   final ({
     String filters,
+    String genreIds,
     String includeItemTypes,
     int page,
     String parentId,
@@ -882,6 +885,7 @@ mixin GetItemRef on AutoDisposeFutureProviderRef<EmbyResponse<Item>> {
   /// The parameter `itemQuery` of this provider.
   ({
     String filters,
+    String genreIds,
     String includeItemTypes,
     int page,
     String parentId,
@@ -898,6 +902,7 @@ class _GetItemProviderElement
   @override
   ({
     String filters,
+    String genreIds,
     String includeItemTypes,
     int page,
     String parentId,

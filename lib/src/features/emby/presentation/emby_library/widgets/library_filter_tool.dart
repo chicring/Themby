@@ -9,9 +9,10 @@ import 'package:themby/src/features/emby/presentation/emby_library/widgets/sort_
 
 
 class LibraryFilterTool extends ConsumerWidget{
-  const LibraryFilterTool({super.key, required this.parentId,required this.filter});
+  const LibraryFilterTool({super.key, required this.parentId,required this.filter,this.genreIds,});
 
   final String parentId;
+  final String? genreIds;
   final String filter;
 
   @override
@@ -23,6 +24,7 @@ class LibraryFilterTool extends ConsumerWidget{
       itemQuery: (
       page: 0,
       parentId: parentId,
+      genreIds: genreIds ?? '',
       includeItemTypes: itemQuery.includeItemTypes,
       sortBy: itemQuery.sortBy,
       sortOrder: itemQuery.sortOrder,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 
 
@@ -52,7 +53,7 @@ class MediaCardH extends ConsumerWidget{
             Stack(
               children: [
                 NetworkImgLayer(
-                  imageUrl: imageUrl,
+                  imageUrl: formatImageUrl(url: imageUrl,width: width.toInt(),height: height.toInt()),
                   width: width,
                   height: height,
                 ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:themby/src/common/widget/empty_data.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/presentation/widgets/list_card_h.dart';
 
@@ -23,6 +24,7 @@ class EmbyFavoriteItem extends ConsumerWidget {
             itemQuery: (
               page: 0,
               parentId: '',
+              genreIds: '',
               includeItemTypes: type == 'movie' ? 'Movie' : 'Series',
               sortBy: 'SortName',
               sortOrder: 'Ascending',
@@ -37,13 +39,13 @@ class EmbyFavoriteItem extends ConsumerWidget {
         data: (data) {
 
           return data.items.isEmpty ?
-            const SizedBox()
+            const EmptyData()
               : ListCardsH(
               name: type == 'movie' ? '喜欢的电影' : '喜欢的剧集',
               parentId: '',
               items: data.items,
               onSelect: () {
-                GoRouter.of(context).push(Uri(path: '/library', queryParameters: {'parentId': '','title': '我的收藏','filter': 'IsFavorite'}).toString());
+                GoRouter.of(context).push(Uri(path: '/libraryItems', queryParameters: {'parentId': '','title': '我的收藏','filter': 'IsFavorite'}).toString());
               },
           );
         }

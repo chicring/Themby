@@ -19,7 +19,7 @@ part 'app.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<void> appStartup(AppStartupRef ref) async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
 
   await ref.read(deviceNameProvider.notifier).initDeviceName();
 

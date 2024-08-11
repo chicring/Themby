@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:themby/src/common/widget/dynamic_height_grid_view.dart';
+import 'package:themby/src/common/widget/empty_data.dart';
 import 'package:themby/src/common/widget/header_text.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/extensions/constrains.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/presentation/emby_search/widgets/search_text.dart';
@@ -37,15 +40,18 @@ class LibraryGenreView extends ConsumerWidget{
         ),
         SliverPadding(
           padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
-          sliver:  SliverDynamicHeightGridView(
-            crossAxisCount: mediaQuery.smAndDown ? 3 : 6,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            itemCount: data.valueOrNull?.totalRecordCount ?? 6,
-            builder: (BuildContext context, int index) {
-              return data.when(
-                data: (data) {
-                  final item = data.items[index];
+          sliver: data.when(
+            data: (response) {
+              if (response.items.isEmpty) {
+                return const SliverToBoxAdapter(child: EmptyData());
+              }
+              return SliverDynamicHeightGridView(
+                crossAxisCount: mediaQuery.smAndDown ? 3 : 6,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                itemCount: response.items.length,
+                builder: (BuildContext context, int index) {
+                  final item = response.items[index];
                   return LayoutBuilder(
                     builder: (context, constraints) {
                       final width = constraints.maxWidth;
@@ -54,21 +60,40 @@ class LibraryGenreView extends ConsumerWidget{
                         item: item,
                         width: width,
                         height: height,
+                        onTap: () {
+                          GoRouter.of(context).push(Uri(
+                            path: '/libraryItems',
+                            queryParameters: {
+                              'parentId': parentId,
+                              'genreIds': item.id,
+                              'title': item.name,
+                              'filter': ''
+                            },
+                          ).toString());
+                        },
                       );
                     },
                   );
                 },
-                loading: () => LayoutBuilder(
+              );
+            },
+            loading: () => SliverDynamicHeightGridView(
+              crossAxisCount: mediaQuery.smAndDown ? 3 : 6,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              itemCount: 6,
+              builder: (BuildContext context, int index) {
+                return LayoutBuilder(
                   builder: (context, constraints) {
                     return SkeletonRecentCard(
                       width: constraints.maxWidth,
                       height: constraints.maxWidth,
                     );
                   },
-                ),
-                error: (error, stackTrace) => const SizedBox(),
-              );
-            },
+                );
+              },
+            ),
+            error: (error, stackTrace) => const SliverToBoxAdapter(child: SizedBox()),
           ),
         ),
       ],
@@ -119,13 +144,15 @@ class SkeletonRecentCard extends StatelessWidget {
 }
 
 class GenreCard extends StatelessWidget {
-  const GenreCard({super.key, required this.item, required this.width, required this.height});
+  const GenreCard({super.key, required this.item, required this.width, required this.height, required this.onTap});
 
   final Item item;
 
   final double width;
 
   final double height;
+
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -136,11 +163,13 @@ class GenreCard extends StatelessWidget {
       margin: EdgeInsets.zero,
       color: Colors.transparent,
       child: InkWell(
-        onTap: (){},
+        onTap: (){
+          onTap?.call();
+        },
         child: Column(
           children: [
             NetworkImgLayer(
-              imageUrl: item.imagesCustom!.primary,
+              imageUrl: formatImageUrl(url: item.imagesCustom!.primary,width: width.toInt(),height: height.toInt()),
               width: width,
               height: height,
             ),

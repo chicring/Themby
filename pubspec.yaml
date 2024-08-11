@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.2+1
+version: 1.0.3+1
 
 environment:
   sdk: '>=3.4.0 <4.0.0'
@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.6
 
   #路由
-  go_router: ^14.1.4
+  go_router: ^14.2.3
 
   #状态管理
   flutter_riverpod: ^2.5.1
@@ -109,6 +109,7 @@ dependencies:
   google_fonts: ^6.2.1
 
   wakelock_plus_platform_interface: 1.1.0
+  flutter_native_splash: ^2.4.1
 
 dev_dependencies:
   flutter_test:
@@ -152,6 +153,7 @@ flutter:
      - assets/
      - assets/loading/
      - assets/icon/
+     - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -180,3 +182,14 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_intl:
   enabled: true
+
+
+flutter_native_splash:
+  color: "#42a5f5"
+  image: assets/images/logo_splash.png
+  android: true
+  ios: true
+  web: false
+  android_gravity: fill
+  ios_content_mode: scaleAspectFill
+  fullscreen: true

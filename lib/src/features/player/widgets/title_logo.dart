@@ -48,8 +48,11 @@ class TitleLogo extends ConsumerWidget{
                 CachedNetworkImage(
                   imageUrl: value.imagesCustom!.logo,
                   height: height * 0.12,
-                  width: width * 0.45,
+                  width: width * 0.4,
                   alignment: Alignment.centerLeft,
+                  httpHeaders: const {
+                    'user-agent': "Themby/1.0.3",
+                  },
                   errorWidget: (_,__,___) =>
                       Text(
                           truncateText(value.seriesName ?? value.name ?? '', 10),
@@ -61,7 +64,6 @@ class TitleLogo extends ConsumerWidget{
                 const SizedBox(height: 5),
                 if(value.type == "Episode")
                   SizedBox(
-                    width: 300,
                     child: Text(
                         'S${value.parentIndexNumber}E${value.indexNumber} - ${value.name}',
                         maxLines: 1,

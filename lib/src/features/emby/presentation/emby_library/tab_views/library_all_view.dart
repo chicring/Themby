@@ -24,6 +24,7 @@ class LibraryAllView extends ConsumerWidget{
         itemQuery: (
           page: 0,
           parentId: parentId,
+          genreIds: '',
           includeItemTypes: itemQuery.includeItemTypes,
           sortBy: itemQuery.sortBy,
           sortOrder: itemQuery.sortOrder,
