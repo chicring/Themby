@@ -81,10 +81,146 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "3:6857104696818981759",
+      "lastPropertyId": "9:1903083576837791941",
+      "name": "CacheControlBox",
+      "properties": [
+        {
+          "id": "1:1803865000160454572",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4769377239963618210",
+          "name": "maxAge",
+          "type": 6
+        },
+        {
+          "id": "3:5587868630683166036",
+          "name": "privacy",
+          "type": 9
+        },
+        {
+          "id": "4:2611406806916646961",
+          "name": "noCache",
+          "type": 1
+        },
+        {
+          "id": "5:3709939775490030854",
+          "name": "noStore",
+          "type": 1
+        },
+        {
+          "id": "6:7952440488360469799",
+          "name": "other",
+          "type": 30
+        },
+        {
+          "id": "7:1147364848637487559",
+          "name": "maxStale",
+          "type": 6
+        },
+        {
+          "id": "8:7771530198643672858",
+          "name": "minFresh",
+          "type": 6
+        },
+        {
+          "id": "9:1903083576837791941",
+          "name": "mustRevalidate",
+          "type": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:5704279771685456028",
+      "lastPropertyId": "14:6785491269180878786",
+      "name": "CacheResponseBox",
+      "properties": [
+        {
+          "id": "1:8754635423653364216",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7143290272839801058",
+          "name": "key",
+          "type": 9
+        },
+        {
+          "id": "3:8200230048991573849",
+          "name": "content",
+          "type": 23
+        },
+        {
+          "id": "4:7310960758278894875",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "5:3253148527008784613",
+          "name": "eTag",
+          "type": 9
+        },
+        {
+          "id": "6:3880121084084456719",
+          "name": "expires",
+          "type": 10
+        },
+        {
+          "id": "7:3363289641270316356",
+          "name": "headers",
+          "type": 23
+        },
+        {
+          "id": "8:3663287813320194046",
+          "name": "lastModified",
+          "type": 9
+        },
+        {
+          "id": "9:7897979406134574332",
+          "name": "maxStale",
+          "type": 10
+        },
+        {
+          "id": "10:1538767300804095279",
+          "name": "responseDate",
+          "type": 10
+        },
+        {
+          "id": "11:1447785889798735642",
+          "name": "requestDate",
+          "type": 10
+        },
+        {
+          "id": "12:6420992281219320445",
+          "name": "url",
+          "type": 9
+        },
+        {
+          "id": "13:3619687227802694612",
+          "name": "priority",
+          "type": 6
+        },
+        {
+          "id": "14:6785491269180878786",
+          "name": "cacheControlId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:2998580078795400146",
+          "relationTarget": "CacheControlBox"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "2:5645114341643632039",
-  "lastIndexId": "1:2827523073541992988",
+  "lastEntityId": "4:5704279771685456028",
+  "lastIndexId": "2:2998580078795400146",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

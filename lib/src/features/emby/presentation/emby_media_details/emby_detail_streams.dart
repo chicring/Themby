@@ -4,13 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/emby/application/emby_common_service.dart';
+import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/domain/emby/media_source.dart';
 import 'package:themby/src/features/emby/domain/emby/media_stream.dart';
 import 'package:themby/src/features/emby/presentation/widgets/media_stream_card.dart';
 
 class EmbyDetailStreams extends StatelessWidget{
-  const EmbyDetailStreams({super.key, this.source});
+  const EmbyDetailStreams({super.key, this.source, required this.item});
 
+  final Item item;
   final List<MediaSource>? source;
 
   @override
@@ -48,12 +50,25 @@ class EmbyDetailStreams extends StatelessWidget{
           ),
           Padding(
             padding: const EdgeInsets.only(left: 16),
-            child: Text(
-              '${mediaSource.container!} ${formatFileSize(mediaSource.size ?? 0)}',
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '${mediaSource.container!} ${formatFileSize(mediaSource.size ?? 0)}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '已添加 ${convertDateTime(item.dateCreated)}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 5),

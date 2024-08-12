@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
+import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/presentation/widgets/like_button.dart';
@@ -87,7 +88,7 @@ class DetailBackground extends StatelessWidget {
           },
           blendMode: BlendMode.dstIn,
           child: NetworkImgLayer(
-            imageUrl: imageUrl,
+            imageUrl: formatImageUrl(url: imageUrl, width: 1080),
             width: width,
             height: height,
             type: 'bg',
@@ -100,7 +101,7 @@ class DetailBackground extends StatelessWidget {
             height: height * 0.5,
             width: width * 0.7,
             alignment: Alignment.bottomLeft,
-            imageUrl: item.imagesCustom!.logo,
+            imageUrl: formatImageUrl(url: item.imagesCustom!.logo,width: (width * 0.7).toInt()),
             httpHeaders: const {
               'user-agent': "Themby/1.0.3",
             },

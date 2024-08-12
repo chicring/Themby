@@ -110,6 +110,7 @@ dependencies:
 
   wakelock_plus_platform_interface: 1.1.0
   flutter_native_splash: ^2.4.1
+  dio_http2_adapter: ^2.5.3
 
 dev_dependencies:
   flutter_test:

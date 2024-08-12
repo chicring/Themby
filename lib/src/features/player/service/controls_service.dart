@@ -65,7 +65,7 @@ class ControlsService extends _$ControlsService{
         position: media.position
     );
 
-    await ref.read(videoControllerProvider).player.open(Media(url));
+    await ref.read(videoControllerProvider).player.open(Media(url,httpHeaders: {'user-agent': "Themby/1.0.3",}));
     await ref.read(videoControllerProvider).player.play().then((v)async{
 
       // await seekTo(media.position ?? Duration.zero);
@@ -111,7 +111,7 @@ class ControlsService extends _$ControlsService{
     String playSessionId = playInfo.playSessionId;
     String url = await ref.read(getPlayerUrlProvider(id).future);
 
-    ref.read(videoControllerProvider).player.open(Media(url));
+    ref.read(videoControllerProvider).player.open(Media(url,httpHeaders: {'user-agent': "Themby/1.0.3",}));
     ref.read(videoControllerProvider).player.play().then((v) {
       startRecordPosition();
     });
@@ -155,7 +155,7 @@ class ControlsService extends _$ControlsService{
 
       await ref.watch(getEpisodesProvider(state.parentId!,state.parentId!).future)
           .then((items) async{
-        final String nextId = _getMediaId(items,state.mediaIndex!);
+        final String nextId = _findNextOrPreviousMediaId(items,state.currentMediaId!, "next");
         if(nextId.isEmpty){
           SmartDialog.showToast('没有下一集了');
           SmartDialog.dismiss(tag: TagsString.nextLoading);
@@ -166,7 +166,7 @@ class ControlsService extends _$ControlsService{
     }else if(state.playType == 'Series'){
       await ref.watch(getNextUpProvider(state.mediaId!).future)
           .then((items) async{
-        final String nextId = _getMediaId(items,state.mediaIndex!);
+        final String nextId = _findNextOrPreviousMediaId(items,state.currentMediaId!, "next");
         if(nextId.isEmpty){
           SmartDialog.showToast('没有下一集了');
           SmartDialog.dismiss(tag: TagsString.nextLoading);
@@ -178,16 +178,61 @@ class ControlsService extends _$ControlsService{
     SmartDialog.dismiss(tag: TagsString.nextLoading);
   }
 
-  String _getMediaId(List<Item> items, int indexNumber) {
+  Future<void> playPrevious() async {
+    ref.read(controlsServiceProvider.notifier).clearPosition();
+    if(state.playType == "Movie"){
+      SmartDialog.showToast('没有上一集了');
+      return;
+    }
+    SmartDialog.show(
+        tag: TagsString.nextLoading,
+        clickMaskDismiss: false,
+        builder: (_) {
+          return Image.asset("assets/loading/loading-2.gif",height: 50);
+        }
+    );
+    if(state.playType == "Episode"){
+
+      await ref.watch(getEpisodesProvider(state.parentId!,state.parentId!).future)
+          .then((items) async{
+        final String previousId = _findNextOrPreviousMediaId(items,state.currentMediaId!, "");
+        if(previousId.isEmpty){
+          SmartDialog.showToast('没有下一集了');
+          SmartDialog.dismiss(tag: TagsString.nextLoading);
+          return;
+        }
+        await togglePlayMedia(previousId, state.mediaIndex! - 1);
+      });
+    }else if(state.playType == 'Series'){
+      await ref.watch(getNextUpProvider(state.mediaId!).future)
+          .then((items) async{
+        final String previousId = _findNextOrPreviousMediaId(items,state.currentMediaId!, "");
+        if(previousId.isEmpty){
+          SmartDialog.showToast('没有下一集了');
+          SmartDialog.dismiss(tag: TagsString.nextLoading);
+          return;
+        }
+        await togglePlayMedia(previousId, state.mediaIndex! - 1);
+      });
+    }
+    SmartDialog.dismiss(tag: TagsString.nextLoading);
+  }
+
+
+  String _findNextOrPreviousMediaId(List<Item> items, String mediaId, String type){
     if (items.isEmpty) {
       return '';
     }
     for(int i = 0; i < items.length; i++){
-      if(items[i].indexNumber == indexNumber){
-        return items[i+1].id ?? '';
+      if(items[i].id == mediaId){
+        if(type == "next"){
+          return items[i+1].id ?? '';
+        }else{
+          return items[i-1].id ?? '';
+        }
       }
     }
-    return  items[0].id!;
+    return '';
   }
 
   /// 开始记录播放位置

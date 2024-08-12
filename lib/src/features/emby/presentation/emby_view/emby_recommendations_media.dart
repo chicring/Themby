@@ -75,8 +75,7 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
                         child: NetworkImgLayer(
                           imageUrl: formatImageUrl(
                               url: media.imagesCustom!.backdrop,
-                              width: width.toInt(),
-                              height: ( height + 90 ).toInt()
+                              width: 1080,
                           ),
                           width: width,
                           height: height + 90,
@@ -93,7 +92,7 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
                     height: height * 0.5,
                     width: width * 0.7,
                     alignment: Alignment.bottomLeft,
-                    imageUrl: media.imagesCustom!.logo,
+                    imageUrl: formatImageUrl(url: media.imagesCustom!.logo,width: (width * 0.7).toInt()),
                     httpHeaders: const {
                       'user-agent': "Themby/1.0.3",
                     },

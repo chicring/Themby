@@ -53,7 +53,7 @@ class MediaCardH extends ConsumerWidget{
             Stack(
               children: [
                 NetworkImgLayer(
-                  imageUrl: formatImageUrl(url: imageUrl,width: width.toInt(),height: height.toInt()),
+                  imageUrl: formatImageUrl(url: imageUrl,width: width.toInt()),
                   width: width,
                   height: height,
                 ),

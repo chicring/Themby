@@ -22,13 +22,24 @@ class CustomToastWidget extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
             decoration: BoxDecoration(
               color: Colors.grey.shade200.withOpacity(0.7),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Text(
-              message,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/images/logo_splash.png',
+                  width: 24,
+                  height: 24,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  message,
+                )
+              ],
             ),
           ),
         ),

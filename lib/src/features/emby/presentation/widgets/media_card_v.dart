@@ -55,7 +55,7 @@ class MediaCardV extends StatelessWidget{
             Stack(
               children: [
                 NetworkImgLayer(
-                  imageUrl: formatImageUrl(url: item.imagesCustom!.primary,width: width.toInt(),height: height.toInt()),
+                  imageUrl: formatImageUrl(url: item.imagesCustom!.primary,width: width.toInt()),
                   width: width,
                   height: height,
                 ),

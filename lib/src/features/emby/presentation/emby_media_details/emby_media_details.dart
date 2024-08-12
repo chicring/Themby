@@ -103,7 +103,7 @@ class _EmbyMediaDetailsState extends ConsumerState<EmbyMediaDetails>{
 
                       const SizedBox(height: 10),
                       if (mediaDetail.mediaType == 'Video')
-                        EmbyDetailStreams(source: mediaDetail.mediaSources),
+                        EmbyDetailStreams(source: mediaDetail.mediaSources,item: mediaDetail),
 
                       const SizedBox(height: 100),
                     ],

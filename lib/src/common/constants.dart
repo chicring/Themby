@@ -32,4 +32,6 @@ class StyleString {
       fontWeight: FontWeight.normal,
       backgroundColor: Colors.transparent,
   );
+
+  static const List<int> imageSizes = [400, 540, 1080, 1920];
 }

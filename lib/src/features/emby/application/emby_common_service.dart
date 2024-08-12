@@ -1,6 +1,7 @@
 import 'dart:math';
 
-
+import 'package:intl/intl.dart';
+import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/domiani/Select.dart';
 import 'package:themby/src/common/domiani/play_info.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
@@ -80,6 +81,14 @@ String formatFileSize(int size) {
   return '${(size / pow(1024, digitGroups)).toStringAsFixed(2)} ${units[digitGroups]}';
 }
 
+/// 格式化日期时间
+String convertDateTime(DateTime? dateTime) {
+  if(dateTime == null){
+    return '';
+  }
+  final DateFormat formatter = DateFormat('yyyy/M/d HH:mm');
+  return formatter.format(dateTime);
+}
 
 List<Select> getMediaSource(List<MediaSource> sources){
   return sources
@@ -110,11 +119,15 @@ String truncateText(String text, int maxLength) {
 String formatImageUrl({required String url, int? width, int? height}) {
 
   if(width != null){
-    url = '$url&maxWidth=${(width * 2).toInt()}';
-  }
-  if(height != null){
-    url = '$url&maxHeight=${(height * 2).toInt()}';
-  }
 
+    for (int size in StyleString.imageSizes) {
+      if (width! <= size) {
+        width = size;
+        break;
+      }
+    }
+
+    url = '$url&maxWidth=$width';
+  }
   return url;
 }

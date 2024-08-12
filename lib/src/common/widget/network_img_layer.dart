@@ -73,8 +73,8 @@ class NetworkImgLayer extends StatelessWidget {
         imageUrl: imageUrl!,
         width: width,
         height: height,
-        // memCacheWidth: memCacheWidth,
-        // memCacheHeight: memCacheHeight,
+        memCacheWidth: memCacheWidth,
+        memCacheHeight: memCacheHeight,
         fit: BoxFit.cover,
         fadeOutDuration:
         fadeOutDuration ?? const Duration(milliseconds: 100),
