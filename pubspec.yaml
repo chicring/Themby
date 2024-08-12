@@ -47,10 +47,10 @@ dependencies:
   shared_preferences: ^2.2.3
 
   #网络请求
-  dio: ^5.4.3+1
+  dio: ^5.5.0+1
 
   #设备信息
-  device_info_plus: ^10.1.0
+  device_info_plus: ^10.1.2
 
   uuid: ^4.4.0
 

@@ -332,7 +332,6 @@ class ViewRepository{
       item.imagesCustom = ImagesCustom.builder(item, site);
       return item;
     });
-
     return resp;
   }
 
@@ -455,26 +454,37 @@ Future<EmbyResponse<Item>> getViews(GetViewsRef ref){
 
   final cancelToken = ref.cancelToken();
 
-  final link = ref.keepAlive();
-
-  Timer? timer;
-
-  ref.onDispose(() {
-    cancelToken.cancel();
-    timer?.cancel();
-  });
-
-  ref.onCancel(() {
-    timer = Timer(const Duration(seconds: 30), () {
-      link.close();
+  ref.onAddListener((){
+    Future.delayed(const Duration(seconds: 10),() {
+      ref.invalidateSelf();
     });
   });
 
-  ref.onResume(() {
-    timer?.cancel();
-  });
-
-  return viewRepo.getViews(cancelToken: cancelToken);
+  // final link = ref.keepAlive();
+  //
+  // Timer? timer;
+  //
+  // ref.onDispose(() {
+  //   cancelToken.cancel();
+  //   timer?.cancel();
+  // });
+  //
+  //
+  //
+  // ref.onCancel(() {
+  //   timer = Timer(const Duration(seconds: 30), () {
+  //     link.close();
+  //   });
+  // });
+  //
+  // ref.onResume(() {
+  //   timer?.cancel();
+  // });
+  final views = viewRepo.getViews(cancelToken: cancelToken);
+  // Future.delayed(const Duration(seconds: 5),() {
+  //   ref.invalidateSelf();
+  // });
+  return views;
 }
 
 @riverpod

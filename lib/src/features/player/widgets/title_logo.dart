@@ -49,7 +49,7 @@ class TitleLogo extends ConsumerWidget{
                   imageUrl: value.imagesCustom!.logo,
                   height: height * 0.12,
                   width: width * 0.4,
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.bottomLeft,
                   httpHeaders: const {
                     'user-agent': "Themby/1.0.3",
                   },
