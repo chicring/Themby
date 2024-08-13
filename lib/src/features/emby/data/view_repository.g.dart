@@ -21,7 +21,7 @@ final viewRepositoryProvider = AutoDisposeProvider<ViewRepository>.internal(
 );
 
 typedef ViewRepositoryRef = AutoDisposeProviderRef<ViewRepository>;
-String _$getViewsHash() => r'fd13560976cb8a55b02a093d80364aecaa05eab3';
+String _$getViewsHash() => r'6a0c28b850e686cc1e33a8ecf872ac0a02c9f67f';
 
 /// See also [getViews].
 @ProviderFor(getViews)

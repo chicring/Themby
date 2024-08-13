@@ -12,6 +12,8 @@ import 'package:themby/src/features/emby/domain/emby_response.dart';
 import 'package:themby/src/helper/cancel_token_ref.dart';
 import 'package:themby/src/helper/dio_provider.dart';
 
+
+
 part 'view_repository.g.dart';
 
 typedef ItemQuery = ({
@@ -454,11 +456,11 @@ Future<EmbyResponse<Item>> getViews(GetViewsRef ref){
 
   final cancelToken = ref.cancelToken();
 
-  ref.onAddListener((){
-    Future.delayed(const Duration(seconds: 10),() {
-      ref.invalidateSelf();
-    });
-  });
+  // ref.onAddListener((){
+  //   Future.delayed(const Duration(seconds: 10),() {
+  //     ref.read(updateViewProvider);
+  //   });
+  // });
 
   // final link = ref.keepAlive();
   //

@@ -43,10 +43,6 @@ class App extends ConsumerWidget{
 
     final startup = ref.watch(appStartupProvider);
 
-    if(startup.isLoading){
-      print("Loading");
-    }
-
     return MaterialApp.router(
       routerConfig: ref.watch(goRouterProvider),
       debugShowCheckedModeBanner: false,
