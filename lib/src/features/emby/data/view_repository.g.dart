@@ -21,7 +21,7 @@ final viewRepositoryProvider = AutoDisposeProvider<ViewRepository>.internal(
 );
 
 typedef ViewRepositoryRef = AutoDisposeProviderRef<ViewRepository>;
-String _$getViewsHash() => r'6a0c28b850e686cc1e33a8ecf872ac0a02c9f67f';
+String _$getViewsHash() => r'26c81540e3fd19b098ba80fa105a3d6a27b83333';
 
 /// See also [getViews].
 @ProviderFor(getViews)
@@ -472,7 +472,7 @@ final getSuggestionsProvider = AutoDisposeFutureProvider<List<Item>>.internal(
 );
 
 typedef GetSuggestionsRef = AutoDisposeFutureProviderRef<List<Item>>;
-String _$getSeasonsHash() => r'95037f30f22790a4d71d9b0894e87d6e493059e9';
+String _$getSeasonsHash() => r'4c04c152471c5b9b3fa645320d9da3682f9494f8';
 
 /// See also [getSeasons].
 @ProviderFor(getSeasons)
@@ -600,7 +600,7 @@ class _GetSeasonsProviderElement
   String get seriesId => (origin as GetSeasonsProvider).seriesId;
 }
 
-String _$getEpisodesHash() => r'1a9e22e1d04d8c734adda78e9a9081178a88e32b';
+String _$getEpisodesHash() => r'a3f90821004a34a0ebf503feb122cf07498cc446';
 
 /// See also [getEpisodes].
 @ProviderFor(getEpisodes)

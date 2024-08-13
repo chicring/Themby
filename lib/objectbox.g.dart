@@ -14,6 +14,7 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
+import 'src/common/domiani/cache_response.dart';
 import 'src/common/domiani/site.dart';
 import 'src/helper/objectbox_cache_store.dart';
 
@@ -233,6 +234,30 @@ final _entities = <obx_int.ModelEntity>[
             relationTarget: 'CacheControlBox')
       ],
       relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(5, 7781721421052415849),
+      name: 'CacheResponse',
+      lastPropertyId: const obx_int.IdUid(3, 5185220916281748578),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 4500478617701732637),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 6938205856489861715),
+            name: 'key',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 5185220916281748578),
+            name: 'content',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
 ];
 
@@ -271,7 +296,7 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(4, 5704279771685456028),
+      lastEntityId: const obx_int.IdUid(5, 7781721421052415849),
       lastIndexId: const obx_int.IdUid(2, 2998580078795400146),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
@@ -567,6 +592,38 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 30, 0);
           object.cacheControl.attach(store);
           return object;
+        }),
+    CacheResponse: obx_int.EntityDefinition<CacheResponse>(
+        model: _entities[3],
+        toOneRelations: (CacheResponse object) => [],
+        toManyRelations: (CacheResponse object) => {},
+        getId: (CacheResponse object) => object.id,
+        setId: (CacheResponse object, int id) {
+          object.id = id;
+        },
+        objectToFB: (CacheResponse object, fb.Builder fbb) {
+          final keyOffset = fbb.writeString(object.key);
+          final contentOffset = fbb.writeString(object.content);
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, keyOffset);
+          fbb.addOffset(2, contentOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          final keyParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final contentParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 8, '');
+          final object =
+              CacheResponse(id: idParam, key: keyParam, content: contentParam);
+
+          return object;
         })
   };
 
@@ -726,4 +783,19 @@ class CacheResponseBox_ {
   static final cacheControl =
       obx.QueryRelationToOne<CacheResponseBox, CacheControlBox>(
           _entities[2].properties[13]);
+}
+
+/// [CacheResponse] entity fields to define ObjectBox queries.
+class CacheResponse_ {
+  /// See [CacheResponse.id].
+  static final id =
+      obx.QueryIntegerProperty<CacheResponse>(_entities[3].properties[0]);
+
+  /// See [CacheResponse.key].
+  static final key =
+      obx.QueryStringProperty<CacheResponse>(_entities[3].properties[1]);
+
+  /// See [CacheResponse.content].
+  static final content =
+      obx.QueryStringProperty<CacheResponse>(_entities[3].properties[2]);
 }

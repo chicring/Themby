@@ -1,5 +1,7 @@
 
 
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
@@ -176,7 +178,28 @@ PlayRepository playRepository(PlayRepositoryRef ref) => PlayRepository(
 
 
 @riverpod
-Future<PlaybackInfo> getPlaybackInfo(GetPlaybackInfoRef ref, String itemId) => ref.read(playRepositoryProvider).getPlaybackInfo(itemId);
+Future<PlaybackInfo> getPlaybackInfo(GetPlaybackInfoRef ref, String itemId) {
+
+  final link = ref.keepAlive();
+
+  Timer? timer;
+
+  ref.onDispose(() {
+    timer?.cancel();
+  });
+
+  ref.onCancel(() {
+    timer = Timer(const Duration(seconds: 30), () {
+      link.close();
+    });
+  });
+
+  ref.onResume(() {
+    timer?.cancel();
+  });
+
+  return ref.read(playRepositoryProvider).getPlaybackInfo(itemId);
+}
 
 @riverpod
 Future<String> getPlayerUrl(GetPlayerUrlRef ref,String itemId,{int? index}) async {

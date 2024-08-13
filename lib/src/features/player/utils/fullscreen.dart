@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:themby/src/helper/device_info_provider.dart';
 
 //横屏
 Future<void> landScape() async {
@@ -40,11 +41,11 @@ Future<void> verticalScreen() async {
   ]);
 }
 
-Future<void> enterFullScreen() async {
-  await SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.immersiveSticky,
-  );
-}
+// Future<void> enterFullScreen() async {
+//   await SystemChrome.setEnabledSystemUIMode(
+//     SystemUiMode.immersiveSticky,
+//   );
+// }
 
 //退出全屏显示
 Future<void> exitFullScreen() async {
@@ -73,4 +74,45 @@ Future<void> exitFullScreen() async {
     debugPrint(exception.toString());
     debugPrint(stacktrace.toString());
   }
+}
+
+
+/// 设置横屏
+Future setLandscapeOrientation() async {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
+}
+
+/// 设置竖屏
+Future setPortraitOrientation() async {
+  await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+}
+
+/// 进入全屏
+void enterFullScreen() {
+  if (Platform.isAndroid || Platform.isIOS) {
+    //全屏
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    setLandscapeOrientation();
+  }
+  // else {
+  //   windowManager.setFullScreen(true);
+  // }
+}
+
+/// 退出全屏
+void exitFull() {
+  if (Platform.isAndroid || Platform.isIOS) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
+        overlays: SystemUiOverlay.values);
+    setPortraitOrientation();
+  }
+  // else {
+  //   windowManager.setFullScreen(false);
+  // }
+  // fullScreenState.value = false;
+
+  //danmakuController?.clear();
 }

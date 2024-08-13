@@ -29,8 +29,9 @@ Dio dio(DioRef ref) {
 
   final dio = Dio(
     BaseOptions(
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
+        connectTimeout: const Duration(seconds: 20),
+        receiveTimeout: const Duration(seconds: 20),
+        sendTimeout: const Duration(seconds: 20),
         headers: {
           "user-agent": "Themby/1.0.3",
           "content-type": "application/json",
@@ -39,12 +40,12 @@ Dio dio(DioRef ref) {
   )
   // ..interceptors.add(DioCacheInterceptor(options: cacheOptions))
   ..interceptors.add(DioInterceptor())
-  ..interceptors.add(LoggerInterceptor())
-  ..httpClientAdapter = Http2Adapter(
-    ConnectionManager(
-      idleTimeout: const Duration(seconds: 10),
-    ),
-  );
+  ..interceptors.add(LoggerInterceptor());
+  // ..httpClientAdapter = Http2Adapter(
+  //   ConnectionManager(
+  //     idleTimeout: const Duration(seconds: 10),
+  //   ),
+  // );
 
 
 

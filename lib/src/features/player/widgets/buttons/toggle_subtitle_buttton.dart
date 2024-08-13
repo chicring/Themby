@@ -57,6 +57,7 @@ Widget _audioSheet(){
             padding: const EdgeInsets.all(12),
             itemBuilder: (context, index) {
               return Container(
+                margin: const EdgeInsets.only(bottom: 5),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey), // Set the border color
                   borderRadius: BorderRadius.circular(12), // Optional: Add border radius

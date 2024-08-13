@@ -9,6 +9,7 @@ import 'package:themby/src/features/player/service/lock_service.dart';
 import 'package:themby/src/features/player/widgets/buttons/lock_button.dart';
 import 'package:themby/src/features/player/widgets/buttons/play_next_button.dart';
 import 'package:themby/src/features/player/widgets/buttons/play_or_pause_button.dart';
+import 'package:themby/src/features/player/widgets/buttons/play_previous_button.dart';
 import 'package:themby/src/features/player/widgets/buttons/toggle_audio_buttoon.dart';
 import 'package:themby/src/features/player/widgets/buttons/toggle_fit_button.dart';
 import 'package:themby/src/features/player/widgets/buttons/toggle_rate_button.dart';
@@ -49,6 +50,9 @@ class _PlayControl extends ConsumerState<PlayControl>{
 
   @override
   Widget build(BuildContext context) {
+
+    double height = MediaQuery.sizeOf(context).height;
+
     return SafeArea(
       minimum: const EdgeInsets.all(StyleString.safeSpace),
       child: Stack(
@@ -57,10 +61,10 @@ class _PlayControl extends ConsumerState<PlayControl>{
         clipBehavior: Clip.none,
 
         children: [
-           const Positioned.fill(
+          const Positioned.fill(
              left: 12,
              right: 12,
-             bottom: 12,
+             bottom: 100,
              top: 12,
              child: HorizontalScreenGestures(),
           ),
@@ -92,6 +96,7 @@ class _PlayControl extends ConsumerState<PlayControl>{
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          PlayPreviousButton(),
                           PlayOrPauseButton(),
                           PlayNextButton(),
                         ],

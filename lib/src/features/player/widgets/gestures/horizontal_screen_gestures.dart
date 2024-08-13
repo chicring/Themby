@@ -1,14 +1,20 @@
 
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_volume_controller/flutter_volume_controller.dart';
+import 'package:media_kit_video/media_kit_video_controls/src/controls/extensions/duration.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/lock_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
+import 'package:themby/src/features/player/service/volume_service.dart';
 import 'package:themby/src/features/player/widget/control_toast.dart';
+import 'package:themby/src/features/player/widgets/progress/draging_time.dart';
+import 'package:themby/src/features/player/widgets/progress/progress_toast.dart';
 
 
 class HorizontalScreenGestures extends ConsumerStatefulWidget{
@@ -73,6 +79,8 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
     final lock = ref.watch(lockServiceProvider).controlsLock;
 
     final double width = MediaQuery.sizeOf(context).width;
+    final double height = MediaQuery.sizeOf(context).height;
+
 
     return GestureDetector(
       onTap: (){
@@ -111,22 +119,57 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         controllerState.player.setRate(rate / 2);
         SmartDialog.dismiss(tag: "show_long_press");
       },
-      // /// 横向滑动开始
+      onVerticalDragStart: (details) async {
+        if (lock) return;
+        final dy = details.globalPosition.dy;
+        // 开始位置必须是中间2/4的位置
+        if (dy < height * 0.25 || dy > height * 0.75) {
+          return;
+        }
+        bool leftVerticalDrag = details.globalPosition.dx < width / 2;
+        if(leftVerticalDrag){
+
+        }else{
+          ref.read(volumeServiceProvider.notifier).showVolumeToast();
+        }
+
+      },
+      onVerticalDragUpdate: (details) async {
+        if (lock) return;
+        bool leftVerticalDrag = details.globalPosition.dx < width / 2;
+
+        if(leftVerticalDrag){
+
+        }else{
+          ref.read(volumeServiceProvider.notifier).update(details.globalPosition.dy);
+          await FlutterVolumeController.setVolume(details.globalPosition.dy);
+        }
+      },
+      onVerticalDragEnd: (details) async{
+        bool leftVerticalDrag = details.globalPosition.dx < width / 2;
+        if(leftVerticalDrag){
+
+        }else{
+          ref.read(volumeServiceProvider.notifier).closeVolumeToast();
+        }
+      },
+      /// 横向滑动开始
       // onHorizontalDragStart: (details) async{
       //   /// 打开进度条提示
       //
-      //   final position = controllerState.player.state.position;
+      //   Duration position = ref.read(videoControllerProvider).player.state.position;
       //   ref.read(dragingTimeProvider.notifier).update(position);
-      //   print('duration1: ${position.inSeconds}');
+      //
       //
       //   await SmartDialog.show(
       //       tag: "progress_toast",
       //       alignment: Alignment.topCenter,
       //       maskColor: Colors.transparent,
-      //       builder: (_) => const ProgressToast()
+      //       builder: (_) => const ProgressToast(),
+      //       keepSingle: true
       //   );
       // },
-      // /// 横向滑动更新
+      /// 横向滑动更新
       // onHorizontalDragUpdate: (details) async{
       //
       //   final current = ref.read(dragingTimeProvider);
@@ -145,6 +188,7 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
       //   final pos = ref.read(dragingTimeProvider);
       //   controllerState.player.seek(pos);
       //   ///关闭toast 并 进行跳转
+      //   ref.invalidate(dragingTimeProvider);
       //   await SmartDialog.dismiss(tag: "progress_toast");
       // },
       // onHorizontalDragCancel: () async{

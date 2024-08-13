@@ -54,14 +54,14 @@ class TitleLogo extends ConsumerWidget{
                     'user-agent': "Themby/1.0.3",
                   },
                   errorWidget: (_,__,___) =>
-                      Text(
-                          truncateText(value.seriesName ?? value.name ?? '', 10),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
-                      ),
+                      Align(alignment: Alignment.centerLeft,child: Text(
+                        truncateText(value.seriesName ?? value.name ?? '', 10),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 3),
                 if(value.type == "Episode")
                   SizedBox(
                     child: Text(

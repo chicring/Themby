@@ -21,7 +21,7 @@ final playRepositoryProvider = AutoDisposeProvider<PlayRepository>.internal(
 );
 
 typedef PlayRepositoryRef = AutoDisposeProviderRef<PlayRepository>;
-String _$getPlaybackInfoHash() => r'0cf29b47c5bfd3e95690a0f14e1d1cc50c097f4b';
+String _$getPlaybackInfoHash() => r'9f3d2b6eb05ec7dea95b2b52c5db9d35ac63317a';
 
 /// Copied from Dart SDK
 class _SystemHash {

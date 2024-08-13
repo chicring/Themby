@@ -439,6 +439,10 @@ class ViewRepository{
 
     return resp;
   }
+
+  Future<void> hideFromResume() async {
+
+  }
 }
 
 @riverpod
@@ -550,12 +554,48 @@ Future<List<Item>> getSuggestions(GetSuggestionsRef ref) {
 @riverpod
 Future<List<Item>> getSeasons(GetSeasonsRef ref, String seriesId) {
   final cancelToken = ref.cancelToken();
+  final link = ref.keepAlive();
+
+  Timer? timer;
+
+  ref.onDispose(() {
+    cancelToken.cancel();
+    timer?.cancel();
+  });
+
+  ref.onCancel(() {
+    timer = Timer(const Duration(seconds: 30), () {
+      link.close();
+    });
+  });
+
+  ref.onResume(() {
+    timer?.cancel();
+  });
   return ref.read(viewRepositoryProvider).getSeasons(seriesId, cancelToken: cancelToken);
 }
 
 @riverpod
 Future<List<Item>> getEpisodes(GetEpisodesRef ref, String sid, String vid) {
   final cancelToken = ref.cancelToken();
+  final link = ref.keepAlive();
+
+  Timer? timer;
+
+  ref.onDispose(() {
+    cancelToken.cancel();
+    timer?.cancel();
+  });
+
+  ref.onCancel(() {
+    timer = Timer(const Duration(seconds: 30), () {
+      link.close();
+    });
+  });
+
+  ref.onResume(() {
+    timer?.cancel();
+  });
   return ref.read(viewRepositoryProvider).getEpisodes(sid, vid, cancelToken: cancelToken);
 }
 

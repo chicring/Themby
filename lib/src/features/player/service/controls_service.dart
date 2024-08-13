@@ -197,7 +197,7 @@ class ControlsService extends _$ControlsService{
           .then((items) async{
         final String previousId = _findNextOrPreviousMediaId(items,state.currentMediaId!, "");
         if(previousId.isEmpty){
-          SmartDialog.showToast('没有下一集了');
+          SmartDialog.showToast('没有上一集了');
           SmartDialog.dismiss(tag: TagsString.nextLoading);
           return;
         }
@@ -208,7 +208,7 @@ class ControlsService extends _$ControlsService{
           .then((items) async{
         final String previousId = _findNextOrPreviousMediaId(items,state.currentMediaId!, "");
         if(previousId.isEmpty){
-          SmartDialog.showToast('没有下一集了');
+          SmartDialog.showToast('没有上一集了');
           SmartDialog.dismiss(tag: TagsString.nextLoading);
           return;
         }
@@ -225,6 +225,11 @@ class ControlsService extends _$ControlsService{
     }
     for(int i = 0; i < items.length; i++){
       if(items[i].id == mediaId){
+        if(i == 0 && type == "") {
+          return '';
+        }else if(i == items.length -1){
+          return '';
+        }
         if(type == "next"){
           return items[i+1].id ?? '';
         }else{

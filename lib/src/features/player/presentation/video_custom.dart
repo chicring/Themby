@@ -1,5 +1,6 @@
 
 
+import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -28,10 +29,7 @@ class _VideoCustom extends ConsumerState<VideoCustom>{
   void initState(){
     super.initState();
     enterFullScreen();
-    landScape();
-    // WakelockPlus.toggle(enable: true);
     ref.read(controlsServiceProvider.notifier).startPlay(widget.media);
-    // Future.microtask(() => );
   }
 
 
@@ -45,8 +43,7 @@ class _VideoCustom extends ConsumerState<VideoCustom>{
 
   @override
   void dispose() {
-    exitFullScreen();
-    verticalScreen();
+    exitFull();
     super.dispose();
   }
 
