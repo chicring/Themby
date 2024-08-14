@@ -238,7 +238,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(5, 7781721421052415849),
       name: 'CacheResponse',
-      lastPropertyId: const obx_int.IdUid(3, 5185220916281748578),
+      lastPropertyId: const obx_int.IdUid(4, 4632034403635304334),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -255,6 +255,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(3, 5185220916281748578),
             name: 'content',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 4632034403635304334),
+            name: 'isUsed',
+            type: 1,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -604,10 +609,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectToFB: (CacheResponse object, fb.Builder fbb) {
           final keyOffset = fbb.writeString(object.key);
           final contentOffset = fbb.writeString(object.content);
-          fbb.startTable(4);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, keyOffset);
           fbb.addOffset(2, contentOffset);
+          fbb.addBool(3, object.isUsed);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -620,8 +626,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 6, '');
           final contentParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 8, '');
-          final object =
-              CacheResponse(id: idParam, key: keyParam, content: contentParam);
+          final isUsedParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 10, false);
+          final object = CacheResponse(
+              id: idParam,
+              key: keyParam,
+              content: contentParam,
+              isUsed: isUsedParam);
 
           return object;
         })
@@ -798,4 +809,8 @@ class CacheResponse_ {
   /// See [CacheResponse.content].
   static final content =
       obx.QueryStringProperty<CacheResponse>(_entities[3].properties[2]);
+
+  /// See [CacheResponse.isUsed].
+  static final isUsed =
+      obx.QueryBooleanProperty<CacheResponse>(_entities[3].properties[3]);
 }

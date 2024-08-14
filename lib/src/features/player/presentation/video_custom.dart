@@ -11,8 +11,9 @@ import 'package:themby/src/features/player/presentation/play_control.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/fit_type_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
+import 'package:themby/src/features/player/service/volume_brightness_service.dart';
 import 'package:themby/src/features/player/utils/fullscreen.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
+
 
 class VideoCustom extends ConsumerStatefulWidget{
   const VideoCustom({super.key, required this.media});
@@ -30,6 +31,7 @@ class _VideoCustom extends ConsumerState<VideoCustom>{
     super.initState();
     enterFullScreen();
     ref.read(controlsServiceProvider.notifier).startPlay(widget.media);
+    ref.read(volumeBrightnessServiceProvider.notifier).update();
   }
 
 

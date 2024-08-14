@@ -5,12 +5,14 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
+import 'package:themby/src/common/riverpod_cache/future_provider.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/emby/domain/emby/custom/images_custom.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/domain/emby_response.dart';
 import 'package:themby/src/helper/cancel_token_ref.dart';
 import 'package:themby/src/helper/dio_provider.dart';
+import 'package:themby/src/helper/objectbox_provider.dart';
 
 
 
@@ -460,36 +462,21 @@ Future<EmbyResponse<Item>> getViews(GetViewsRef ref){
 
   final cancelToken = ref.cancelToken();
 
-  // ref.onAddListener((){
-  //   Future.delayed(const Duration(seconds: 10),() {
-  //     ref.read(updateViewProvider);
-  //   });
-  // });
-
-  // final link = ref.keepAlive();
-  //
-  // Timer? timer;
-  //
-  // ref.onDispose(() {
-  //   cancelToken.cancel();
-  //   timer?.cancel();
-  // });
-  //
-  //
-  //
-  // ref.onCancel(() {
-  //   timer = Timer(const Duration(seconds: 30), () {
-  //     link.close();
-  //   });
-  // });
-  //
-  // ref.onResume(() {
-  //   timer?.cancel();
-  // });
   final views = viewRepo.getViews(cancelToken: cancelToken);
-  // Future.delayed(const Duration(seconds: 5),() {
-  //   ref.invalidateSelf();
-  // });
+
+  ref.futureSWR(
+    key: 'views',
+    future: () => views,
+    refresh: () => ref.invalidateSelf(),
+    store: ref.watch(storeProvider),
+    fromJson: (json) => EmbyResponse<Item>.fromJson(json, (json) {
+      final item = Item.fromJson(json);
+      item.imagesCustom = ImagesCustom.builder(item, ref.watch(embyStateServiceProvider.select((value) => value.site!)));
+      return item;
+    }),
+    toJson: (object) => object.toJson(),
+  );
+
   return views;
 }
 

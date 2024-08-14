@@ -220,7 +220,7 @@
     },
     {
       "id": "5:7781721421052415849",
-      "lastPropertyId": "3:5185220916281748578",
+      "lastPropertyId": "4:4632034403635304334",
       "name": "CacheResponse",
       "properties": [
         {
@@ -238,6 +238,11 @@
           "id": "3:5185220916281748578",
           "name": "content",
           "type": 9
+        },
+        {
+          "id": "4:4632034403635304334",
+          "name": "isUsed",
+          "type": 1
         }
       ],
       "relations": []

@@ -11,7 +11,7 @@ import 'package:media_kit_video/media_kit_video_controls/src/controls/extensions
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/lock_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
-import 'package:themby/src/features/player/service/volume_service.dart';
+import 'package:themby/src/features/player/service/volume_brightness_service.dart';
 import 'package:themby/src/features/player/widget/control_toast.dart';
 import 'package:themby/src/features/player/widgets/progress/draging_time.dart';
 import 'package:themby/src/features/player/widgets/progress/progress_toast.dart';
@@ -126,32 +126,15 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         if (dy < height * 0.25 || dy > height * 0.75) {
           return;
         }
-        bool leftVerticalDrag = details.globalPosition.dx < width / 2;
-        if(leftVerticalDrag){
-
-        }else{
-          ref.read(volumeServiceProvider.notifier).showVolumeToast();
-        }
-
+        await ref.read(volumeBrightnessServiceProvider.notifier).onVerticalDragStart(details, width);
       },
       onVerticalDragUpdate: (details) async {
         if (lock) return;
-        bool leftVerticalDrag = details.globalPosition.dx < width / 2;
-
-        if(leftVerticalDrag){
-
-        }else{
-          ref.read(volumeServiceProvider.notifier).update(details.globalPosition.dy);
-          await FlutterVolumeController.setVolume(details.globalPosition.dy);
-        }
+        ref.read(volumeBrightnessServiceProvider.notifier).onVerticalDragUpdate(details, height);
       },
       onVerticalDragEnd: (details) async{
-        bool leftVerticalDrag = details.globalPosition.dx < width / 2;
-        if(leftVerticalDrag){
-
-        }else{
-          ref.read(volumeServiceProvider.notifier).closeVolumeToast();
-        }
+        if (lock) return;
+        ref.read(volumeBrightnessServiceProvider.notifier).onVerticalDragEnd(details);
       },
       /// 横向滑动开始
       // onHorizontalDragStart: (details) async{

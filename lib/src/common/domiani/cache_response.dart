@@ -12,10 +12,13 @@ class CacheResponse{
 
   String content;
 
+  bool isUsed;
+
   CacheResponse({
     this.id = 0,
     required this.key,
     required this.content,
+    required this.isUsed
   });
 
 }

@@ -14,4 +14,11 @@ class EmbyResponse<T>{
       totalRecordCount: json['TotalRecordCount'],
     );
   }
+
+  Map<String, dynamic> toJson(Map<String, dynamic> Function(T) toJson) {
+    return {
+      'Items': items.map((item) => toJson(item)).toList(),
+      'TotalRecordCount': totalRecordCount,
+    };
+  }
 }
