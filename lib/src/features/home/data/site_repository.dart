@@ -92,7 +92,7 @@ class SiteRepository{
         && oldSite.host == site.host
         && oldSite.port == site.port) {
 
-      await siteBox.putAsync(site,mode: PutMode.update);
+      await siteBox.putAsync(site, mode: PutMode.update);
       return;
     }
     

@@ -21,4 +21,18 @@ class CacheResponse{
     required this.isUsed
   });
 
+  CacheResponse copyWith({
+    int? id,
+    String? key,
+    String? content,
+    bool? isUsed,
+  }) {
+    return CacheResponse(
+      id: id ?? this.id,
+      key: key ?? this.key,
+      content: content ?? this.content,
+      isUsed: isUsed ?? this.isUsed,
+    );
+  }
+
 }

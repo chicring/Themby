@@ -29,4 +29,24 @@ class ImagesCustom{
       );
     }
   }
+
+  factory ImagesCustom.fromJson(Map<String, dynamic> json) {
+    return ImagesCustom(
+      primary: json['primary'],
+      backdrop: json['backdrop'],
+      logo: json['logo'],
+      thumb: json['thumb'],
+      banner: json['banner'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'primary': primary,
+      'backdrop': backdrop,
+      'logo': logo,
+      'thumb': thumb,
+      'banner': banner,
+    };
+  }
 }

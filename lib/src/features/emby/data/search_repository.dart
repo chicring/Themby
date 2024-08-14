@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/application/emby_state_service.dart';
+import 'package:themby/src/features/emby/domain/emby/custom/images_custom.dart';
 import 'package:themby/src/features/emby/domain/emby_response.dart';
 import 'package:themby/src/features/emby/domain/media.dart';
 
@@ -28,7 +29,7 @@ class SearchRepository{
   });
 
 
-  Future<EmbyResponse<Media>> getSearchRecommend({CancelToken? cancelToken}) async {
+  Future<EmbyResponse> getSearchRecommend({CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
           scheme: site.scheme,
@@ -53,10 +54,16 @@ class SearchRepository{
       ),
       cancelToken: cancelToken,
     );
-    return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
+    final resp = EmbyResponse.fromJson(response.data);
+    resp.items = resp.items.map((item) {
+      item.imagesCustom = ImagesCustom.builder(item, site);
+      return item;
+    }).toList();
+
+    return resp;
   }
 
-  Future<EmbyResponse<Media>> search({String? query, CancelToken? cancelToken}) async {
+  Future<EmbyResponse> search({String? query, CancelToken? cancelToken}) async {
     final response = await client.getUri(
       Uri(
           scheme: site.scheme,
@@ -86,7 +93,13 @@ class SearchRepository{
       ),
       cancelToken: cancelToken,
     );
-    return EmbyResponse<Media>.fromJson(response.data, (json) => Media.fromJson(json));
+    final resp = EmbyResponse.fromJson(response.data);
+    resp.items = resp.items.map((item) {
+      item.imagesCustom = ImagesCustom.builder(item, site);
+      return item;
+    }).toList();
+
+    return resp;
   }
 
 }
@@ -100,13 +113,13 @@ SearchRepository searchRepository(SearchRepositoryRef ref)  => SearchRepository(
 );
 
 @riverpod
-Future<EmbyResponse<Media>> getSearchRecommend(GetSearchRecommendRef ref) async {
+Future<EmbyResponse> getSearchRecommend(GetSearchRecommendRef ref) async {
   final cancelToken = ref.cancelToken();
   return ref.read(searchRepositoryProvider).getSearchRecommend(cancelToken: cancelToken);
 }
 
 @riverpod
-Future<EmbyResponse<Media>> embySearch(EmbySearchRef ref, String query) async {
+Future<EmbyResponse> embySearch(EmbySearchRef ref, String query) async {
   final cancelToken = ref.cancelToken();
   return ref.read(searchRepositoryProvider).search(query: query, cancelToken: cancelToken);
 }

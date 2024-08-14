@@ -16,16 +16,6 @@ part 'dio_provider.g.dart';
 @Riverpod(keepAlive: true)
 Dio dio(DioRef ref) {
 
-  final cacheOptions = CacheOptions(
-    store: ref.read(memCacheStoreProvider),
-    policy: CachePolicy.forceCache,
-    maxStale: const Duration(days: 1),
-    priority: CachePriority.high,
-    hitCacheOnErrorExcept: [401, 403],
-    keyBuilder: (request) {
-      return request.uri.toString();
-    },
-  );
 
   final dio = Dio(
     BaseOptions(
@@ -38,7 +28,6 @@ Dio dio(DioRef ref) {
         }
     )
   )
-  // ..interceptors.add(DioCacheInterceptor(options: cacheOptions))
   ..interceptors.add(DioInterceptor())
   ..interceptors.add(LoggerInterceptor());
   // ..httpClientAdapter = Http2Adapter(
@@ -48,21 +37,5 @@ Dio dio(DioRef ref) {
   // );
 
 
-
-
-  // dio.;
-  // dio.interceptors.add(DioInterceptor());
-  // dio.interceptors.add(LoggerInterceptor());
-  // dio.httpClientAdapter = Http2Adapter(
-  //   ConnectionManager(
-  //     idleTimeout: const Duration(seconds: 10),
-  //   ),
-  // );
-
   return dio;
-}
-
-@riverpod
-CacheStore memCacheStore(MemCacheStoreRef ref) {
-  return MemCacheStore();
 }

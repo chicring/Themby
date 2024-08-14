@@ -20,7 +20,6 @@ class EmbyView extends ConsumerWidget {
 
     double cardWidth = ScreenHelper.getPortionAuto(xs: 5, sm: 4, md: 3) * 1.1;
     double cardHeight = cardWidth * 9 / 16;
-
     return view.when(
       loading: () => ListCardHHSkeleton(width: cardWidth, height: cardHeight),
       error: (error, stack) => const SizedBox(),

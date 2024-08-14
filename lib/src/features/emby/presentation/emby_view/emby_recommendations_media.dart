@@ -38,7 +38,7 @@ class _SmallSlider extends ConsumerState<EmbyRecommendationsMedia> {
 
     return medias.when(
       loading: () => SizedBox(height: height + 90),
-      error: (error, stack) => const SizedBox(),
+      error: (error, stack) => const SizedBox(height: 90),
       data: (data) {
         return CarouselSlider(
           options: CarouselOptions(

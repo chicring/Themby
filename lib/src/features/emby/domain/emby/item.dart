@@ -290,7 +290,7 @@ class Item {
   // int? songCount;
   // @JsonKey(name: "MusicVideoCount")
   // int? musicVideoCount;
-  @JsonKey(ignore: true)
+  @JsonKey(name: "ImagesCustom")
   ImagesCustom? imagesCustom;
 
   Item({

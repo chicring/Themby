@@ -21,11 +21,11 @@ final viewRepositoryProvider = AutoDisposeProvider<ViewRepository>.internal(
 );
 
 typedef ViewRepositoryRef = AutoDisposeProviderRef<ViewRepository>;
-String _$getViewsHash() => r'26c81540e3fd19b098ba80fa105a3d6a27b83333';
+String _$getViewsHash() => r'8e508953fef4b4d86c35a38ee2b0cb501cc2bdf6';
 
 /// See also [getViews].
 @ProviderFor(getViews)
-final getViewsProvider = AutoDisposeFutureProvider<EmbyResponse<Item>>.internal(
+final getViewsProvider = AutoDisposeFutureProvider<EmbyResponse>.internal(
   getViews,
   name: r'getViewsProvider',
   debugGetCreateSourceHash:
@@ -34,7 +34,7 @@ final getViewsProvider = AutoDisposeFutureProvider<EmbyResponse<Item>>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GetViewsRef = AutoDisposeFutureProviderRef<EmbyResponse<Item>>;
+typedef GetViewsRef = AutoDisposeFutureProviderRef<EmbyResponse>;
 String _$getMediaHash() => r'c206477930949a1edf94377cf352764540e3373d';
 
 /// Copied from Dart SDK
@@ -183,7 +183,7 @@ class _GetMediaProviderElement extends AutoDisposeFutureProviderElement<Item>
   String get id => (origin as GetMediaProvider).id;
 }
 
-String _$getLastMediaHash() => r'b72fba5be93a1d9654718c7fac380923dc031529';
+String _$getLastMediaHash() => r'fa9446d7ecc2a5d25eae04f35d90a3b6e6f96396';
 
 /// See also [getLastMedia].
 @ProviderFor(getLastMedia)
@@ -311,7 +311,7 @@ class _GetLastMediaProviderElement
   String get parentId => (origin as GetLastMediaProvider).parentId;
 }
 
-String _$getResumeMediaHash() => r'e49b55d4519398ce92c66c5ca5e052285ce7b63d';
+String _$getResumeMediaHash() => r'41f2cb7921b0812361243165c1955e0eb186638f';
 
 /// See also [getResumeMedia].
 @ProviderFor(getResumeMedia)
@@ -457,7 +457,7 @@ final getRecommendationsProvider =
 );
 
 typedef GetRecommendationsRef = AutoDisposeFutureProviderRef<List<Item>>;
-String _$getSuggestionsHash() => r'1c15cb5c0f323eaf34fabbf93d927f6f347d30a3';
+String _$getSuggestionsHash() => r'7681be0364e79478205eed74f0c1f29aa77d4376';
 
 /// See also [getSuggestions].
 @ProviderFor(getSuggestions)
@@ -743,14 +743,14 @@ class _GetEpisodesProviderElement
   String get vid => (origin as GetEpisodesProvider).vid;
 }
 
-String _$getItemHash() => r'99d2997532d9513af6158043b0ad964e43f53ec8';
+String _$getItemHash() => r'8a49a12d3377bc642e5ac89a895c0e94ca327eae';
 
 /// See also [getItem].
 @ProviderFor(getItem)
 const getItemProvider = GetItemFamily();
 
 /// See also [getItem].
-class GetItemFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
+class GetItemFamily extends Family<AsyncValue<EmbyResponse>> {
   /// See also [getItem].
   const GetItemFamily();
 
@@ -796,7 +796,7 @@ class GetItemFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
 }
 
 /// See also [getItem].
-class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
+class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse> {
   /// See also [getItem].
   GetItemProvider({
     required ({
@@ -846,7 +846,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
 
   @override
   Override overrideWith(
-    FutureOr<EmbyResponse<Item>> Function(GetItemRef provider) create,
+    FutureOr<EmbyResponse> Function(GetItemRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -863,7 +863,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<EmbyResponse<Item>> createElement() {
+  AutoDisposeFutureProviderElement<EmbyResponse> createElement() {
     return _GetItemProviderElement(this);
   }
 
@@ -881,7 +881,7 @@ class GetItemProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   }
 }
 
-mixin GetItemRef on AutoDisposeFutureProviderRef<EmbyResponse<Item>> {
+mixin GetItemRef on AutoDisposeFutureProviderRef<EmbyResponse> {
   /// The parameter `itemQuery` of this provider.
   ({
     String filters,
@@ -895,8 +895,7 @@ mixin GetItemRef on AutoDisposeFutureProviderRef<EmbyResponse<Item>> {
 }
 
 class _GetItemProviderElement
-    extends AutoDisposeFutureProviderElement<EmbyResponse<Item>>
-    with GetItemRef {
+    extends AutoDisposeFutureProviderElement<EmbyResponse> with GetItemRef {
   _GetItemProviderElement(super.provider);
 
   @override
@@ -911,14 +910,14 @@ class _GetItemProviderElement
   }) get itemQuery => (origin as GetItemProvider).itemQuery;
 }
 
-String _$getSimilarHash() => r'0dce1264bfb212d43c2319511aefb5613ca8c437';
+String _$getSimilarHash() => r'49e3407afc6c10e8e31abedd153dfef830708d77';
 
 /// See also [getSimilar].
 @ProviderFor(getSimilar)
 const getSimilarProvider = GetSimilarFamily();
 
 /// See also [getSimilar].
-class GetSimilarFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
+class GetSimilarFamily extends Family<AsyncValue<EmbyResponse>> {
   /// See also [getSimilar].
   const GetSimilarFamily();
 
@@ -956,7 +955,7 @@ class GetSimilarFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
 }
 
 /// See also [getSimilar].
-class GetSimilarProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
+class GetSimilarProvider extends AutoDisposeFutureProvider<EmbyResponse> {
   /// See also [getSimilar].
   GetSimilarProvider(
     String id,
@@ -991,7 +990,7 @@ class GetSimilarProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
 
   @override
   Override overrideWith(
-    FutureOr<EmbyResponse<Item>> Function(GetSimilarRef provider) create,
+    FutureOr<EmbyResponse> Function(GetSimilarRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1008,7 +1007,7 @@ class GetSimilarProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<EmbyResponse<Item>> createElement() {
+  AutoDisposeFutureProviderElement<EmbyResponse> createElement() {
     return _GetSimilarProviderElement(this);
   }
 
@@ -1026,14 +1025,13 @@ class GetSimilarProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   }
 }
 
-mixin GetSimilarRef on AutoDisposeFutureProviderRef<EmbyResponse<Item>> {
+mixin GetSimilarRef on AutoDisposeFutureProviderRef<EmbyResponse> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
 class _GetSimilarProviderElement
-    extends AutoDisposeFutureProviderElement<EmbyResponse<Item>>
-    with GetSimilarRef {
+    extends AutoDisposeFutureProviderElement<EmbyResponse> with GetSimilarRef {
   _GetSimilarProviderElement(super.provider);
 
   @override
@@ -1167,14 +1165,14 @@ class _GetNextUpProviderElement
   String get seriesId => (origin as GetNextUpProvider).seriesId;
 }
 
-String _$getGenresHash() => r'78dc2eabbe925a082f3783722847403fc2f7a652';
+String _$getGenresHash() => r'9b9a2c2bf70cea3b8505360ab2adef2e16ee35ea';
 
 /// See also [getGenres].
 @ProviderFor(getGenres)
 const getGenresProvider = GetGenresFamily();
 
 /// See also [getGenres].
-class GetGenresFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
+class GetGenresFamily extends Family<AsyncValue<EmbyResponse>> {
   /// See also [getGenres].
   const GetGenresFamily();
 
@@ -1212,7 +1210,7 @@ class GetGenresFamily extends Family<AsyncValue<EmbyResponse<Item>>> {
 }
 
 /// See also [getGenres].
-class GetGenresProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
+class GetGenresProvider extends AutoDisposeFutureProvider<EmbyResponse> {
   /// See also [getGenres].
   GetGenresProvider(
     String id,
@@ -1246,7 +1244,7 @@ class GetGenresProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
 
   @override
   Override overrideWith(
-    FutureOr<EmbyResponse<Item>> Function(GetGenresRef provider) create,
+    FutureOr<EmbyResponse> Function(GetGenresRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1263,7 +1261,7 @@ class GetGenresProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<EmbyResponse<Item>> createElement() {
+  AutoDisposeFutureProviderElement<EmbyResponse> createElement() {
     return _GetGenresProviderElement(this);
   }
 
@@ -1281,14 +1279,13 @@ class GetGenresProvider extends AutoDisposeFutureProvider<EmbyResponse<Item>> {
   }
 }
 
-mixin GetGenresRef on AutoDisposeFutureProviderRef<EmbyResponse<Item>> {
+mixin GetGenresRef on AutoDisposeFutureProviderRef<EmbyResponse> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
 class _GetGenresProviderElement
-    extends AutoDisposeFutureProviderElement<EmbyResponse<Item>>
-    with GetGenresRef {
+    extends AutoDisposeFutureProviderElement<EmbyResponse> with GetGenresRef {
   _GetGenresProviderElement(super.provider);
 
   @override

@@ -22,12 +22,12 @@ final searchRepositoryProvider = AutoDisposeProvider<SearchRepository>.internal(
 
 typedef SearchRepositoryRef = AutoDisposeProviderRef<SearchRepository>;
 String _$getSearchRecommendHash() =>
-    r'054d1fb7b5bb725e07234ae9151098ef57f5ff0a';
+    r'a02293ab73385c25822f3d3febab4c79deac4069';
 
 /// See also [getSearchRecommend].
 @ProviderFor(getSearchRecommend)
 final getSearchRecommendProvider =
-    AutoDisposeFutureProvider<EmbyResponse<Media>>.internal(
+    AutoDisposeFutureProvider<EmbyResponse>.internal(
   getSearchRecommend,
   name: r'getSearchRecommendProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -37,9 +37,8 @@ final getSearchRecommendProvider =
   allTransitiveDependencies: null,
 );
 
-typedef GetSearchRecommendRef
-    = AutoDisposeFutureProviderRef<EmbyResponse<Media>>;
-String _$embySearchHash() => r'3913b41b02acef89ae6695d570cac895bda6e6ea';
+typedef GetSearchRecommendRef = AutoDisposeFutureProviderRef<EmbyResponse>;
+String _$embySearchHash() => r'e1a16244b556be9cc4a89dac0305cc5b6eb6529b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -67,7 +66,7 @@ class _SystemHash {
 const embySearchProvider = EmbySearchFamily();
 
 /// See also [embySearch].
-class EmbySearchFamily extends Family<AsyncValue<EmbyResponse<Media>>> {
+class EmbySearchFamily extends Family<AsyncValue<EmbyResponse>> {
   /// See also [embySearch].
   const EmbySearchFamily();
 
@@ -105,8 +104,7 @@ class EmbySearchFamily extends Family<AsyncValue<EmbyResponse<Media>>> {
 }
 
 /// See also [embySearch].
-class EmbySearchProvider
-    extends AutoDisposeFutureProvider<EmbyResponse<Media>> {
+class EmbySearchProvider extends AutoDisposeFutureProvider<EmbyResponse> {
   /// See also [embySearch].
   EmbySearchProvider(
     String query,
@@ -141,7 +139,7 @@ class EmbySearchProvider
 
   @override
   Override overrideWith(
-    FutureOr<EmbyResponse<Media>> Function(EmbySearchRef provider) create,
+    FutureOr<EmbyResponse> Function(EmbySearchRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -158,7 +156,7 @@ class EmbySearchProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<EmbyResponse<Media>> createElement() {
+  AutoDisposeFutureProviderElement<EmbyResponse> createElement() {
     return _EmbySearchProviderElement(this);
   }
 
@@ -176,14 +174,13 @@ class EmbySearchProvider
   }
 }
 
-mixin EmbySearchRef on AutoDisposeFutureProviderRef<EmbyResponse<Media>> {
+mixin EmbySearchRef on AutoDisposeFutureProviderRef<EmbyResponse> {
   /// The parameter `query` of this provider.
   String get query;
 }
 
 class _EmbySearchProviderElement
-    extends AutoDisposeFutureProviderElement<EmbyResponse<Media>>
-    with EmbySearchRef {
+    extends AutoDisposeFutureProviderElement<EmbyResponse> with EmbySearchRef {
   _EmbySearchProviderElement(super.provider);
 
   @override

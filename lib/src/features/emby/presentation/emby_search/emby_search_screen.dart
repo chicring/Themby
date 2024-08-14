@@ -79,18 +79,12 @@ class _EmbySearchScreenState extends ConsumerState<EmbySearchScreen>  {
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const SizedBox(height: StyleString.safeSpace),
-            if (query.isNotEmpty)
-              const EmbySearchItem(),
-            if (query.isEmpty)
-              const EmbySearchSuggests(),
-          ],
-        ),
-      )
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: query.isNotEmpty
+            ? const EmbySearchItem()
+            : const EmbySearchSuggests(),
+      ),
     );
   }
 }

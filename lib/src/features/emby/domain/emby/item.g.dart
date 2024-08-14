@@ -167,6 +167,9 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
       currentProgram: json['CurrentProgram'] as String?,
       movieCount: (json['MovieCount'] as num?)?.toInt(),
       seriesCount: (json['SeriesCount'] as num?)?.toInt(),
+      imagesCustom: json['ImagesCustom'] == null
+          ? null
+          : ImagesCustom.fromJson(json['ImagesCustom'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -287,4 +290,5 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'CurrentProgram': instance.currentProgram,
       'MovieCount': instance.movieCount,
       'SeriesCount': instance.seriesCount,
+      'ImagesCustom': instance.imagesCustom,
     };
