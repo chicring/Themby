@@ -58,6 +58,27 @@ class FavoriteRepository{
     );
     return UserData.fromJson(response.data);
   }
+
+  Future<void> hideFromResume(String id) async{
+    await client.postUri(
+      Uri(
+        scheme: site.scheme,
+        host: site.host,
+        port: site.port,
+        path: '/emby/Users/${site.userId}/Items/$id/HideFromResume',
+        queryParameters: {
+          'Hide': "true",
+        },
+      ),
+      options: Options(
+        headers: {
+          'X-Emby-Authorization': embyToken,
+          'x-emby-token': site.accessToken,
+        },
+      ),
+    );
+    return;
+  }
 }
 
 
@@ -77,4 +98,9 @@ Future<UserData> toggleFavorite(ToggleFavoriteRef ref, String id, bool favorite)
 @riverpod
 Future<UserData> togglePlayed(TogglePlayedRef ref, String id, bool played) async {
   return ref.read(favoriteRepositoryProvider).togglePlayed(id, played);
+}
+
+@riverpod
+Future<void> hideFromResume(HideFromResumeRef ref, String id) async {
+  return ref.read(favoriteRepositoryProvider).hideFromResume(id);
 }

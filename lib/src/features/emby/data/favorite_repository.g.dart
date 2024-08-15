@@ -333,5 +333,133 @@ class _TogglePlayedProviderElement
   @override
   bool get played => (origin as TogglePlayedProvider).played;
 }
+
+String _$hideFromResumeHash() => r'763d41286ca6f0c8596b5812eee9e9bfe0d531fe';
+
+/// See also [hideFromResume].
+@ProviderFor(hideFromResume)
+const hideFromResumeProvider = HideFromResumeFamily();
+
+/// See also [hideFromResume].
+class HideFromResumeFamily extends Family<AsyncValue<void>> {
+  /// See also [hideFromResume].
+  const HideFromResumeFamily();
+
+  /// See also [hideFromResume].
+  HideFromResumeProvider call(
+    String id,
+  ) {
+    return HideFromResumeProvider(
+      id,
+    );
+  }
+
+  @override
+  HideFromResumeProvider getProviderOverride(
+    covariant HideFromResumeProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'hideFromResumeProvider';
+}
+
+/// See also [hideFromResume].
+class HideFromResumeProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [hideFromResume].
+  HideFromResumeProvider(
+    String id,
+  ) : this._internal(
+          (ref) => hideFromResume(
+            ref as HideFromResumeRef,
+            id,
+          ),
+          from: hideFromResumeProvider,
+          name: r'hideFromResumeProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$hideFromResumeHash,
+          dependencies: HideFromResumeFamily._dependencies,
+          allTransitiveDependencies:
+              HideFromResumeFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  HideFromResumeProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final String id;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(HideFromResumeRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: HideFromResumeProvider._internal(
+        (ref) => create(ref as HideFromResumeRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _HideFromResumeProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is HideFromResumeProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin HideFromResumeRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _HideFromResumeProviderElement
+    extends AutoDisposeFutureProviderElement<void> with HideFromResumeRef {
+  _HideFromResumeProviderElement(super.provider);
+
+  @override
+  String get id => (origin as HideFromResumeProvider).id;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

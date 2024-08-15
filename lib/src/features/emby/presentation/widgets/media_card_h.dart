@@ -5,12 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_common_service.dart';
+import 'package:themby/src/features/emby/data/favorite_repository.dart';
+import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 
 
 class MediaCardH extends ConsumerWidget{
 
-  const MediaCardH({super.key, required this.item, required this.width, required this.height, this.press, this.longPress, this.longPressEnd});
+  const MediaCardH({super.key, required this.item, required this.width, required this.height, this.press,this.actions});
 
   final Item item;
 
@@ -20,9 +22,8 @@ class MediaCardH extends ConsumerWidget{
 
   final Function()? press;
 
-  final Function()? longPress;
 
-  final Function()? longPressEnd;
+  final List<String>? actions;
 
 
   @override
@@ -47,34 +48,35 @@ class MediaCardH extends ConsumerWidget{
           maskColor: Colors.transparent,
           alignment: Alignment.bottomRight,
           builder:  (_) => Card(
-            elevation: 3,
+            elevation: 1,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
+                // color: Colors.white,
               ),
               constraints: const BoxConstraints(
                 minWidth: 200,
-                maxWidth: 500
+                maxWidth: 250
               ),
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 12),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    InkWell(
-                      onTap: () async {
-
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(Icons.play_arrow),
-                          SizedBox(width: 10),
-                          Text("继续观看"),
-                        ],
-                      ),
-                    ),
+                    if(actions?.contains("remove") == true)...{
+                      ListTile(
+                        dense: true,
+                        leading: const Icon(Icons.remove_circle_outline),
+                        title: const Text("移除继续观看",style: TextStyle(fontSize: 15)),
+                        onTap: () async {
+                          await ref.read(hideFromResumeProvider(item.id!).future);
+                          await ref.refresh(getResumeMediaProvider().future);
+                          await SmartDialog.dismiss();
+                        },
+                        contentPadding: const EdgeInsets.only(bottom: 8),
+                        visualDensity: VisualDensity.comfortable,
+                      )
+                    }
                   ]
               ),
             ),
@@ -93,7 +95,9 @@ class MediaCardH extends ConsumerWidget{
           GoRouter.of(context).push('/details/${item.id}');
         },
         onLongPress: () async {
-          openDialog();
+          if(actions != null) {
+            openDialog();
+          }
         },
         child: Column(
           children: [

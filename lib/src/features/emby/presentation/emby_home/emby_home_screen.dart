@@ -20,21 +20,6 @@ class EmbyHomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final site = ref.watch(embyStateServiceProvider.select((value) => value.site));
 
-    // const SingleChildScrollView(
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       EmbyRecommendationsMedia(),
-    //
-    //       EmbyResumeMedia(),
-    //
-    //       SizedBox(height: 10),
-    //       EmbyView(),
-    //
-    //       EmbyMediaLibrary(),
-    //     ],
-    //   ),
-    // )
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: _buildAppBar(site!,context),
@@ -72,7 +57,7 @@ class EmbyHomeScreen extends ConsumerWidget {
 }
 
 
-AppBar _buildAppBar(Site site,BuildContext context) {
+AppBar _buildAppBar(Site site, BuildContext context) {
   return AppBar(
     scrolledUnderElevation: 0.0,
     backgroundColor: Colors.transparent,

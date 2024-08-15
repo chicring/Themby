@@ -21,7 +21,7 @@ final viewRepositoryProvider = AutoDisposeProvider<ViewRepository>.internal(
 );
 
 typedef ViewRepositoryRef = AutoDisposeProviderRef<ViewRepository>;
-String _$getViewsHash() => r'8e508953fef4b4d86c35a38ee2b0cb501cc2bdf6';
+String _$getViewsHash() => r'3cd597f4009c0c8215690b368a539c965c4971fd';
 
 /// See also [getViews].
 @ProviderFor(getViews)
@@ -183,7 +183,7 @@ class _GetMediaProviderElement extends AutoDisposeFutureProviderElement<Item>
   String get id => (origin as GetMediaProvider).id;
 }
 
-String _$getLastMediaHash() => r'fa9446d7ecc2a5d25eae04f35d90a3b6e6f96396';
+String _$getLastMediaHash() => r'07dfa42b7b0da2d8c8ddaa440c8fcd70e7ed6f83';
 
 /// See also [getLastMedia].
 @ProviderFor(getLastMedia)
@@ -311,7 +311,7 @@ class _GetLastMediaProviderElement
   String get parentId => (origin as GetLastMediaProvider).parentId;
 }
 
-String _$getResumeMediaHash() => r'41f2cb7921b0812361243165c1955e0eb186638f';
+String _$getResumeMediaHash() => r'd7119f86c2532f1af04c61ecb9043d0672a7c49f';
 
 /// See also [getResumeMedia].
 @ProviderFor(getResumeMedia)

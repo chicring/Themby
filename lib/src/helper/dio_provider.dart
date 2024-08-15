@@ -35,7 +35,5 @@ Dio dio(DioRef ref) {
   //     idleTimeout: const Duration(seconds: 10),
   //   ),
   // );
-
-
   return dio;
 }
