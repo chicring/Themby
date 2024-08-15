@@ -40,10 +40,12 @@ class EmbyHomeScreen extends ConsumerWidget {
       appBar: _buildAppBar(site!,context),
       body: RefreshIndicator(
         onRefresh: () async {
-          ref.refresh(getResumeMediaProvider());
-          // ref.refresh(getResumeMediaProvider());
-
-          ref.refresh(getViewsProvider);
+          await ref.refresh(getResumeMediaProvider().future);
+          await ref.refresh(getViewsProvider.future).then((data){
+            data.items.map((item) async{
+              ref.refresh(getLastMediaProvider(item.id!));
+            });
+          });
         },
         child: const CustomScrollView(
           slivers: [

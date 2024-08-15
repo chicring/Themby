@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
@@ -39,6 +40,49 @@ class MediaCardH extends ConsumerWidget{
           : item.imagesCustom!.primary;
     }
 
+    void openDialog(){
+      SmartDialog.showAttach(
+          targetContext: context,
+          usePenetrate: true,
+          maskColor: Colors.transparent,
+          alignment: Alignment.bottomRight,
+          builder:  (_) => Card(
+            elevation: 3,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+              ),
+              constraints: const BoxConstraints(
+                minWidth: 200,
+                maxWidth: 500
+              ),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Icons.play_arrow),
+                          SizedBox(width: 10),
+                          Text("继续观看"),
+                        ],
+                      ),
+                    ),
+                  ]
+              ),
+            ),
+          )
+      );
+    }
+
+
     return Card(
       elevation: 0,
       clipBehavior: Clip.hardEdge,
@@ -47,6 +91,9 @@ class MediaCardH extends ConsumerWidget{
       child: InkWell(
         onTap: () async {
           GoRouter.of(context).push('/details/${item.id}');
+        },
+        onLongPress: () async {
+          openDialog();
         },
         child: Column(
           children: [

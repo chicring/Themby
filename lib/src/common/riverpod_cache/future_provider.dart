@@ -5,10 +5,7 @@ import 'package:themby/objectbox.g.dart';
 import 'package:themby/src/common/domiani/cache_response.dart';
 
 extension FutureProviderSwr<State> on FutureProviderRef<State> {
-  /// Return the [future] first if error occurs, it will return the cached value
-  ///
-  /// [T] is the type that will be emitted
-  /// [Encodable] is the type that can be converted to and from json, and must be encodable by [jsonEncode]
+
   Future<T> futureSWR<T, Encodable>({
     required String key,
     required Future<T> Function() future,
@@ -31,12 +28,13 @@ extension FutureProviderSwr<State> on FutureProviderRef<State> {
         Future(() async {
           final value = await future();
           final json = toJson(value);
-          box.putAsync(raw.copyWith(content: jsonEncode(json), isUsed: false), mode: PutMode.update).then((v){
-            refresh();
-          });
+          await box.putAsync(raw.copyWith(content: jsonEncode(json), isUsed: false), mode: PutMode.update);
+          refresh();
         });
+      }else{
+        box.put(raw.copyWith(isUsed: true),mode: PutMode.update);
       }
-      box.putAsync(raw.copyWith(isUsed: true),mode: PutMode.update);
+
       return fromJson(json as Encodable);
     }else{
       final value = await future();
@@ -67,13 +65,12 @@ extension FutureProviderSwr<State> on FutureProviderRef<State> {
         Future(() async {
           final value = await future();
           final jsonList = value.map((item) => toJson(item)).toList();
-          box.putAsync(raw.copyWith(content: jsonEncode(jsonList), isUsed: false), mode: PutMode.update).then((v){
-            refresh();
-            state = AsyncValue.data(value as State);
-          });
+          await box.putAsync(raw.copyWith(content: jsonEncode(jsonList), isUsed: false), mode: PutMode.update);
+          refresh();
         });
+      }else{
+        box.put(raw.copyWith(isUsed: true),mode: PutMode.update);
       }
-      box.putAsync(raw.copyWith(isUsed: true),mode: PutMode.update);
       return jsonList.map((json) => fromJson(json as Encodable)).toList();
     }else{
       final value = await future();

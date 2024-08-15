@@ -3,11 +3,11 @@ import 'package:flutter/widgets.dart';
 
 // ignore: constant_identifier_names
 const Breakpoints = (
-xs: 480.0,
-sm: 640.0,
-md: 820.0,
-lg: 1024.0,
-xl: 1280.0,
+  xs: 480.0,
+  sm: 640.0,
+  md: 820.0,
+  lg: 1024.0,
+  xl: 1280.0,
 );
 
 extension SliverBreakpoints on SliverConstraints {

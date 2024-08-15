@@ -32,6 +32,7 @@ class _LikeButton extends ConsumerState<LikeButton>{
         icon: liked ? const Icon(Icons.favorite_rounded, color: Color(0xFFc45a65),size: 28)
             : const Icon(Icons.favorite_border_rounded, size: 28)
     );
+
   }
 
 

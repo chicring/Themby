@@ -471,7 +471,10 @@ Future<EmbyResponse> getViews(GetViewsRef ref){
   return ref.futureSWR(
     key: ref.read(viewKeyProvider),
     future: () => views,
-    refresh: () => (),
+    refresh:  () {
+      // Avoid circular dependency by using a different approach
+      Future.microtask(() => ref.invalidateSelf());
+    },
     store: ref.read(storeProvider),
     fromJson: EmbyResponse.fromJson,
     toJson: (object) => object.toJson(),
@@ -519,12 +522,14 @@ Future<List<Item>> getLastMedia(GetLastMediaRef ref, String parentId){
   return ref.futureListSWR(
     key: ref.read(lastMediaKeyProvider(parentId)),
     future: () => ref.watch(viewRepositoryProvider).getLastMedia(parentId, cancelToken: cancelToken),
-    refresh: () => (),
+    refresh: () {
+      // Avoid circular dependency by using a different approach
+      Future.microtask(() => ref.invalidateSelf());
+    },
     store: ref.read(storeProvider),
     fromJson: Item.fromJson,
     toJson: (object) => object.toJson(),
   );
-  // return ref.watch(viewRepositoryProvider).getLastMedia(parentId,cancelToken: cancelToken);
 }
 
 @riverpod
@@ -533,7 +538,9 @@ Future<List<Item>> getResumeMedia(GetResumeMediaRef ref, {String? parentId }) {
   return ref.futureListSWR(
     key: ref.read(resumeKeyProvider(parentId: parentId)),
     future: () => ref.watch(viewRepositoryProvider).getResumeMedia(parentId: parentId, cancelToken: cancelToken),
-    refresh: () => (),
+    refresh: () {
+      Future.microtask(() => ref.invalidateSelf());
+    },
     store: ref.read(storeProvider),
     fromJson: Item.fromJson,
     toJson: (object) => object.toJson(),

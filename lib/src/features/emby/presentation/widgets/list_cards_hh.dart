@@ -9,13 +9,16 @@ import 'package:themby/src/helper/screen_helper.dart';
 import 'media_card_h.dart';
 
 class ListCardsHh extends ConsumerWidget{
-  const ListCardsHh({super.key,required this.name,required this.items,this.onSelect});
+  const ListCardsHh({super.key,required this.name,required this.items,this.onSelect, this.onLongPress});
 
   final String name;
 
   final List<Item> items;
 
-  final Function? onSelect;
+  final Function()? onSelect;
+
+  final Function()? onLongPress;
+
 
 
   @override
@@ -71,6 +74,7 @@ class ListCardsHh extends ConsumerWidget{
                         item: items[index],
                         width: cardWidth,
                         height: cardHeight,
+                        longPress: onLongPress,
                       ),
                     );
                   },

@@ -79,7 +79,7 @@ class ServerList extends ConsumerWidget {
     final Color surfaceColor = Theme.of(context).colorScheme.surface;
 
     return ListView.builder(
-      key: ValueKey(query),
+      // key: ValueKey(query),
       itemCount: sites.valueOrNull?.length ?? 0,
       padding: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
       itemBuilder: (context, index) {
@@ -98,7 +98,10 @@ class ServerList extends ConsumerWidget {
                   contentPadding: const EdgeInsets.only(right: 8, left: 16),
                   dense: true,
                   leading: SvgPicture.asset('assets/emby.svg', width: 36, height: 36),
-                  title: Text(data[index].remake ?? data[index].serverName!, style: const TextStyle(fontWeight: FontWeight.w500)),
+                  title: Text(
+                    (data[index].remake?.isNotEmpty == true ? data[index].remake : data[index].serverName)!,
+                    style: const TextStyle(fontWeight: FontWeight.w500),
+                  ),
                   subtitle: Text(data[index].username!, style: const TextStyle(fontWeight: FontWeight.w300)),
                   trailing: _menuButton(
                           () {
