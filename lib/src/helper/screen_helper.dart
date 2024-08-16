@@ -11,7 +11,6 @@ extension ScreenExtension on int {
   double get pw => ScreenHelper.getInstance().getWidthPortion(this);
 }
 
-
 class ScreenHelper {
 
   static double screenWidth = 0;

@@ -9,7 +9,11 @@ part 'video_controller.g.dart';
 @riverpod
 VideoController videoController(VideoControllerRef  ref){
 
-  Player player = Player();
+  Player player = Player(
+      configuration: const PlayerConfiguration(
+          bufferSize: 5 * 1024 * 1024
+      )
+  );
   return VideoController(
     player,
     configuration: const VideoControllerConfiguration(

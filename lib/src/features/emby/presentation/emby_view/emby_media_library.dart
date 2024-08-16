@@ -41,8 +41,6 @@ class MediaItemWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final media = ref.watch(getLastMediaProvider(item.id!));
 
-    print("刷新列表${item.name}");
-
     return media.when(
       loading: () => const ListCardsHSkeleton(),
       error: (error, stack) => const SizedBox(),

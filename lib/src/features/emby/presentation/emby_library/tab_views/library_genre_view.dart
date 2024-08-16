@@ -4,13 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:themby/src/common/widget/dynamic_height_grid_view.dart';
 import 'package:themby/src/common/widget/empty_data.dart';
-import 'package:themby/src/common/widget/header_text.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/extensions/constrains.dart';
 import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
-import 'package:themby/src/features/emby/presentation/emby_search/widgets/search_text.dart';
 
 class LibraryGenreView extends ConsumerWidget{
   const LibraryGenreView({super.key, required this.parentId, required this.filter});
@@ -46,7 +44,7 @@ class LibraryGenreView extends ConsumerWidget{
                 return const SliverToBoxAdapter(child: EmptyData());
               }
               return SliverDynamicHeightGridView(
-                crossAxisCount: mediaQuery.smAndDown ? 3 : 6,
+                crossAxisCount: mediaQuery.smAndDown ? 3 : (mediaQuery.lgAndDown ? 6 : 8),
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
                 itemCount: response.items.length,

@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'emby_state_service.dart';
+part of 'fvp_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$embyStateServiceHash() => r'84aada95d8cdeb6ffd79ef024c38fb26d172b102';
+String _$fvpControllerHash() => r'f93eba36d52b06ddf24acac1ab031fa613c796fb';
 
-/// See also [EmbyStateService].
-@ProviderFor(EmbyStateService)
-final embyStateServiceProvider =
-    AutoDisposeNotifierProvider<EmbyStateService, EmbySiteState>.internal(
-  EmbyStateService.new,
-  name: r'embyStateServiceProvider',
+/// See also [FvpController].
+@ProviderFor(FvpController)
+final fvpControllerProvider =
+    AutoDisposeNotifierProvider<FvpController, FvpState>.internal(
+  FvpController.new,
+  name: r'fvpControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$embyStateServiceHash,
+      : _$fvpControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$EmbyStateService = AutoDisposeNotifier<EmbySiteState>;
+typedef _$FvpController = AutoDisposeNotifier<FvpState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

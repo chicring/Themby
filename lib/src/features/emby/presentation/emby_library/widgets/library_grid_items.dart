@@ -42,7 +42,7 @@ class LibraryGridItems extends ConsumerWidget {
     return SliverPadding(
       padding: const EdgeInsets.fromLTRB(StyleString.safeSpace, 0, StyleString.safeSpace, 0),
       sliver: SliverDynamicHeightGridView(
-        crossAxisCount: mediaQuery.smAndDown ? 3 : 8,
+        crossAxisCount: mediaQuery.smAndDown ? 3 : (mediaQuery.lgAndDown ? 6 : 8),
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
         builder: (BuildContext context, int index) {

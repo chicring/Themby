@@ -11,8 +11,10 @@ import 'package:themby/src/features/emby/presentation/emby_media_details/emby_me
 import 'package:themby/src/features/emby/presentation/emby_media_details/emby_season_details.dart';
 import 'package:themby/src/features/emby/presentation/emby_search/emby_search_screen.dart';
 import 'package:themby/src/features/home/presentation/home_screen.dart';
+import 'package:themby/src/features/mine/presentation/about/about_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
+import 'package:themby/src/features/mine/presentation/mine_app_setting/setting_player__screen.dart';
 import 'package:themby/src/features/player/presentation/player_screen.dart';
 import 'package:themby/src/router/scaffold_with_nested_navigation_emby.dart';
 
@@ -28,6 +30,8 @@ enum AppRoute {
   season,
   player,
   search,
+  about,
+  playSetting
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -90,47 +94,22 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           child: const MineAppSettingScreen(),
         ),
       ),
-      // StatefulShellRoute.indexedStack(
-      //   builder: (context, state, navigationShell) {
-      //     return ScaffoldWithNestedNavigation(navigationShell: navigationShell);
-      //   },
-      //   branches: [
-      //     StatefulShellBranch(
-      //       navigatorKey: _homeNavigatorKey,
-      //       routes: [
-      //         GoRoute(
-      //           path: '/home',
-      //           name: AppRoute.home.name,
-      //           pageBuilder: (context, state) => NoTransitionPage(
-      //             key: state.pageKey,
-      //             child: const HomeScreen(),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //     StatefulShellBranch(
-      //       navigatorKey: _mineNavigatorKey,
-      //       routes: [
-      //         GoRoute(
-      //           path: '/mine',
-      //           name: AppRoute.mine.name,
-      //           pageBuilder: (context, state) => NoTransitionPage(
-      //             key: state.pageKey,
-      //             child: const MineScreen(),
-      //           ),
-      //         ),
-      //         GoRoute(
-      //           path: '/app_setting',
-      //           name: AppRoute.mineAppSetting.name,
-      //           pageBuilder: (context, state) => NoTransitionPage(
-      //             key: state.pageKey,
-      //             child: const MineAppSettingScreen(),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ],
-      // ),
+      GoRoute(
+        path: '/play_setting',
+        name: AppRoute.playSetting.name,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const SettingPlayerScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/about',
+        name: AppRoute.about.name,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const AboutScreen(),
+        ),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return ScaffoldWithNestedNavigationEmby(navigationShell: navigationShell);
@@ -229,7 +208,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) {
 
           SelectedMedia select = state.extra as SelectedMedia;
-
           return NoTransitionPage(
             key: state.pageKey,
             child: PlayerScreen(

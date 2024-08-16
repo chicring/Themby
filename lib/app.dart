@@ -10,18 +10,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/data/app_setting_repository.dart';
 import 'package:themby/src/common/domiani/color_type.dart';
 import 'package:themby/src/common/widget/custom_dialog.dart';
-import 'package:themby/src/helper/objectbox_provider.dart';
-import 'package:themby/src/helper/prefs_provider.dart';
 import 'package:themby/src/router/app_router.dart';
-import 'package:themby/src/helper/device_info_provider.dart';
+
 part 'app.g.dart';
 
 
 @Riverpod(keepAlive: true)
 Future<void> appStartup(AppStartupRef ref) async {
   // WidgetsFlutterBinding.ensureInitialized();
-
-  await ref.read(deviceNameProvider.notifier).initDeviceName();
 
   if (Platform.isAndroid){
     await FlutterDisplayMode.setHighRefreshRate();

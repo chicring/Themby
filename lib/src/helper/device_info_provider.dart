@@ -2,39 +2,35 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:themby/src/common/domiani/device_info.dart';
 
 part 'device_info_provider.g.dart';
 
 @riverpod
-DeviceInfoPlugin deviceInfo(DeviceInfoRef ref){
-  return DeviceInfoPlugin();
+DeviceInfo deviceInfo(DeviceInfoRef ref){
+  return throw UnimplementedError();
 }
 
-@Riverpod(keepAlive: true)
-class DeviceName extends _$DeviceName{
+Future<DeviceInfo> initDevice() async {
 
-  @override
-  String build(){
-    return 'null';
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  String deviceName = 'unknown';
+  String deviceId = 'unknown';
+  if (Platform.isAndroid) {
+    deviceName = (await deviceInfo.androidInfo).model;
+    deviceId = (await deviceInfo.androidInfo).serialNumber;
+  } else if (Platform.isIOS) {
+    deviceName = (await deviceInfo.iosInfo).name;
+    deviceId = (await deviceInfo.iosInfo).model;
+  } else if (Platform.isMacOS) {
+    deviceName = (await deviceInfo.macOsInfo).model;
+    deviceId = (await deviceInfo.macOsInfo).model;
+  } else if (Platform.isWindows) {
+    deviceName = (await deviceInfo.windowsInfo).productName;
+    deviceId = (await deviceInfo.windowsInfo).computerName;
+  } else if (Platform.isLinux) {
+    deviceName = (await deviceInfo.linuxInfo).name;
+    deviceId = (await deviceInfo.linuxInfo).id;
   }
-  /*
-  * 初始化设备名称，避免异步获取设备名称时出现空值
-   */
-  Future<void> initDeviceName() async {
-    DeviceInfoPlugin deviceInfo = ref.read(deviceInfoProvider);
-    String deviceName = 'Unknown';
-
-    if (Platform.isAndroid) {
-      deviceName = (await deviceInfo.androidInfo).model;
-    } else if (Platform.isIOS) {
-      deviceName = (await deviceInfo.iosInfo).name;
-    } else if (Platform.isMacOS) {
-      deviceName = (await deviceInfo.macOsInfo).model;
-    } else if (Platform.isWindows) {
-      deviceName = (await deviceInfo.windowsInfo).productName;
-    } else if (Platform.isLinux) {
-      deviceName = (await deviceInfo.linuxInfo).name;
-    }
-    state = deviceName;
-  }
+  return DeviceInfo(deviceName: deviceName, deviceId: deviceId);
 }

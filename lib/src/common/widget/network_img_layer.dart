@@ -68,7 +68,7 @@ class NetworkImgLayer extends StatelessWidget {
       ),
       child: CachedNetworkImage(
         httpHeaders: const {
-          'user-agent': "Themby/1.0.3",
+          'user-agent': "Themby/1.0.4",
         },
         imageUrl: imageUrl!,
         width: width,

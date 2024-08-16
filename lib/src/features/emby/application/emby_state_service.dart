@@ -1,9 +1,10 @@
-import 'dart:io';
-import 'package:device_info_plus/device_info_plus.dart';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:themby/src/common/domiani/device_info.dart';
 import 'package:themby/src/common/domiani/site.dart';
 import 'package:themby/src/features/emby/domain/emby_site_state.dart';
+import 'package:themby/src/helper/package_info.dart';
 import 'package:themby/src/helper/prefs_provider.dart';
 import 'package:themby/src/helper/device_info_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -16,14 +17,15 @@ class EmbyStateService extends _$EmbyStateService{
 
   @override
   EmbySiteState build() {
-    final SharedPreferences prefs = ref.watch(sharedPreferencesProvider);
 
-    String deviceId = prefs.getString(_key) ?? const Uuid().v4();
-    prefs.setString(_key, deviceId);
+    DeviceInfo deviceInfo = ref.watch(deviceInfoProvider);
 
-    String deviceName = ref.read(deviceNameProvider);
+    final String deviceName = deviceInfo.deviceName;
 
-    return EmbySiteState.initial(_initToken(deviceName, deviceId));
+    final String deviceId = deviceInfo.deviceId;
+
+    print(deviceName);
+    return EmbySiteState.initial(_initToken(deviceName, _getDeviceId(deviceId)));
   }
 
   void updateSite(Site site){
@@ -35,22 +37,18 @@ class EmbyStateService extends _$EmbyStateService{
   }
 
   String _initToken(String deviceName, String deviceId){
-    return 'Emby UserId=null,Client=Themby,Device=$deviceName,DeviceId=$deviceId,Version=1.0.0';
+    return 'Emby UserId=null,Client=Themby,Device=$deviceName,DeviceId=$deviceId,Version=${ref.read(packageInfoProvider).version}';
   }
 
-  Future<String> _getDeviceName() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
-      return (await deviceInfo.androidInfo).model;
-    } else if (Platform.isIOS) {
-      return (await deviceInfo.iosInfo).name;
-    } else if (Platform.isMacOS) {
-      return (await deviceInfo.macOsInfo).model;
-    } else if (Platform.isWindows) {
-      return (await deviceInfo.windowsInfo).productName;
-    } else if (Platform.isLinux) {
-      return (await deviceInfo.linuxInfo).name;
+  String _getDeviceId(String realDeviceId){
+
+    if(realDeviceId == "unknown"){
+      final SharedPreferences prefs = ref.watch(sharedPreferencesProvider);
+      String deviceId = prefs.getString(_key) ?? const Uuid().v4();
+      realDeviceId = deviceId;
+      prefs.setString(_key, deviceId);
     }
-    return 'Unknown';
+
+    return realDeviceId;
   }
 }

@@ -54,6 +54,7 @@ class ControlsService extends _$ControlsService{
       url = await ref.read(getPlayerUrlProvider(media.id!,index: media.mediaSourcesIndex).future);
       currentId = media.id!;
     }
+    print(url);
     state = state.copyWith(
         mediaId: media.id,
         parentId: media.parentId,
@@ -65,12 +66,9 @@ class ControlsService extends _$ControlsService{
         position: media.position
     );
 
-    await ref.read(videoControllerProvider).player.open(Media(url,httpHeaders: {'user-agent': "Themby/1.0.3",}));
+    await ref.read(videoControllerProvider).player.open(Media(url,httpHeaders: {'user-agent': "Themby/1.0.4",}));
     await ref.read(videoControllerProvider).player.play().then((v)async{
 
-      // await seekTo(media.position ?? Duration.zero);
-      // startRecordPosition(position: media.position?.inMicroseconds);
-      //
       if(media.audioIndex != null){
         toggleAudio(media.audioIndex!);
       }
@@ -272,62 +270,5 @@ class ControlsService extends _$ControlsService{
   void clearPosition() {
     state = state.copyWith(position: Duration.zero);
   }
-  // //销毁
-  // Future<void> dispose() async {
-  //   backTimer?.cancel();
-  //   state.timer?.cancel();
-  //
-  //   ref.read(videoControllerProvider).player.stop();
-  //
-  //   await recordPosition(type: "stop").then((v) {
-  //     ref.refresh(GetMediaProvider(state.mediaId));
-  //   });
-  //
-  //   // await ref.read(videoControllerProvider).player.dispose();
-  //   ref.read(mediasServiceProvider.notifier).removeEpisode();
-  //
-  //   state = state.copyWith(mediaId: '0', mediaSourceId: '', playSessionId: '',timer: null, backTimer: null);
-  //
-  // }
-  //
-  // void showSetSpeedSheet(){
-  //   final double currentSpeed = state.rate;
-  //   final List<double> speedsList = [
-  //     0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0
-  //   ];
-  //
-  //   SmartDialog.show(
-  //     alignment: Alignment.centerRight,
-  //       maskColor: Colors.transparent,
-  //     builder: (context) {
-  //       return Container(
-  //         width: 220,
-  //         color: Colors.black.withOpacity(0.85),
-  //         child: SingleChildScrollView(
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.center,
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               for (var speed in speedsList)
-  //                 TextButton(
-  //                   child: Text(
-  //                     speed.toString(),
-  //                     style: TextStyle(
-  //                       fontSize: 16,
-  //                       color: speed == currentSpeed ? Colors.white : Colors.grey,
-  //                     ),
-  //                   ),
-  //                   onPressed: () {
-  //                     setRate(speed);
-  //                     SmartDialog.dismiss();
-  //                   },
-  //                 ),
-  //             ],
-  //           ),
-  //         )
-  //       );
-  //     }
-  //   );
-  // }
 
 }

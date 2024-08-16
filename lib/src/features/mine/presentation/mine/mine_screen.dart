@@ -1,8 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
-import 'package:themby/src/features/mine/presentation/mine_app_setting/setting_player__screen.dart';
 import 'package:themby/src/features/mine/widgets/setting_item.dart';
 import 'package:themby/src/localization/string_hardcoded.dart';
 
@@ -42,12 +40,7 @@ class MineScreen extends StatelessWidget {
                 title: Text("播放器".hardcoded),
                 subtitle: Text("播放器外观、手势、控件".hardcoded),
                 onTap: () {
-                  SmartDialog.show(
-                      alignment: Alignment.centerRight,
-                      builder: (_) {
-                        return const SettingPlayerScreen();
-                      }
-                  );
+                  GoRouter.of(context).push('/play_setting');
                 },
               ),
               SettingItem(
@@ -79,7 +72,7 @@ class MineScreen extends StatelessWidget {
                 title: Text("关于".hardcoded),
                 subtitle: Text("关于，鸣谢".hardcoded),
                 onTap: () {
-                  // GoRouter.of(context).push('/about');
+                  GoRouter.of(context).push('/about');
                 },
               ),
               // SettingItem(
