@@ -15,6 +15,7 @@ import 'package:path/path.dart';
 import 'objectbox.g.dart';
 
 
+
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
