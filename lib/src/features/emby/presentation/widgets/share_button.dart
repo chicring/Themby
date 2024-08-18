@@ -48,10 +48,8 @@ class ShareButton extends ConsumerWidget{
     void openMxPlayer(String videoUrl) async {
       final intent = AndroidIntent(
         action: 'action_view',
-        data: Uri.encodeFull(videoUrl),
+        data: videoUrl,
         type: "video/*",
-        package: "com.mxtech.videoplayer.pro",  // MX Player 免费版的包名
-        flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
       );
 
       try {
@@ -80,6 +78,7 @@ class ShareButton extends ConsumerWidget{
 
           Wrap(
             alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 6,
             runSpacing: 6,
             children: [
@@ -96,7 +95,7 @@ class ShareButton extends ConsumerWidget{
                 },
               ),
               IconButton(
-                icon: SvgPicture.asset("assets/icon/vlc.svg",width: 52,height: 52),
+                icon: const Icon(Icons.more_horiz_rounded,size: 38,),
                 onPressed: (){
                   openMxPlayer(url);
                 },
