@@ -117,9 +117,8 @@ dependencies:
   #音量控制
   flutter_volume_controller: ^1.3.2
   package_info_plus: ^4.2.0
+  android_intent_plus: ^5.1.0
 
-  #fvp 播放器
-  fvp: ^0.23.0
 
 #  #屏幕亮度
 #  screen_brightness: ^1.0.1

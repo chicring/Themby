@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:themby/src/common/constants.dart';
+import 'package:themby/src/common/data/subtitle_setting.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/selected_media.dart';
 import 'package:themby/src/features/player/presentation/play_control.dart';
@@ -68,9 +69,9 @@ class _VideoCustom extends ConsumerState<VideoCustom>{
               resumeUponEnteringForegroundMode: false,
               alignment: Alignment.center,
               fit: videoFitType[fitType]['attr'],
-              subtitleViewConfiguration: const SubtitleViewConfiguration(
-                style: StyleString.subTitleStyle,
-                padding: EdgeInsets.all(24.0),
+              subtitleViewConfiguration: SubtitleViewConfiguration(
+                style: ref.watch(subtitleSettingProvider).subtitleStyle,
+                padding: const EdgeInsets.all(24.0),
               ),
               controls: NoVideoControls,
             ),

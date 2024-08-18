@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class LabelText extends StatelessWidget {
   final String text;
-
-  const LabelText({super.key, required this.text});
+  final String? subtitle;
+  const LabelText({super.key, required this.text,this.subtitle});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +13,7 @@ class LabelText extends StatelessWidget {
 
     return ListTile(
       title: Text(text),
+      subtitle: subtitle != null ? Text(subtitle!) : null,
       titleTextStyle:  TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.bold,

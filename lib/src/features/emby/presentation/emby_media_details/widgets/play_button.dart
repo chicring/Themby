@@ -31,10 +31,14 @@ class PlayButton extends ConsumerWidget{
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
         decoration: BoxDecoration(
-          borderRadius: StyleString.lgRadius,
+          borderRadius: BorderRadius.circular(26),
           color: Theme.of(context).colorScheme.primary,
         ),
-        width: width,
+        constraints: const BoxConstraints(
+          minWidth: 300,
+          maxWidth: 400,
+        ),
+        // width: width,
         height: 50,
         child: (item.userData?.playedPercentage != null && item.type != 'Series')
             ? _playResume(item.userData!.playedPercentage! / 100, remainingTime(item.runTimeTicks! - item.userData!.playbackPositionTicks!), context, width)

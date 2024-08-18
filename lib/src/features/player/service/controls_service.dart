@@ -54,7 +54,6 @@ class ControlsService extends _$ControlsService{
       url = await ref.read(getPlayerUrlProvider(media.id!,index: media.mediaSourcesIndex).future);
       currentId = media.id!;
     }
-    print(url);
     state = state.copyWith(
         mediaId: media.id,
         parentId: media.parentId,

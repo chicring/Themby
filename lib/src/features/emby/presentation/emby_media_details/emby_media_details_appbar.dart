@@ -7,10 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/features/emby/application/emby_common_service.dart';
+import 'package:themby/src/features/emby/data/play_repository.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
 import 'package:themby/src/features/emby/domain/emby/item.dart';
 import 'package:themby/src/features/emby/presentation/widgets/like_button.dart';
 import 'package:themby/src/features/emby/presentation/widgets/played_button.dart';
+import 'package:themby/src/features/emby/presentation/widgets/share_button.dart';
 
 
 class DetailAppBar extends ConsumerWidget {
@@ -20,9 +22,12 @@ class DetailAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     final double heightBar = MediaQuery.sizeOf(context).height * 0.4;
 
     final data = ref.watch(GetMediaProvider(id));
+
+    ref.read(getPlayerUrlProvider(id,index: 0).future);
 
     return data.when(
         data: (data) => SliverAppBar(
@@ -45,7 +50,8 @@ class DetailAppBar extends ConsumerWidget {
             LikeButton(
               id: data.id!,
               liked: data.userData?.isFavorite ?? false,
-            )
+            ),
+            if(data.mediaType == 'Video') ShareButton(data.id!)
           ],
           flexibleSpace: FlexibleSpaceBar(
             collapseMode: CollapseMode.pin,

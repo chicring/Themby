@@ -3,6 +3,7 @@
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:themby/src/common/data/player_setting.dart';
 
 part 'video_controller.g.dart';
 
@@ -10,15 +11,20 @@ part 'video_controller.g.dart';
 VideoController videoController(VideoControllerRef  ref){
 
   Player player = Player(
-      configuration: const PlayerConfiguration(
-          bufferSize: 5 * 1024 * 1024
+      configuration: PlayerConfiguration(
+        bufferSize: 1024 * 1024 * ref.watch(playerSettingProvider).mpvBufferSize
       )
   );
-  return VideoController(
+  VideoController controller = VideoController(
     player,
-    configuration: const VideoControllerConfiguration(
-      enableHardwareAcceleration: true,
+    configuration: VideoControllerConfiguration(
+      enableHardwareAcceleration: ref.watch(playerSettingProvider).mpvHardDecoding,
       androidAttachSurfaceAfterVideoParameters: false,
     ),
   );
+
+  ref.onDispose(() {
+    player.dispose();
+  });
+  return controller;
 }

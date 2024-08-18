@@ -15,6 +15,7 @@ import 'package:themby/src/features/mine/presentation/about/about_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/setting_player__screen.dart';
+import 'package:themby/src/features/mine/presentation/mine_app_setting/subtitle_setting_screen.dart';
 import 'package:themby/src/features/player/presentation/player_screen.dart';
 import 'package:themby/src/router/scaffold_with_nested_navigation_emby.dart';
 
@@ -31,7 +32,8 @@ enum AppRoute {
   player,
   search,
   about,
-  playSetting
+  playSetting,
+  subtitleSetting,
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -100,6 +102,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => NoTransitionPage(
           key: state.pageKey,
           child: const SettingPlayerScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/subtitle_setting',
+        name: AppRoute.subtitleSetting.name,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const SubtitleSettingScreen(),
         ),
       ),
       GoRoute(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/src/common/data/app_setting_repository.dart';

@@ -48,7 +48,7 @@ class MineScreen extends StatelessWidget {
                 title: Text("字幕外观".hardcoded),
                 subtitle: Text("播放选项".hardcoded),
                 onTap: () {
-                  // GoRouter.of(context).push('/app_setting');
+                  GoRouter.of(context).push('/subtitle_setting');
                 },
               ),
               SettingItem(

@@ -17,8 +17,9 @@ Future<DeviceInfo> initDevice() async {
   String deviceName = 'unknown';
   String deviceId = 'unknown';
   if (Platform.isAndroid) {
-    deviceName = (await deviceInfo.androidInfo).model;
-    deviceId = (await deviceInfo.androidInfo).serialNumber;
+    var androidInfo = await deviceInfo.androidInfo;
+    deviceName = '${androidInfo.manufacturer}-${androidInfo.model}';
+    deviceId = androidInfo.serialNumber;
   } else if (Platform.isIOS) {
     deviceName = (await deviceInfo.iosInfo).name;
     deviceId = (await deviceInfo.iosInfo).model;

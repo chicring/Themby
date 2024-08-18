@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.3"
+  android_intent_plus:
+    dependency: "direct main"
+    description:
+      name: android_intent_plus
+      sha256: "007703c1b2cac7ca98add3336b98cffa4baa11d5133cc463293dba9daa39cdf6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   ansicolor:
     dependency: transitive
     description:
@@ -517,14 +525,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
-  fvp:
-    dependency: "direct main"
-    description:
-      name: fvp
-      sha256: "19a605fb32c2ee7a0b594ed51a2dd5fd5e8326bfa287ffd88c3e1ef0289d9afc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.23.0"
   glob:
     dependency: transitive
     description:
@@ -1410,30 +1410,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  video_player_android:
-    dependency: transitive
-    description:
-      name: video_player_android
-      sha256: "4de50df9ee786f5891d3281e1e633d7b142ef1acf47392592eb91cba5d355849"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.6.0"
-  video_player_avfoundation:
-    dependency: transitive
-    description:
-      name: video_player_avfoundation
-      sha256: d1e9a824f2b324000dc8fb2dcb2a3285b6c1c7c487521c63306cc5b394f68a7c
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.6.1"
-  video_player_platform_interface:
-    dependency: transitive
-    description:
-      name: video_player_platform_interface
-      sha256: "236454725fafcacf98f0f39af0d7c7ab2ce84762e3b63f2cbb3ef9a7e0550bc6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.2.2"
   vm_service:
     dependency: transitive
     description:

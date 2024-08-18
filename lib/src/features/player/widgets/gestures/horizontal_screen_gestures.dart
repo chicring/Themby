@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:media_kit_video/media_kit_video_controls/src/controls/extensions/duration.dart';
+import 'package:themby/src/common/data/player_setting.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/lock_service.dart';
 import 'package:themby/src/features/player/service/video_controller.dart';
@@ -38,26 +39,35 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
   }
 
   Future<void> onDoublePressLeft() async {
+    if(!ref.read(playerSettingProvider).doubleClickToJump){
+      return;
+    }
     final position = ref.read(videoControllerProvider).player.state.position;
-    ref.read(videoControllerProvider).player.seek(position - const Duration(seconds: 10));
+    ref.read(videoControllerProvider).player.seek(position - Duration(seconds: ref.read(playerSettingProvider).fastRewindTime));
       SmartDialog.showToast(
         '',
         alignment: Alignment.topCenter,
         displayTime: const Duration(milliseconds: 800),
         displayType: SmartToastType.last,
         builder: (context) {
-          return textToast('快退10秒');
+          return textToast('快退${ref.read(playerSettingProvider).fastRewindTime}秒');
         }
       );
   }
 
   Future<void> onDoublePressCenter() async{
+    if(!ref.read(playerSettingProvider).doubleClickToPause){
+      return;
+    }
     ref.read(videoControllerProvider).player.playOrPause();
   }
 
   Future<void> onDoublePressRight() async {
+    if(!ref.read(playerSettingProvider).doubleClickToJump){
+      return;
+    }
     final position = ref.read(videoControllerProvider).player.state.position;
-    ref.read(videoControllerProvider).player.seek(position + const Duration(seconds: 10));
+    ref.read(videoControllerProvider).player.seek(position + Duration(seconds: ref.read(playerSettingProvider).fastForwardTime));
 
       SmartDialog.showToast(
         '',
@@ -65,7 +75,7 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
         displayTime: const Duration(milliseconds: 800),
         displayType: SmartToastType.last,
         builder: (context) {
-          return textToast('快进10秒');
+          return textToast('快进${ref.read(playerSettingProvider).fastForwardTime}秒');
         }
       );
   }
