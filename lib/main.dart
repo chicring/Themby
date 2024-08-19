@@ -19,7 +19,7 @@ import 'objectbox.g.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   final prefs = await SharedPreferences.getInstance();
   final directory = await getApplicationDocumentsDirectory();
@@ -39,8 +39,8 @@ void main() async {
       )
   );
 
-  Timer(const Duration(milliseconds: 500), () {
-    FlutterNativeSplash.remove();
-  });
+  // Timer(const Duration(milliseconds: 500), () {
+  //   FlutterNativeSplash.remove();
+  // });
 }
 

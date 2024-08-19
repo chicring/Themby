@@ -2,6 +2,7 @@ import 'dart:convert';  // 导入 JSON 编码库
 import 'dart:typed_data';  // 导入 Uint8List 类型
 
 import 'package:dio/dio.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:themby/objectbox.g.dart';
 import 'package:themby/src/common/data/sync_setting.dart';
@@ -155,20 +156,23 @@ class SiteRepository{
     if (existingSite != null) {
       siteBox.put(site,mode: PutMode.update);
     } else {
-      siteBox.put(site);
+      siteBox.put(site.copyWith(id: 0));
     }
   }
-
-
 
   Future<bool> syncSite() async {
     try {
       // 读取远程目录内容
       final dirContent = await webdavClient.readDir("/");
 
+      late final content;
+
       // 检查是否存在 "Themby" 目录, 如果不存在则创建
       if (!dirContent.any((element) => element.name == "Themby")) {
         await webdavClient.mkdir("Themby");
+        content = await webdavClient.readDir("Themby");
+      }else{
+        content = await webdavClient.readDir("Themby");
       }
 
       // 设置请求头
@@ -178,17 +182,24 @@ class SiteRepository{
 
       // 获取本地 site 数据
       List<Site> localSites = siteBox.getAll();
-      DateTime latestLocalDate = localSites.map((e) => e.date!).reduce((a, b) => a.isAfter(b) ? a : b);
+      DateTime latestLocalDate;
+
+      if (localSites.isEmpty) {
+        latestLocalDate = DateTime(1970, 1, 1);
+      } else {
+        latestLocalDate = localSites.map((e) => e.date!).reduce((a, b) => a.isAfter(b) ? a : b);
+      }
 
       // 检查是否存在远程的 backup.json 文件
-      webdav.File? remoteFile = dirContent.firstWhere((element) => element.name == "backup.json", orElse: () =>  webdav.File(name: ""));
+      webdav.File remoteFile = content.firstWhere((element) => element.name == "backup.json", orElse: () =>  webdav.File(name: null, mTime: DateTime(1970, 1, 1), size: null));
 
-      if (remoteFile.name=="backup.json") {
+      if (remoteFile.name != null) {
         // 获取远程文件的修改时间
         final remoteFileDate = remoteFile.mTime;
 
         if (latestLocalDate.isBefore(remoteFileDate!)) {
           // 如果远程数据较新，使用远程数据
+          print("远程数据较新");
           Uint8List remoteData = Uint8List.fromList(await webdavClient.read("Themby/backup.json"));
           String remoteJsonString = utf8.decode(remoteData);
           List<dynamic> remoteSitesList = jsonDecode(remoteJsonString);
@@ -200,18 +211,27 @@ class SiteRepository{
           }
         } else {
           // 如果本地数据较新或相等，则上传本地数据
+          print("本地数据较新");
+
           String jsonString = jsonEncode(localSites.map((e) => e.toJson()).toList());
           Uint8List data = Uint8List.fromList(utf8.encode(jsonString));
           await webdavClient.write("Themby/backup.json", data);
         }
       } else {
         // 如果远程没有文件，直接上传本地数据
+        print("远程没有文件");
         String jsonString = jsonEncode(localSites.map((e) => e.toJson()).toList());
         Uint8List data = Uint8List.fromList(utf8.encode(jsonString));
         await webdavClient.write("Themby/backup.json", data);
       }
       return true;
     } catch (e) {
+      print(e);
+      if(e is DioException) {
+        SmartDialog.showToast("同步失败, 请检查配置");
+      } else {
+        SmartDialog.showToast("同步失败");
+      }
       return false;
     }
   }

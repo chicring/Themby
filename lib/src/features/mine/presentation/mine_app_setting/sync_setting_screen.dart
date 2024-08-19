@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/common/data/sync_setting.dart';
+import 'package:themby/src/features/home/data/site_repository.dart';
 import 'package:themby/src/features/mine/widgets/label_text.dart';
 import 'package:themby/src/features/mine/widgets/setting_item.dart';
 
@@ -84,6 +85,12 @@ class SyncSettingScreen extends ConsumerWidget {
                 ),
                 child: const Text('开始同步'),
                 onPressed: () async{
+                  bool result = await ref.read(syncSiteProvider.future);
+                  if (result) {
+                    SmartDialog.showToast('同步成功');
+                  } else {
+                    SmartDialog.showToast('同步失败');
+                  }
                 },
               ),
             )

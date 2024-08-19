@@ -98,7 +98,6 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
       },
       onDoubleTapDown: (details){
         if (lock) return;
-
         final double tapPosition = details.localPosition.dx;
         final double sectionWidth = width / 3;
         if (tapPosition < sectionWidth) {
