@@ -9,6 +9,7 @@ import 'package:themby/src/features/emby/application/emby_state_service.dart';
 import 'package:themby/src/features/home/data/site_repository.dart';
 import 'package:themby/src/features/home/presentation/home_server_edit.dart';
 import 'package:themby/src/features/home/presentation/home_server_notifier.dart';
+import 'package:themby/src/features/home/widgets/sync_button.dart';
 import 'package:themby/src/localization/string_hardcoded.dart';
 
 import 'home_ search.dart';
@@ -33,11 +34,7 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text('连接'.hardcoded, style: StyleString.headerStyle.copyWith(fontSize: 30)),
         actions: [
-          IconButton(
-              icon: const Icon(Icons.cloud_sync_outlined),
-              onPressed: () {
-              }
-          ),
+          const SyncButton(),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             onPressed: () {

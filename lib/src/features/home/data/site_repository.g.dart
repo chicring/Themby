@@ -6,7 +6,7 @@ part of 'site_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$siteRepositoryHash() => r'db659c22878bd5c35a0878793b9c70ef8f2da7bf';
+String _$siteRepositoryHash() => r'6d416c8277778216e88f3123be1bf02a04871fe8';
 
 /// See also [siteRepository].
 @ProviderFor(siteRepository)
@@ -567,5 +567,20 @@ class _UpdateEmbySiteProviderElement
   @override
   Site get site => (origin as UpdateEmbySiteProvider).site;
 }
+
+String _$syncSiteHash() => r'289750f0774e5a301e635184ef04390416f183f9';
+
+/// See also [syncSite].
+@ProviderFor(syncSite)
+final syncSiteProvider = AutoDisposeFutureProvider<bool>.internal(
+  syncSite,
+  name: r'syncSiteProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$syncSiteHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef SyncSiteRef = AutoDisposeFutureProviderRef<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

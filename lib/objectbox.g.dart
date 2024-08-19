@@ -24,7 +24,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(2, 5645114341643632039),
       name: 'Site',
-      lastPropertyId: const obx_int.IdUid(14, 3027875153999223532),
+      lastPropertyId: const obx_int.IdUid(15, 2219989088528420289),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -96,6 +96,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(14, 3027875153999223532),
             name: 'accessToken',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(15, 2219989088528420289),
+            name: 'date',
+            type: 10,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -367,7 +372,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final accessTokenOffset = object.accessToken == null
               ? null
               : fbb.writeString(object.accessToken!);
-          fbb.startTable(15);
+          fbb.startTable(16);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, remakeOffset);
           fbb.addOffset(2, typeOffset);
@@ -382,12 +387,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(11, passwordOffset);
           fbb.addOffset(12, imageTagOffset);
           fbb.addOffset(13, accessTokenOffset);
+          fbb.addInt64(14, object.date?.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
+          final dateValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 32);
           final idParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final remakeParam = const fb.StringReader(asciiOptimization: true)
@@ -417,6 +425,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final accessTokenParam =
               const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 30);
+          final dateParam = dateValue == null
+              ? null
+              : DateTime.fromMillisecondsSinceEpoch(dateValue);
           final object = Site(
               id: idParam,
               remake: remakeParam,
@@ -431,7 +442,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
               username: usernameParam,
               password: passwordParam,
               imageTag: imageTagParam,
-              accessToken: accessTokenParam);
+              accessToken: accessTokenParam,
+              date: dateParam);
 
           return object;
         }),
@@ -695,6 +707,9 @@ class Site_ {
   /// See [Site.accessToken].
   static final accessToken =
       obx.QueryStringProperty<Site>(_entities[0].properties[13]);
+
+  /// See [Site.date].
+  static final date = obx.QueryDateProperty<Site>(_entities[0].properties[14]);
 }
 
 /// [CacheControlBox] entity fields to define ObjectBox queries.

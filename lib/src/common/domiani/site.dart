@@ -23,7 +23,8 @@ class Site{
     this.username,
     this.password,
     this.imageTag,
-    this.accessToken
+    this.accessToken,
+    this.date
   });
 
   @Id()
@@ -45,6 +46,9 @@ class Site{
 
   final String? accessToken;
 
+  @Property(type: PropertyType.date)
+  final DateTime? date;
+
   Site copyWith({
     int? id,
     String? remake,
@@ -59,7 +63,8 @@ class Site{
     String? username,
     String? password,
     String? imageTag,
-    String? accessToken
+    String? accessToken,
+    DateTime? date
   }) {
     return Site(
       id: id ?? this.id,
@@ -75,9 +80,48 @@ class Site{
       username: username ?? this.username,
       password: password ?? this.password,
       imageTag: imageTag ?? this.imageTag,
-      accessToken: accessToken ?? this.accessToken
+      accessToken: accessToken ?? this.accessToken,
+      date: date ?? this.date,
     );
   }
 
+  factory Site.fromJson(Map<String, dynamic> json) {
+    return Site(
+      id: json['id'],
+      remake: json['remake'],
+      type: json['type'],
+      serverId: json['serverId'],
+      serverName: json['serverName'],
+      version: json['version'],
+      scheme: json['scheme'],
+      host: json['host'],
+      port: json['port'],
+      userId: json['userId'],
+      username: json['username'],
+      password: json['password'],
+      imageTag: json['imageTag'],
+      accessToken: json['accessToken'],
+      date: DateTime.parse(json['date']),
+    );
+  }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'remake': remake,
+      'type': type,
+      'serverId': serverId,
+      'serverName': serverName,
+      'version': version,
+      'scheme': scheme,
+      'host': host,
+      'port': port,
+      'userId': userId,
+      'username': username,
+      'password': password,
+      'imageTag': imageTag,
+      'accessToken': accessToken,
+      'date': date?.toIso8601String(),
+    };
+  }
 }

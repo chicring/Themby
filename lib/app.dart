@@ -11,6 +11,7 @@ import 'package:themby/src/common/data/app_setting_repository.dart';
 import 'package:themby/src/common/domiani/color_type.dart';
 import 'package:themby/src/common/widget/custom_dialog.dart';
 import 'package:themby/src/router/app_router.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 part 'app.g.dart';
 
@@ -65,6 +66,15 @@ class App extends ConsumerWidget{
         ThemeMode.dark,
         ThemeMode.system,
       ][ref.watch(appSettingRepositoryProvider).themeMode],
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('zh', 'CN'),
+      ],
       builder: FlutterSmartDialog.init(
         toastBuilder: (String message) => CustomToastWidget(message: message),
       ),

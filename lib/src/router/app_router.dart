@@ -13,9 +13,11 @@ import 'package:themby/src/features/emby/presentation/emby_search/emby_search_sc
 import 'package:themby/src/features/home/presentation/home_screen.dart';
 import 'package:themby/src/features/mine/presentation/about/about_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine/mine_screen.dart';
+import 'package:themby/src/features/mine/presentation/mine_app_setting/cache_setting_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/mine_app_setting_screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/setting_player__screen.dart';
 import 'package:themby/src/features/mine/presentation/mine_app_setting/subtitle_setting_screen.dart';
+import 'package:themby/src/features/mine/presentation/mine_app_setting/sync_setting_screen.dart';
 import 'package:themby/src/features/player/presentation/player_screen.dart';
 import 'package:themby/src/router/scaffold_with_nested_navigation_emby.dart';
 
@@ -34,6 +36,8 @@ enum AppRoute {
   about,
   playSetting,
   subtitleSetting,
+  syncSetting,
+  cacheSetting
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -110,6 +114,22 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => NoTransitionPage(
           key: state.pageKey,
           child: const SubtitleSettingScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/sync_setting',
+        name: AppRoute.syncSetting.name,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const SyncSettingScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/cache_setting',
+        name: AppRoute.cacheSetting.name,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const CacheSettingScreen(),
         ),
       ),
       GoRoute(

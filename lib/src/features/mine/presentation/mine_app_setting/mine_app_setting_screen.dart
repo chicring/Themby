@@ -17,6 +17,7 @@ class MineAppSettingScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('外观'.hardcoded),
+        titleSpacing: 0.0,
       ),
       body: ListView(
         children: [

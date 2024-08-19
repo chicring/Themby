@@ -56,15 +56,15 @@ class MineScreen extends StatelessWidget {
                 title: Text("缓存".hardcoded),
                 subtitle: Text("图片缓存".hardcoded),
                 onTap: () {
-                  // GoRouter.of(context).push('/app_setting');
+                  GoRouter.of(context).push('/cache_setting');
                 },
               ),
               SettingItem(
                 leading: const Icon(Icons.cloud,size: 24),
                 title: Text("同步".hardcoded),
-                subtitle: Text("语言, 暗色模式，主题色".hardcoded),
+                subtitle: Text("webdav 同步站点".hardcoded),
                 onTap: () {
-                  // GoRouter.of(context).push('/app_setting');
+                  GoRouter.of(context).push('/sync_setting');
                 },
               ),
               SettingItem(
@@ -75,14 +75,6 @@ class MineScreen extends StatelessWidget {
                   GoRouter.of(context).push('/about');
                 },
               ),
-              // SettingItem(
-              //   leading: const Icon(Icons.info_outline),
-              //   title: "赞助".hardcoded,
-              //   subtitle: "请作者喝咖啡".hardcoded,
-              //   onTap: () {
-              //     // GoRouter.of(context).push('/about');
-              //   },
-              // ),
             ],
           ),
         )

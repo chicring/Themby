@@ -119,6 +119,12 @@ dependencies:
   package_info_plus: ^4.2.0
   android_intent_plus: ^5.1.0
 
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+
+  webdav_client: ^1.2.2
+
 
 #  #屏幕亮度
 #  screen_brightness: ^1.0.1
@@ -126,9 +132,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  intl: any
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -154,7 +157,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-#  generate: true
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "2:5645114341643632039",
-      "lastPropertyId": "14:3027875153999223532",
+      "lastPropertyId": "15:2219989088528420289",
       "name": "Site",
       "properties": [
         {
@@ -78,6 +78,11 @@
           "id": "14:3027875153999223532",
           "name": "accessToken",
           "type": 9
+        },
+        {
+          "id": "15:2219989088528420289",
+          "name": "date",
+          "type": 10
         }
       ],
       "relations": []

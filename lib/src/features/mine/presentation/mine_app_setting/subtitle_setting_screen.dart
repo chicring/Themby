@@ -15,6 +15,7 @@ class SubtitleSettingScreen extends ConsumerWidget{
     return Scaffold(
       appBar: AppBar(
         title: const Text('字幕外观'),
+        titleSpacing: 0.0,
       ),
       body: SingleChildScrollView(
         child: Column(
