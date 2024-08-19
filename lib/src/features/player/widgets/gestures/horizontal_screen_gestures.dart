@@ -112,6 +112,10 @@ class _HorizontalScreenGestures extends ConsumerState<HorizontalScreenGestures>{
       onLongPressStart: (details){
         if (lock) return;
 
+        if(!ref.read(playerSettingProvider).longPressSpeed){
+          return;
+        }
+
         final rate = controllerState.player.state.rate * 2;
         SmartDialog.show(
             tag: "show_long_press",

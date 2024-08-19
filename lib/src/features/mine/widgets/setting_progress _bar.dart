@@ -112,7 +112,7 @@ class CustomThumbShape extends SliderComponentShape {
         width: thumbWidth,
         height: thumbHeight,
       ),
-      Radius.circular(4.0), // Adjust the radius for rounded corners
+      const Radius.circular(4.0), // Adjust the radius for rounded corners
     );
 
     canvas.drawRRect(thumbRRect, paint);
