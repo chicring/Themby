@@ -1,10 +1,12 @@
 # **Themby**
-|第三方emby播放器
+第三方emby播放器
 
 ## 项目介绍
-一个flutter编写的emby客户端，目前只支持安卓，使用mpv播放器，支持搜索，收藏，播放历史等功能。
+**目前还在完善中**
 
+由flutter编写的emby客户端， 使用 GoRouter、Riverpod、Dio、Media_Kit、Objectbox等插件。
 
+目前只支持安卓，使用mpv播放器，支持搜索，收藏，播放历史等功能。
 ## 使用说明
 
 
