@@ -100,6 +100,9 @@ class _MediaProgressBar extends ConsumerState<MediaProgressBar>{
               ref.read(controlsServiceProvider.notifier).playNext();
             }
           }),
+          ref.read(videoControllerProvider).player.stream.log.listen((event) {
+            print(event.text);
+          }),
         ]
     );
 

@@ -7,7 +7,7 @@ import 'package:themby/src/helper/package_info.dart';
 
 part 'dio_provider.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 Dio dio(DioRef ref) {
 
   final dio = Dio(

@@ -78,9 +78,22 @@ dependencies:
   dio_cache_interceptor: ^3.5.0
 
   #视频播放
-  media_kit: ^1.1.10+1
-  media_kit_video: ^1.2.4
-  media_kit_libs_video: ^1.0.4
+
+  media_kit:
+    git:
+      url: https://github.com/media-kit/media-kit.git
+      ref: main
+      path: ./media_kit
+  media_kit_video:
+    git:
+      url: https://github.com/media-kit/media-kit.git
+      ref: main
+      path: ./media_kit_video
+  media_kit_libs_video:
+    git:
+      url: https://github.com/media-kit/media-kit.git
+      ref: main
+      path: ./libs/universal/media_kit_libs_video
 
   #打开外部链接
   url_launcher: ^6.3.0
@@ -125,7 +138,27 @@ dependencies:
 
   webdav_client: ^1.2.2
 
-
+dependency_overrides:
+  media_kit:
+    git:
+      url: https://github.com/media-kit/media-kit.git
+      ref: main
+      path: ./media_kit
+  media_kit_video:
+    git:
+      url: https://github.com/media-kit/media-kit.git
+      ref: main
+      path: ./media_kit_video
+  media_kit_libs_video:
+    git:
+      url: https://github.com/media-kit/media-kit.git
+      ref: main
+      path: ./libs/universal/media_kit_libs_video
+  media_kit_native_event_loop:
+    git:
+      url: https://github.com/media-kit/media-kit.git
+      ref: main
+      path: ./media_kit_native_event_loop
 #  #屏幕亮度
 #  screen_brightness: ^1.0.1
 

@@ -57,7 +57,7 @@ class AboutScreen extends ConsumerWidget {
                 "Github",
                  (){
                     launchUrl(
-                      Uri.parse("https://github.com/chicring/Themby-Release"),
+                      Uri.parse("https://github.com/chicring/Themby"),
                       mode: LaunchMode.externalApplication
                     );
                  }

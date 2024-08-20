@@ -66,7 +66,7 @@ class App extends ConsumerWidget{
         ThemeMode.dark,
         ThemeMode.system,
       ][ref.watch(appSettingRepositoryProvider).themeMode],
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

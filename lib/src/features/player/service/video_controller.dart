@@ -12,9 +12,16 @@ VideoController videoController(VideoControllerRef  ref){
 
   Player player = Player(
       configuration: PlayerConfiguration(
-        bufferSize: 1024 * 1024 * ref.watch(playerSettingProvider).mpvBufferSize
+        bufferSize: 1024 * 1024 * ref.watch(playerSettingProvider).mpvBufferSize,
+        libass: true,
+        logLevel: MPVLogLevel.debug
       )
   );
+
+  if (player.platform is NativePlayer) {
+    // (player.platform as dynamic).setProperty('rtsp-transport', 'udp');
+  }
+
   VideoController controller = VideoController(
     player,
     configuration: VideoControllerConfiguration(
