@@ -55,7 +55,7 @@ class _MediaProgressBar extends ConsumerState<MediaProgressBar>{
 
             if(media.position > Duration.zero){
               position = media.position;
-              ref.read(videoControllerProvider).player.seek(media.position);
+              // ref.read(videoControllerProvider).player.seek(media.position);
               ref.read(controlsServiceProvider.notifier).startRecordPosition(position: position.inMicroseconds);
             }
 

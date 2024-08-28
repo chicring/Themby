@@ -18,9 +18,6 @@ VideoController videoController(VideoControllerRef  ref){
       )
   );
 
-  if (player.platform is NativePlayer) {
-    // (player.platform as dynamic).setProperty('rtsp-transport', 'udp');
-  }
 
   VideoController controller = VideoController(
     player,

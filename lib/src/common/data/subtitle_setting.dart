@@ -13,7 +13,7 @@ class SubtitleSetting {
 
   final SharedPreferences prefs;
 
-  int get subtitleSize => prefs.getInt(Constant.subtitleSizeKey) ?? 16;
+  int get subtitleSize => prefs.getInt(Constant.subtitleSizeKey) ?? 32;
   set subtitleSize(int value) => prefs.setInt(Constant.subtitleSizeKey, value);
 
   int get subtitleColor => prefs.getInt(Constant.subtitleColorKey) ?? 0xFFFFFFFF;
@@ -29,20 +29,32 @@ class SubtitleSetting {
   set subtitleShadow(bool value) => prefs.setBool(Constant.subtitleShadowKey, value);
 
   TextStyle get subtitleStyle => TextStyle(
-    height: 1.5,
+    height: 1.4,
     fontSize: subtitleSize.toDouble(),
     letterSpacing: 0.0,
     wordSpacing: 0.0,
     color: Color(subtitleColor),
     fontWeight: subtitleBold ? FontWeight.bold : FontWeight.normal,
     backgroundColor: Colors.transparent,
-    // shadows: subtitleShadow ? [
+    // shadows: [
     //   Shadow(
-    //     color: Color(0x80000000),
-    //     offset: Offset(1, 1),
-    //     blurRadius: 3,
+    //     offset: const Offset(1.0, 1.0),
+    //     color: Colors.black.withOpacity(0.4),
+    //     blurRadius: 3.0,
     //   ),
-    // ] : null,
+    //   // 第二层阴影：略深的颜色和较大的偏移量
+    //   Shadow(
+    //     offset: const Offset(2.0, 2.0),
+    //     color: Colors.black.withOpacity(0.6),
+    //     blurRadius: 6.0,
+    //   ),
+    //   // 第三层阴影：最深的颜色和最大的模糊半径
+    //   Shadow(
+    //     offset: const Offset(4.0, 4.0),
+    //     color: Colors.black.withOpacity(0.8),
+    //     blurRadius: 8.0,
+    //   ),
+    // ],
   );
 }
 

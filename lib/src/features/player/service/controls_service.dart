@@ -65,9 +65,11 @@ class ControlsService extends _$ControlsService{
         position: media.position
     );
 
-    await ref.read(videoControllerProvider).player.open(Media(url,httpHeaders: {'user-agent': "Themby/1.0.4",}));
-    await ref.read(videoControllerProvider).player.play().then((v)async{
+    await ref.read(videoControllerProvider)
+        .player
+        .open(Media(url,httpHeaders: {'user-agent': "Themby/1.0.4",},start: media.position));
 
+    await ref.read(videoControllerProvider).player.play().then((v)async{
       if(media.audioIndex != null){
         toggleAudio(media.audioIndex!);
       }

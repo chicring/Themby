@@ -52,7 +52,7 @@ Widget _labelContent(Item item){
           children: [
             const Icon(Icons.star, color: Colors.yellow, size: 20),
             Text(
-              item.communityRating.toString(),
+              item.communityRating!.toStringAsFixed(1),
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ Widget _labelContent(Item item){
             ),
             borderRadius: BorderRadius.circular(6.0), // 设置边框圆角
           ),
-          padding: const EdgeInsets.all(2.0), // 设置内边距
+          padding: const EdgeInsets.symmetric(horizontal: 3,vertical: 0), // 设置内边距
           child: Text(
             item.officialRating ?? '',
             style: const TextStyle(
@@ -105,7 +105,7 @@ Widget _labelContent(Item item){
 
 Widget _overviewContent(String overview){
   return Padding(
-    padding: const EdgeInsets.only(left: 12),
+    padding: const EdgeInsets.only(left: 12, right: 10),
     child: ExpandableText(
       overview,
       maxLines: 3,
