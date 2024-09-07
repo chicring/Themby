@@ -78,6 +78,9 @@ dependencies:
   dio_cache_interceptor: ^3.5.0
 
   #视频播放
+  fvp: ^0.26.0
+  video_player: ^2.9.1
+
   media_kit: ^1.1.11
   media_kit_video: ^1.2.5
   media_kit_libs_video: 1.0.5
