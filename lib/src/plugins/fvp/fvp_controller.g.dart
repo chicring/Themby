@@ -1,26 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'controls_service.dart';
+part of 'fvp_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$controlsServiceHash() => r'e3e8db6f196be9f3673ceb5e2bb18604dffb5aa1';
+String _$fvpControllerHash() => r'e6af778cacb8f81805eaf1e35d354d4d557406e2';
 
-/// See also [ControlsService].
-@ProviderFor(ControlsService)
-final controlsServiceProvider =
-    AutoDisposeNotifierProvider<ControlsService, ControlsState>.internal(
-  ControlsService.new,
-  name: r'controlsServiceProvider',
+/// See also [fvpController].
+@ProviderFor(fvpController)
+final fvpControllerProvider = AutoDisposeProvider<FvpController>.internal(
+  fvpController,
+  name: r'fvpControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$controlsServiceHash,
+      : _$fvpControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ControlsService = AutoDisposeNotifier<ControlsState>;
+typedef FvpControllerRef = AutoDisposeProviderRef<FvpController>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -6,11 +6,11 @@ part of 'dio_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dioHash() => r'1deaccaa47c996a5920aa9c2b1ec74e1a662581b';
+String _$dioHash() => r'fe91a6951d3721ab131966e315d891a201270222';
 
 /// See also [dio].
 @ProviderFor(dio)
-final dioProvider = Provider<Dio>.internal(
+final dioProvider = AutoDisposeProvider<Dio>.internal(
   dio,
   name: r'dioProvider',
   debugGetCreateSourceHash:
@@ -19,6 +19,6 @@ final dioProvider = Provider<Dio>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef DioRef = ProviderRef<Dio>;
+typedef DioRef = AutoDisposeProviderRef<Dio>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

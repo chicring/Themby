@@ -128,6 +128,8 @@ dependencies:
 
   webdav_client: ^1.2.2
 
+  logger: ^2.4.0
+
 #  #屏幕亮度
 #  screen_brightness: ^1.0.1
 
