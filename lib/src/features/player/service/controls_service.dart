@@ -13,7 +13,7 @@ import 'package:themby/src/features/emby/domain/playback_info.dart';
 import 'package:themby/src/features/emby/domain/selected_media.dart';
 import 'package:themby/src/features/player/constants.dart';
 import 'package:themby/src/features/player/domain/controls_state.dart';
-import 'package:themby/src/features/player/service/video_controller.dart';
+import 'package:themby/src/features/player/service/themby_controller.dart';
 
 part 'controls_service.g.dart';
 

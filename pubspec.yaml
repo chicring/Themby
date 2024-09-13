@@ -69,7 +69,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
 
   #轮播图
-  carousel_slider: ^4.2.1
+  carousel_slider_plus: ^7.0.1
 
   #骨架屏
   shimmer: ^3.0.0
@@ -78,9 +78,6 @@ dependencies:
   dio_cache_interceptor: ^3.5.0
 
   #视频播放
-  fvp: ^0.26.0
-  video_player: ^2.9.1
-
   media_kit: ^1.1.11
   media_kit_video: ^1.2.5
   media_kit_libs_video: 1.0.5
@@ -173,7 +170,7 @@ flutter:
      - assets/loading/
      - assets/icon/
      - assets/images/
-     - assets/ttf/
+     - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:themby/src/features/player/service/video_controller.dart';
+import 'package:themby/src/features/player/service/themby_controller.dart';
 
 class PlayOrPauseButton extends ConsumerStatefulWidget{
   const PlayOrPauseButton({super.key});
@@ -22,7 +22,7 @@ class _PlayOrPauseButtonState extends ConsumerState<PlayOrPauseButton>{
   @override
   void initState() {
     super.initState();
-    subscription = ref.read(videoControllerProvider).player.stream.playing.listen((event) {
+    subscription = ref.read(thembyControllerProvider).controller.player.stream.playing.listen((event) {
       setState(() {
         isPlaying = event;
       });

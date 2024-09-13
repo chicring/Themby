@@ -11,7 +11,7 @@ import 'package:media_kit_video/media_kit_video_controls/src/controls/extensions
 import 'package:themby/src/common/data/player_setting.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/lock_service.dart';
-import 'package:themby/src/features/player/service/video_controller.dart';
+import 'package:themby/src/features/player/service/themby_controller.dart';
 import 'package:themby/src/features/player/service/volume_brightness_service.dart';
 import 'package:themby/src/features/player/widget/control_toast.dart';
 import 'package:themby/src/features/player/widgets/progress/draging_time.dart';

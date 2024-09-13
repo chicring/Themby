@@ -11,7 +11,7 @@ import 'package:themby/src/features/emby/domain/selected_media.dart';
 import 'package:themby/src/features/player/presentation/play_control.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
 import 'package:themby/src/features/player/service/fit_type_service.dart';
-import 'package:themby/src/features/player/service/video_controller.dart';
+import 'package:themby/src/features/player/service/themby_controller.dart';
 import 'package:themby/src/features/player/service/volume_brightness_service.dart';
 import 'package:themby/src/features/player/utils/fullscreen.dart';
 
@@ -30,6 +30,9 @@ class _VideoCustom extends ConsumerState<VideoCustom>{
   @override
   void initState(){
     super.initState();
+    Future.microtask(() async {
+      await ref.read(thembyControllerProvider).init();;
+    });
     enterFullScreen();
     ref.read(controlsServiceProvider.notifier).startPlay(widget.media);
     ref.read(volumeBrightnessServiceProvider.notifier).update();
@@ -38,7 +41,7 @@ class _VideoCustom extends ConsumerState<VideoCustom>{
 
   @override
   void deactivate(){
-    /// 记录播放结束············································································································
+    /// 记录播放结束
     ref.read(controlsServiceProvider.notifier).recordPosition(type: "stop");
     ref.read(videoControllerProvider).player.stop();
     super.deactivate();

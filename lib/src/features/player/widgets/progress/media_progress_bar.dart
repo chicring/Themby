@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:themby/src/common/constants.dart';
 import 'package:themby/src/features/player/service/controls_service.dart';
-import 'package:themby/src/features/player/service/video_controller.dart';
+import 'package:themby/src/features/player/service/themby_controller.dart';
 import 'package:themby/src/features/player/widgets/progress/draging_time.dart';
 import 'package:themby/src/features/player/widgets/progress/progress_toast.dart';
 

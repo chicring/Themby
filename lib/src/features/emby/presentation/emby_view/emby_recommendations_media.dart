@@ -1,6 +1,7 @@
 
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +9,7 @@ import 'package:themby/src/common/widget/network_img_layer.dart';
 import 'package:themby/src/extensions/constrains.dart';
 import 'package:themby/src/features/emby/application/emby_common_service.dart';
 import 'package:themby/src/features/emby/data/view_repository.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+
 
 class EmbyRecommendationsMedia extends ConsumerStatefulWidget{
   const EmbyRecommendationsMedia({super.key});

@@ -222,12 +222,12 @@ Future<String> markPlayUrl(List<MediaSource> sources, Site site,{int? index}) as
     if (source.container == 'strm') {
       return source.path;
     } else {
-      return source.directStreamUrl;
+      return  '${site.scheme}://${site.host}:${site.port}/emby${source.directStreamUrl}';
     }
   }).toList();
 
   if (urls.isNotEmpty) {
-    return '${site.scheme}://${site.host}:${site.port}/emby${urls[index ?? 0]}';
+    return urls[index ?? 0];
   } else {
     return '';
   }
